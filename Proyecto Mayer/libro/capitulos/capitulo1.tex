@@ -1,0 +1,151 @@
+% Archivo: capitulos/capitulo_generacion_potencia.tex
+\chapter{Introducción a la generación de potencia }
+\label{chap:introduccion-generacion-potencia}
+
+\section{Sobre la generación de potencia}
+Cuando hablamos de generación de potencia en este libro, nos referimos específicamente a la \textbf{generación de potencia eléctrica}, un elemento esencial para las actividades industriales, el transporte, las comunicaciones y la vida cotidiana. Casi nada funciona sin ella, lo que la convierte en uno de los pilares fundamentales del desarrollo económico y social de una región.
+
+En el ámbito industrial, la generación de potencia eléctrica es crucial para procesos productivos que requieren grandes cantidades de energía. Por ejemplo, industrias como la fabricación de productos químicos, la refinación de petróleo y la producción de acero dependen directamente de un suministro confiable y eficiente de electricidad. Estas actividades no solo impulsan la economía, sino que también son vitales para mantener la infraestructura moderna.
+
+Por otro lado, en el contexto social, la electricidad es indispensable para garantizar la calidad de vida. Proporciona iluminación, calefacción, refrigeración y acceso a tecnologías modernas que mejoran el bienestar de las personas. Desde el hogar hasta las instituciones educativas y de salud, la electricidad es un recurso básico que sustenta prácticamente todos los aspectos de la vida contemporánea.
+
+\section{Contexto histórico y evolución tecnológica}
+La historia de la generación de potencia está íntimamente ligada al desarrollo de la humanidad. Durante la Revolución Industrial, la invención de la máquina de vapor marcó un hito fundamental, permitiendo la mecanización de procesos que antes dependían de la fuerza humana o animal. Este avance sentó las bases para la creación de las primeras centrales eléctricas a finales del siglo XIX, que utilizaban carbón como combustible principal.
+
+A lo largo del siglo XX, la tecnología de generación de potencia evolucionó rápidamente. Se desarrollaron centrales hidroeléctricas, que aprovechan la energía potencial del agua, y centrales térmicas, que utilizan combustibles fósiles como el carbón, el petróleo y el gas natural. En la segunda mitad del siglo, la energía nuclear emergió como una fuente de potencia capaz de generar grandes cantidades de energía con un bajo costo de combustible, aunque con desafíos significativos en términos de seguridad y gestión de residuos \citep{smith2020}.
+
+En las últimas décadas, el enfoque se ha desplazado hacia las energías renovables, como la eólica, la solar y la geotérmica, en respuesta a la creciente preocupación por el cambio climático y la necesidad de reducir las emisiones de gases de efecto invernadero \citep{perez2021}. Estas tecnologías representan el futuro de la generación de potencia, prometiendo un suministro energético más sostenible y respetuoso con el medio ambiente.
+
+\section{Cómo se produce la energía eléctrica}
+La generación de electricidad se lleva a cabo mediante un dispositivo conocido como \emph{generador eléctrico}, cuyo funcionamiento se basa en el principio de inducción electromagnética. Este fenómeno, descubierto por Michael Faraday en el siglo XIX, establece que cuando existe un movimiento relativo entre un conductor y un campo magnético, se induce una corriente eléctrica en dicho conductor.
+
+En términos prácticos, un generador eléctrico está compuesto por un conjunto de bobinas de alambre, llamadas espiras, que actúan como conductores. Estas espiras giran dentro de un campo magnético generado por imanes permanentes o electroimanes. El movimiento relativo entre el campo magnético y las espiras genera una diferencia de potencial (voltaje) en los extremos del conductor, lo que permite el flujo de electrones y, consecuentemente, la producción de electricidad.
+
+%\begin{figure}[h]
+%\centering
+%\includegraphics[width=0.8\linewidth]{figura_generador}
+%\caption{Esquema básico del funcionamiento de un generador eléctrico: inducción de corriente mediante el movimiento relativo entre un conductor y un campo magnético.}
+%\label{fig:generador}
+%\end{figure}
+
+Ahora bien, ¿qué relación tiene este fenómeno electromagnético con la Ingeniería de Procesos? La conexión surge al analizar cómo se genera el movimiento relativo necesario entre el conductor y el campo magnético. En las plantas generadoras de electricidad, este movimiento es proporcionado por una turbina, que es un dispositivo mecánico que actúa como un "motor" para el generador.
+
+Las turbinas pueden ser impulsadas por diferentes medios lo que define el tipo de central eléctrica:
+
+\begin{itemize}
+\item \textbf{Centrales hidroeléctricas}: En estas instalaciones, el agua fluye a través de la turbina en estado líquido, aprovechando la energía potencial gravitatoria del agua almacenada en embalses.
+\item \textbf{Centrales térmicas}: Aquí, el agua se convierte en vapor mediante calor generado por la combustión de combustibles fósiles (como carbón, petróleo o gas natural). El vapor resultante impulsa la turbina.
+\item \textbf{Centrales nucleares}: En este caso, el calor necesario para vaporizar el agua proviene de reacciones nucleares en un reactor, donde se libera energía mediante fisión atómica.
+\item \textbf{Turbina de gas}: En estas centrales, los gases producto de una combustión (principalmente aire caliente) son los responsables de mover la turbina. Este tipo de tecnología es común en aplicaciones industriales y aeroespaciales.
+\end{itemize}
+
+En resumen, el proceso de generación de electricidad combina principios fundamentales de la física (inducción electromagnética) con ingeniería aplicada (turbinas y sistemas de conversión de energía). Cada tipo de central eléctrica utiliza una fuente de energía primaria distinta para impulsar la turbina, lo que determina su diseño, eficiencia y impacto ambiental.
+
+\section{Centrales alternativas y energías renovables}
+En contraste con las centrales térmicas previamente descriptas (llamadas \textit{convencionales}), que dependen de combustibles fósiles o nucleares, las \textbf{centrales alternativas} utilizan fuentes de energía renovable para generar electricidad, reduciendo significativamente el impacto ambiental (con otros problemas asociados, por supuesto). Entre las más destacadas se encuentran las centrales eólicas, solares fotovoltaicas, solares termoeléctricas y las centrales geotérmicas.
+
+En una central eólica, la energía cinética del viento mueve las aspas de un aerogenerador, cuyo eje está conectado a un generador eléctrico. Por su parte, las centrales solares fotovoltaicas convierten directamente la luz solar en electricidad mediante paneles compuestos de células fotovoltaicas, mientras que las solares termoeléctricas utilizan espejos o lentes para concentrar la radiación solar y calentar un fluido, generando vapor que impulsa una turbina. Finalmente, las centrales geotérmicas aprovechan el calor proveniente del interior de la Tierra para producir vapor que activa un generador. Estas tecnologías no solo son sostenibles, sino que también representan una transición hacia un modelo energético más limpio y eficiente, aunque presentan desafíos como la intermitencia de la fuente (en el caso del viento y el sol) o los altos costos iniciales de instalación.
+
+
+\section{Generación de potencia en Argentina y el mundo}
+\label{section:GeneracionPotenciaArgentina}
+En Argentina, la matriz energética es diversa y refleja tanto las riquezas naturales del país como las decisiones políticas y económicas que han guiado su desarrollo. Según datos recientes de la Secretaría de Energía de la Nación \citep{secretaria2022}, la potencia instalada total en Argentina es de aproximadamente 42.000 MW, distribuida de la siguiente manera:
+
+\begin{itemize}
+    \item \textbf{Energía térmica}: Representa alrededor del 60\% de la capacidad instalada, con una potencia de aproximadamente 25.200 MW. Las centrales térmicas utilizan principalmente gas natural, carbón y combustibles líquidos.
+    \item \textbf{Energía hidroeléctrica}: Contribuye con aproximadamente el 25\% de la capacidad, con una potencia de 10,500 MW. Centrales como Yacyretá y El Chocón son ejemplos destacados.
+    \item \textbf{Energía nuclear}: Representa cerca del 5\% de la capacidad, con una potencia de 1.800 MW, proveniente de las centrales Atucha I, Atucha II y Embalse.
+    \item \textbf{Energías renovables}: Aportan alrededor del 10\% de la capacidad, con una potencia de 4.200 MW. Esto incluye energía eólica, solar, biomasa y pequeñas centrales hidroeléctricas.
+\end{itemize}
+
+Las centrales hidroeléctricas, como Yacyretá y El Chocón, han sido históricamente una fuente importante de energía, aprovechando los recursos hídricos del país. Las centrales térmicas, que utilizan gas natural y combustibles líquidos, también juegan un papel crucial, especialmente en regiones donde no es viable la generación hidroeléctrica \citep{secretaria2022}.
+
+En los últimos años, Argentina ha dado pasos significativos hacia la incorporación de energías renovables. Proyectos como el Parque Eólico Rawson y el Parque Solar Caucharí han demostrado el potencial del país para generar energía limpia y reducir su dependencia de los combustibles fósiles \citep{cader}. Además, las centrales nucleares de Atucha I, Atucha II y Embalse continúan siendo una parte importante de la matriz energética, proporcionando una fuente estable y confiable de energía \citep{nucleoelectrica}. Más detalles sobre las plantas generadoras de potencia se encuentran en las Tablas \ref{tab:Centrales Termicas}, \ref{tab:hidroelectricas}, \ref{tab:nucleares}, \ref{tab:renovables}.
+
+A nivel mundial, la generación de potencia está experimentando una transformación sin precedentes. Países como Alemania, China y Estados Unidos están invirtiendo fuertemente en energías renovables, mientras que otros, como Francia, mantienen un enfoque significativo en la energía nuclear \citep{iea2023}. La transición hacia una economía baja en carbono es un desafío global que requiere innovación, cooperación internacional y políticas públicas efectivas.
+
+\begin{table}[h]
+\centering
+\caption{Tabla de centrales térmicas}
+\label{tab:Centrales Termicas}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\multicolumn{1}{c}{\textbf{Nombre}}	& \textbf{Ubicación}	& \textbf{Combustible} & \textbf{Tipo de ciclo} & \textbf{\begin{tabular}[c]{@{}c@{}}Potencia \\ (MW)\end{tabular}} \\ \midrule
+\begin{tabular}[c]{@{}l@{}}Central Termoeléctrica\\ Manuel Belgrano\end{tabular} & \begin{tabular}[c]{@{}c@{}}Campana \\ (Bs. As.)\end{tabular}     & Gas natural	& Combinado	& 830	\\ \midrule
+\begin{tabular}[c]{@{}l@{}}Central Térmica\\ Güemes\end{tabular}	& \begin{tabular}[c]{@{}c@{}}Güemes \\ (Salta)\end{tabular}	& Gas natural	& Turbina de gas	& 120	\\ \midrule
+\begin{tabular}[c]{@{}l@{}}Central Térmica \\ Brigadier López\end{tabular}	& Santa Fe	& Gas natural	& Rankine	& 540	\\ \midrule
+\begin{tabular}[c]{@{}l@{}}Central Térmica \\ San Nicolás\end{tabular}	& \begin{tabular}[c]{@{}c@{}}San Nicolás \\ (Bs. As.)\end{tabular} & Carbón	& Rankine	& 650	\\ \midrule
+\begin{tabular}[c]{@{}l@{}}Central Térmica \\ Luján de Cuyo\end{tabular}	& Mendoza	& Gas natural	& Combinado	& 520	\\ \midrule
+\begin{tabular}[c]{@{}l@{}}Central Costanera\end{tabular}	& Buenos Aires	& Gas natural	& Combinado	& 1,260	\\ \midrule
+\begin{tabular}[c]{@{}l@{}}Central Térmica \\ Genelba\end{tabular}	& Buenos Aires	& Gas natural	& Combinado	& 700	\\ \midrule
+\begin{tabular}[c]{@{}l@{}}Central Térmica \\ Piedra Buena\end{tabular}	& Río Negro	& Gas natural	& Turbina de gas	& 240	\\ \bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Principales centrales hidroeléctricas en Argentina}
+\begin{tabularx}{\textwidth}{l C C S[table-format=4.0]}
+\toprule
+\textbf{Nombre} & \textbf{Ubicación} & \textbf{Tipo} & \textbf{Potencia (MW)} \\
+\midrule
+Yacyretá & Corrientes/Misiones & Embalse & 3,100 \\
+El Chocón & Neuquén & Embalse & 1,200 \\
+Salto Grande & Entre Ríos & Embalse & 1,890 \\
+Piedra del Águila & Neuquén & Embalse & 1,400 \\
+Alicurá & Neuquén & Embalse & 1,050 \\
+Embalse Río Tercero & Córdoba & Embalse & 350 \\
+Los Reyunos & Mendoza & Embalse & 200 \\
+\bottomrule
+\end{tabularx}
+\label{tab:hidroelectricas}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Principales centrales nucleares en Argentina}
+\begin{tabularx}{\textwidth}{l C C C S[table-format=3.0]}
+\toprule
+\textbf{Nombre} & \textbf{Ubicación} & \textbf{Tipo de reactor} & \textbf{Tipo de ciclo} & \textbf{Potencia (MW)} \\
+\midrule
+Atucha I & Lima, Buenos Aires & PHWR & Ciclo Rankine & 362 \\
+Atucha II & Lima, Buenos Aires & PHWR & Ciclo Rankine & 745 \\
+Embalse & Embalse, Córdoba & PHWR & Ciclo Rankine & 683 \\
+\bottomrule
+\end{tabularx}
+\label{tab:nucleares}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Principales plantas de energías renovables en Argentina}
+\begin{tabularx}{\textwidth}{l C C S[table-format=3.0]}
+\toprule
+\textbf{Nombre} & \textbf{Ubicación} & \textbf{Tipo} & \textbf{Potencia (MW)} \\
+\midrule
+Parque Eólico Rawson & Chubut & Eólica & 108 \\
+Parque Eólico Arauco & La Rioja & Eólica & 100 \\
+Parque Solar Caucharí & Jujuy & Solar & 300 \\
+Parque Solar Ullum & San Juan & Solar & 5 \\
+Central Térmica Biomasa & Villa María, Córdoba & Biomasa & 12 \\
+Parque Eólico Pomona & Chubut & Eólica & 200 \\
+Parque Solar Pilar & Buenos Aires & Solar & 50 \\
+\bottomrule
+\end{tabularx}
+\label{tab:renovables}
+\end{table}
+
+\clearpage
+\section{Termodinámica e Ingeniería de Proceso}
+En el contexto arriba descripto, la Termodinámica juega un papel fundamental, especialmente para los \textbf{ingenieros de proceso}, quienes son responsables de diseñar, optimizar, operar y supervisar los sistemas de generación de potencia. Estos profesionales deben comprender en profundidad los principios termodinámicos que rigen la conversión de energía, ya que su trabajo implica desde la selección de tecnologías y combustibles hasta la mejora de la eficiencia energética y la reducción de emisiones contaminantes \citep{moran2018}.
+
+Para los ingenieros de proceso, la termodinámica no es solo una disciplina teórica, sino una herramienta práctica que les permite:
+\begin{itemize}
+    \item \textbf{Diseñar ciclos termodinámicos eficientes}: Como los ciclos Rankine en centrales térmicas y nucleares, o los ciclos combinados en plantas de cogeneración \citep{cengel2019}.
+    \item \textbf{Optimizar el uso de recursos}: Maximizando la eficiencia de los procesos y minimizando el desperdicio de energía.
+    \item \textbf{Evaluar el impacto ambiental}: Analizando las emisiones de gases de efecto invernadero y proponiendo soluciones sostenibles.
+    \item \textbf{Integrar nuevas tecnologías}: Como la captura de \ce{CO2}, el hidrógeno verde y el almacenamiento de energía, que son clave para la transición energética \citep{jones2019}.
+\end{itemize}
+
+Este libro está dirigido específicamente a los ingenieros de proceso, ofreciendo un enfoque práctico y aplicado de la termodinámica en el ámbito de la generación de potencia. A través de ejemplos concretos, casos de estudio y problemas resueltos, se busca proporcionar las herramientas necesarias para enfrentar los desafíos actuales y futuros de la industria energética, con un énfasis especial en las realidades locales de Argentina.
+

@@ -1,0 +1,75 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Paquetes Recomendados ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{booktabs} % Para tablas profesionales
+
+% --- Configuración de Página ---
+\geometry{margin=1in}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}[\titlerule]
+
+% --- Información del Documento ---
+\title{
+    \textbf{Proyecto MAYER} \\
+    \large Plataforma Integrada para la Enseñanza de Termodinámica Técnica 
+}
+\author{Dr. Pablo S. Gauna}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Identidad del Proyecto}
+El \textbf{Proyecto MAYER} bla bla
+
+\section{Arquitectura del Ecosistema Multicanal}
+El proyecto se estructura mediante la integración de cuatro pilares estratégicos que funcionan de forma sinérgica:
+
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{Tomo I: Plantas de Generación de Potencia (Editorial UNGS):} Texto de referencia que sustituye ejercicios genéricos por casos de estudio del parque generador nacional, con foco en el análisis exergético.
+    \item \textbf{Observatorio Energético Regional (Sección A):} Base de datos técnica y operativa de centrales térmicas (Central Güemes, Atucha II, Costanera, etc.), que actúa como el laboratorio real del libro.
+    \item \textbf{Software de Simulación (App Python):} Motor de cálculo de estados termodinámicos mediante \textit{Cubic Splines}, permitiendo una visualización dinámica y precisa de ciclos reales en diagramas $T-s$.
+    \item \textbf{Canal de Ingeniería Visual (YouTube):} Plataforma de narrativa técnica destinada a la contextualización de activos energéticos y la explicación de fenómenos complejos en planta.
+\end{itemize}
+
+\section{Plan de Gestión y Designación de Tareas}
+
+\begin{table}[h]
+\centering
+\caption{Hoja de Ruta Operativa - Proyecto MAYER}
+\vspace{0.5em}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Área} & \textbf{Tarea Crítica} & \textbf{Entregable} \\ \midrule
+\textbf{Investigación} & Digitalización de Tablas de Vapor & Dataset Curado (CSV/JSON) \\
+\textbf{Desarrollo} & Programación del Motor Termodinámico & Web-App Interactiva \\
+\textbf{Editorial} & Redacción de Capítulos y Observatorio & Manuscrito Tomo I \\
+\textbf{Contenido} & Guionado y Producción Audiovisual & Serie ``Termodinámica Real'' \\ \bottomrule
+\end{tabular}
+\end{table}
+\clearpage
+
+\section{Estrategia de Financiamiento y Publicación}
+\begin{itemize}
+    \item \textbf{Eje Científico:} Publicaciones sobre eficiencia del SADI en revistas de energía y aplicación a fondos PICT / Proyectos UTN.
+    \item \textbf{Eje Pedagógico:} Artículos sobre el impacto de la enseñanza inversa y herramientas Open Source en congresos de ingeniería (CAEDI/CONFEDI).
+\end{itemize}
+
+\section{Hitos Próximos}
+\begin{enumerate}
+    \item Consolidación de la Sección A (Datos técnicos de la Central Güemes).
+    \item Lanzamiento del prototipo de la App con motor de interpolación Spline.
+    \item Presentación del plan de obra ante el consejo editorial de la UNGS.
+\end{enumerate}
+
+\end{document}

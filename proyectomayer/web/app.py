@@ -1,81 +1,54 @@
 import streamlit as st
-import pandas as pd
 
-# Configuración de la página
-st.set_page_config(page_title="Proyecto MAYER", page_icon="🏗️", layout="wide")
+st.set_page_config(page_title="Proyecto MAYER - Cap II", layout="wide")
 
-# --- ESTILOS PERSONALIZADOS ---
-st.markdown("""
-    <style>
-    .main { background-color: #f5f7f9; }
-    .stMetric { background-color: #ffffff; padding: 15px; border-radius: 10px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
-    </style>
-    """, unsafe_allow_html=True)
-
-# --- BARRA LATERAL (MENÚ) ---
+# Barra lateral
 with st.sidebar:
-    st.image("https://www.na-sa.com.ar/assets/images/centrales/atucha2_thumb.jpg", caption="CNA II - Proyecto MAYER")
-    st.title("Navegación")
-    menu = st.radio("Ir a:", ["📊 Estado del Proyecto", "⚛️ Capítulo 2: Atucha II", "🔭 Observatorio de Datos"])
+    st.title("Proyecto MAYER")
+    st.markdown("### Capítulo II\n**Sistemas y Balances**")
     st.divider()
-    st.info("Este portal es el complemento interactivo del libro 'Ingeniería Mayer'.")
+    st.info("Analizando la generación de electricidad para formalizar la termodinámica.")
 
-# --- LÓGICA DE LAS SECCIONES ---
+# Cuerpo principal
+st.title("Capítulo II: De la Central a la Teoría")
 
-if menu == "📊 Estado del Proyecto":
-    st.title("🏗️ Tablero de Control - Proyecto MAYER")
+st.markdown("""
+### 1. La Central Térmica como Sistema
+Antes de ir a las definiciones abstractas, observemos nuestra unidad de estudio: **Atucha II**. 
+En ingeniería, definimos un **Sistema** como una porción del universo que aislamos para su análisis.
+""")
+
+# Simulación de Balance de Masa y Energía
+st.subheader("2. Análisis de Balance en el Generador de Vapor")
+
+col1, col2 = st.columns([1, 1])
+
+with col1:
+    st.write("**Entradas y Salidas (Volumen de Control)**")
+    # Datos reales para que el alumno juegue con el balance
+    m_punto = st.number_input("Caudal másico (kg/s)", value=950.4)
+    h_entrada = st.number_input("Entalpía de entrada (kJ/kg)", value=950.0)
+    h_salida = st.number_input("Entalpía de salida (kJ/kg)", value=2770.0)
+
+with col2:
+    # Ecuación de Balance de Energía Simplificada
+    # Q = m * (h_salida - h_entrada)
+    potencia_termica = m_punto * (h_salida - h_entrada) / 1000 # Resultado en MW
     
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Progreso del Libro", "65%", "+5% esta semana")
-    col2.metric("Capítulos Listos", "4 / 12")
-    col3.metric("Revisión Técnica", "Pendiente")
+    st.metric("Transferencia de Calor (Q)", f"{potencia_termica:.2f} MWt")
+    st.caption("Este cálculo representa el calor entregado por el reactor al ciclo secundario.")
 
-    st.subheader("Checklist de Avance")
-    st.checkbox("Capítulo 1: Fundamentos", value=True)
-    st.checkbox("Capítulo 2: Atucha II y Ciclos de Vapor", value=False)
-    st.write("---")
-    st.write("📩 **Nota para el autor:** Recordá subir el último PDF a la carpeta `/libro` para que los alumnos puedan descargarlo.")
+st.divider()
 
-elif menu == "⚛️ Capítulo 2: Atucha II":
-    st.title("⚛️ Capítulo 2: El Ciclo de Atucha II")
-    
-    st.write("""
-    En esta sección analizamos la **Central Nuclear Atucha II** como un sistema termodinámico de gran escala. 
-    A diferencia de una central térmica convencional, aquí el 'combustible' no se quema, sino que fisiona.
-    """)
+st.markdown("""
+### 3. Hacia la Formalización
+A partir del ejemplo anterior, podemos definir:
+* **Masa ($\dot{m}$):** Se conserva (Balance de materia).
+* **Energía ($Q, W$):** Se transforma (Balance de energía).
+* **Sistema Abierto:** Atucha II intercambia materia y energía con su entorno.
+""")
 
-    # Simulador Interactivo
-    st.subheader("🎮 Simulador de Parámetros Operativos")
-    
-    col_a, col_b = st.columns([1, 2])
-    
-    with col_a:
-        p_vapor = st.slider("Presión de Vapor Vivo (bar)", 40.0, 70.0, 56.1, step=0.1)
-        t_vapor = st.slider("Temperatura de Vapor (°C)", 250.0, 300.0, 271.5, step=0.5)
-        st.warning("El punto de diseño nominal es 56.1 bar.")
-
-    with col_b:
-        # Cálculo ficticio para visualización
-        eficiencia = (p_vapor * 0.4) + (t_vapor * 0.05)
-        st.subheader(f"Eficiencia Estimada del Ciclo: {eficiencia:.2f}%")
-        st.progress(eficiencia / 100)
-        
-        st.info("Este cálculo utiliza las tablas de vapor cargadas en el sistema.")
-
-    st.divider()
-    st.subheader("📥 Descargas")
-    # Intentará buscar el PDF en tu carpeta libro/main.pdf
-    st.button("Descargar Borrador del Capítulo 2 (PDF)")
-
-elif menu == "🔭 Observatorio de Datos":
-    st.title("🔭 Observatorio de Datos Atucha II")
-    st.write("Monitoreo de parámetros históricos y comparativas.")
-
-    # Generamos datos de ejemplo para que la app no se vea vacía
-    chart_data = pd.DataFrame({
-        'Día': range(1, 11),
-        'Generación (MW)': [740, 745, 742, 738, 745, 746, 740, 735, 744, 745]
-    })
-    
-    st.line_chart(chart_data, x='Día', y='Generación (MW)')
-    st.success("Sincronizado con los archivos .csv del repositorio.")
+# Botón para descargar el texto que me pasaste
+st.download_button("Descargar Borrador Texto Cap. II", 
+                   "En este capítulo, abordaremos los conceptos fundamentales...", 
+                   "Capitulo_II_Intro.txt")

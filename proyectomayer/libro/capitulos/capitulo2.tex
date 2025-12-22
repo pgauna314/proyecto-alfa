@@ -70,39 +70,24 @@ En capítulos previos, mencionamos que una central térmica es aquella que impul
 \end{figure}
 
 
-\begin{figure}[h]
-    \centering
-    \begin{tikzpicture}
-        \begin{axis}[
-            width=10cm, height=8cm,
-            xlabel={Entropía específica, $s$ [kJ/kg$\cdot$K]},
-            ylabel={Temperatura, $T$ [°C]},
-            grid=both,
-            title={Diagrama $T-s$ - Evolución en Turbina (Prueba)},
-            xmin=0, xmax=9,
-            ymin=0, ymax=400,
-        ]
-            % 1. Simulamos la Campana de Saturación (Datos simplificados)
-            \addplot[thick, black, smooth] coordinates {
-                (0.5, 40) (1.5, 150) (3.1, 311) % Línea de líquido saturado
-                (4.5, 374) % Punto crítico aproximado
-                (5.5, 311) (6.5, 150) (8.2, 40) % Línea de vapor saturado
-            };
-            \node at (axis cs: 2.5, 350) {Campana de Agua};
+\begin{tikzpicture}
+    \begin{axis}[
+        width=8cm, height=10cm,
+        xlabel={$s$ [kJ/kg$\cdot$K]},
+        ylabel={$T$ [°C]},
+        grid=both,
+        ymin=0, ymax=400,
+        xmin=0, xmax=10,
+        minor tick num=1,
+        title={Diagrama $T-s$ Agua (Atucha II)}
+    ]
+        % La campana con los datos del .dat
+        \addplot[blue, thick, smooth, tension=0.7] table {datos/campana_agua.dat};
 
-            % 2. Evolución de la Turbina de Atucha II (Simplificada)
-            % Entrada: ~271°C, s ~ 5.8 (Vapor saturado a 56 bar)
-            % Salida: ~33°C, s ~ 7.2 (Vapor húmedo en condensador)
-            \addplot[red, ultra thick, -{Stealth}] coordinates {
-                (5.8, 271) 
-                (7.5, 33)
-            } node[pos=0, above right, black] {Entrada}
-              node[pos=1, below, black] {Salida};
-
-        \end{axis}
-    \end{tikzpicture}
-    \caption{Prueba de integración de datos termodinámicos en el libro.}
-\end{figure}
+        % Punto Crítico (Referencia)
+        \filldraw[black] (axis cs:4.407, 373.95) circle (2pt) node[above] {PC};
+    \end{axis}
+\end{tikzpicture}
 
 Teniendo en mente el funcionamiento de una central térmica, supongamos que queremos analizar termodinámicamente el agua que circula por una cañería dentro de la caldera. Para ello, tracemos una línea imaginaria que abarque esa cañería, como se muestra en la Figura \ref{fig:EleccionSistema} (recuadro rojo). Esta elección nos permite definir tres regiones:
 

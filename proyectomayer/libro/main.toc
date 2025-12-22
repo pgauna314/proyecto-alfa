@@ -17,7 +17,7 @@
 \contentsline {section}{\numberline {2.4}Balance de materia}{20}{section.2.4}%
 \contentsline {section}{\numberline {2.5}Balances de energía}{21}{section.2.5}%
 \contentsline {subsection}{\numberline {2.5.1}El Primer Principio}{21}{subsection.2.5.1}%
-\contentsline {subsubsection}{Sobre leyes, principios y teorías}{21}{subsubsection*.12}%
+\contentsline {subsubsection}{Sobre leyes, principios y teorías}{21}{subsubsection*.11}%
 \contentsline {subsection}{\numberline {2.5.2}La ecuación del Primer Principio para sistemas abiertos}{22}{subsection.2.5.2}%
 \contentsline {subsection}{\numberline {2.5.3}Ejemplo: Balance de materia y energía en la Central Térmica Güemes}{23}{subsection.2.5.3}%
 \contentsline {chapter}{\numberline {3}Anexos}{25}{chapter.3}%

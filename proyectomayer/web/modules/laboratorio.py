@@ -6,7 +6,6 @@ import numpy as np
 def mostrar_laboratorio():
     st.title("🧪 Laboratorio de Propiedades Termodinámicas")
     
-    # --- ÁREA DE CONFIGURACIÓN ---
     with st.container(border=True):
         c1, c2, c3 = st.columns([2, 2, 2])
         with c1:
@@ -37,81 +36,69 @@ def mostrar_laboratorio():
                 v2 = st.number_input("Temperatura (°C)", value=20.0)
                 t_k = v2 + 273.15
         with i3:
-            st.write("") # Espacio
+            st.write("") 
             ejecutar = st.button("🚀 Ejecutar Diagnóstico", use_container_width=True, type="primary")
 
     if ejecutar:
         try:
-            # 1. INICIALIZACIÓN DE VARIABLES DE SALIDA
             t_plot, s_plot, p_plot, v_plot = 0, 0, 0, 0
-            cuento = []
-
-            # 2. LÓGICA DE CÁLCULO Y RELATO (EL CUENTO)
-            if par == "P y h":
-                h_in = v2
-                hf = PropsSI('H', 'P', p_pa, 'Q', 0, sustancia) / 1000
-                hg = PropsSI('H', 'P', p_pa, 'Q', 1, sustancia) / 1000
-                
-                cuento.append(f"1. Buscamos en la tabla de **{nombre_user}** a **{v1} bar**.")
-                cuento.append(f"2. Obtenemos los valores de saturación: $h_f = {hf:.2f}$ kJ/kg y $h_g = {hg:.2f}$ kJ/kg.")
-                
-                if h_in < hf:
-                    estado = "Líquido Comprimido"
-                    cuento.append(f"3. Como $h$ ({h_in}) < $h_f$, el estado es **{estado}**.")
-                elif h_in > hg:
-                    estado = "Vapor Sobrecalentado"
-                    cuento.append(f"3. Como $h$ ({h_in}) > $h_g$, el estado es **{estado}**.")
-                else:
-                    x = (h_in - hf) / (hg - hf)
-                    estado = "Mezcla"
-                    cuento.append(f"3. Como $h_f < h < h_g$, es una **Mezcla** con título $x = {x:.4f}$.")
-                
-                # Propiedades para graficar
-                t_plot = PropsSI('T', 'P', p_pa, 'H', h_in*1000, sustancia) - 273.15
-                s_plot = PropsSI('S', 'P', p_pa, 'H', h_in*1000, sustancia) / 1000
-                p_plot = v1
-                v_plot = 1 / PropsSI('D', 'P', p_pa, 'H', h_in*1000, sustancia)
-
-            # (Aquí podés ir agregando los elif para los otros pares siguiendo el mismo esquema)
-
-            # 3. MOSTRAR EL PROCEDIMIENTO
+            
             with st.expander("📖 Procedimiento del Diagnóstico", expanded=True):
-                for linea in cuento:
-                    st.write(linea)
+                if par == "P y h":
+                    h_in = v2
+                    hf = PropsSI('H', 'P', p_pa, 'Q', 0, sustancia) / 1000
+                    hg = PropsSI('H', 'P', p_pa, 'Q', 1, sustancia) / 1000
+                    st.write(f"1. En tablas para **{v1} bar**: $h_f = {hf:.2f}$ y $h_g = {hg:.2f}$ kJ/kg.")
+                    
+                    if h_in < hf:
+                        st.info(f"**Líquido Comprimido**: $h$ ({h_in}) < $h_f$.")
+                    elif h_in > hg:
+                        st.warning(f"**Vapor Sobrecalentado**: $h$ ({h_in}) > $h_g$.")
+                    else:
+                        x = (h_in - hf) / (hg - hf)
+                        st.success(f"**Mezcla Bifásica**: El valor está entre $h_f$ y $h_g$.")
+                        st.latex(r"x = \frac{h - h_f}{h_g - h_f} = " + f"{x:.4f}")
+                    
+                    t_plot = PropsSI('T', 'P', p_pa, 'H', h_in*1000, sustancia) - 273.15
+                    s_plot = PropsSI('S', 'P', p_pa, 'H', h_in*1000, sustancia) / 1000
+                    p_plot = v1
+                    v_plot = 1 / PropsSI('D', 'P', p_pa, 'H', h_in*1000, sustancia)
 
-            # 4. DIBUJAR EL GRÁFICO (RECORREGIDO)
+            # --- DIBUJO DE GRÁFICOS ---
             t_crit = PropsSI('Tcrit', sustancia)
             t_min = PropsSI('Tmin', sustancia)
-            t_vec = np.linspace(t_min, t_crit - 0.05, 100)
-            
+            t_vec = np.linspace(t_min + 0.1, t_crit - 0.5, 100)
             fig = go.Figure()
 
             if "T-s" in tipo_grafico:
+                # Campana
                 sf = [PropsSI('S', 'T', t, 'Q', 0, sustancia)/1000 for t in t_vec]
                 sg = [PropsSI('S', 'T', t, 'Q', 1, sustancia)/1000 for t in t_vec]
-                # Unimos las dos curvas para cerrar la campana correctamente
-                fig.add_trace(go.Scatter(x=sf + sg[::-1], 
-                                         y=[t-273.15 for t in t_vec] + [t-273.15 for t in t_vec][::-1], 
-                                         fill='toself', fillcolor='rgba(0,100,255,0.1)', 
-                                         line=dict(color='blue'), name='Campana'))
-                fig.add_trace(go.Scatter(x=[s_plot], y=[t_plot], mode='markers', 
-                                         marker=dict(color='red', size=14, symbol='x'), name='Estado'))
-                fig.update_layout(xaxis_title="Entropía (s) [kJ/kgK]", yaxis_title="Temperatura (T) [°C]")
-            
+                fig.add_trace(go.Scatter(x=sf+sg[::-1], y=[t-273.15 for t in t_vec]*2, fill='toself', name='Campana', line=dict(color='gray')))
+                
+                # ISOBARA (P constante)
+                s_iso = np.linspace(min(sf)*0.8, max(sg)*1.2, 100)
+                t_iso = [PropsSI('T', 'P', p_pa, 'S', s*1000, sustancia)-273.15 for s in s_iso]
+                fig.add_trace(go.Scatter(x=s_iso, y=t_iso, name=f'Isobara {v1} bar', line=dict(dash='dash', color='orange')))
+                
+                fig.add_trace(go.Scatter(x=[s_plot], y=[t_plot], mode='markers', marker=dict(color='red', size=15), name='ESTADO'))
+
             else: # P-v
+                # Campana
                 vf = [1/PropsSI('D', 'T', t, 'Q', 0, sustancia) for t in t_vec]
                 vg = [1/PropsSI('D', 'T', t, 'Q', 1, sustancia) for t in t_vec]
                 pf = [PropsSI('P', 'T', t, 'Q', 0, sustancia)/100000 for t in t_vec]
-                fig.add_trace(go.Scatter(x=vf + vg[::-1], y=pf + pf[::-1], 
-                                         fill='toself', fillcolor='rgba(0,255,100,0.1)', 
-                                         line=dict(color='green'), name='Campana'))
-                fig.add_trace(go.Scatter(x=[v_plot], y=[p_plot], mode='markers', 
-                                         marker=dict(color='red', size=14, symbol='x'), name='Estado'))
-                fig.update_layout(xaxis_type="log", xaxis_title="Vol. específico (v) [m³/kg]", yaxis_title="Presión (P) [bar]")
+                fig.add_trace(go.Scatter(x=vf+vg[::-1], y=pf+pf[::-1], fill='toself', name='Campana', line=dict(color='gray')))
+                
+                # ISOTERMA (T constante)
+                v_iso = np.logspace(np.log10(min(vf)*0.5), np.log10(max(vg)*2), 100)
+                p_iso = [PropsSI('P', 'T', t_plot+273.15, 'D', 1/v, sustancia)/100000 for v in v_iso]
+                fig.add_trace(go.Scatter(x=v_iso, y=p_iso, name=f'Isoterma {t_plot:.1f}°C', line=dict(dash='dash', color='purple')))
+                
+                fig.add_trace(go.Scatter(x=[v_plot], y=[p_plot], mode='markers', marker=dict(color='red', size=15), name='ESTADO'))
+                fig.update_layout(xaxis_type="log", yaxis_type="log")
 
             st.plotly_chart(fig, use_container_width=True)
 
         except Exception as e:
-            st.error(f"Error en el cálculo: {e}")
-    else:
-        st.info("Ajustá los valores y presioná el botón para ver el diagnóstico.")
+            st.error(f"Error: {e}")

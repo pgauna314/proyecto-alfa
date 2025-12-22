@@ -10,10 +10,12 @@ st.set_page_config(page_title="Proyecto MAYER", layout="wide", page_icon="⚛️
 # Barra Lateral
 with st.sidebar:
     st.title("🏗️ Proyecto MAYER")
+    # AGREGUÉ "Sobre el Autor" AQUÍ ABAJO:
     menu = st.radio("Navegación:", [
         "Inicio", 
         "Matriz Energética", 
-        "Capítulo II: Sistemas"
+        "Capítulo II: Sistemas",
+        "Sobre el Autor"
     ])
     st.divider()
     st.link_button("📺 YouTube", "https://youtube.com")
@@ -26,7 +28,7 @@ elif menu == "Matriz Energética":
     mostrar_matriz()
 elif menu == "Capítulo II: Sistemas":
     mostrar_cap2()
-elif menu == "Sobre el Autor":        
+elif menu == "Sobre el Autor":         
     mostrar_autor()
 
 

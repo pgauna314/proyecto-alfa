@@ -1,4 +1,10 @@
 import streamlit as st
+import os
+
+def mostrar_autor():
+    st.title("👤 Sobre el Autor y el Proyecto")
+    
+    col1, col2 = st.columns([1, 2])
 
 def mostrar_autor():
     st.title("👤 Sobre el Autor y el Proyecto")
@@ -31,3 +37,4 @@ def mostrar_autor():
     "La ingeniería no se aprende solo leyendo, se aprende rompiendo y reconstruyendo balances." 
     Este entorno interactivo es el resultado de buscar una pedagogía 4.0 para la ingeniería nuclear argentina.
     """)
+

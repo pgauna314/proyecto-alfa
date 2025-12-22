@@ -1,97 +1,101 @@
 import streamlit as st
+import pandas as pd
 
 # 1. Configuración de página
-st.set_page_config(page_title="Proyecto MAYER", layout="wide", page_icon="🏗️")
+st.set_page_config(page_title="Proyecto MAYER", layout="wide", page_icon="⚛️")
 
-# 2. Barra Lateral (Navegación y Botones)
+# 2. Barra Lateral
 with st.sidebar:
-    st.title("🏗️ Hola AYU")
+    st.title("🏗️ Proyecto MAYER")
+    menu = st.radio("Navegación:", ["Inicio", "Capítulo II: Sistemas"])
     st.divider()
-    
-    # Menú de Secciones
-    menu = st.radio("Secciones del Libro:", 
-                    ["Inicio", "Capítulo II: Sistemas", "Observatorio de Datos"])
-    
-    st.divider()
-    st.write("### Recursos Externos")
-    
-    # Botones de acceso rápido
-    st.link_button("📺 Canal de YouTube", "https://youtube.com/@TuCanal")
-    st.link_button("📚 Libro Completo (PDF)", "https://github.com/TuUsuario/Proyecto-Mayer/libro/main.pdf")
-    
-    st.divider()
-    st.info("Autor: Dr. Pablo Gauna")
+    st.link_button("📺 YouTube", "https://youtube.com")
+    st.link_button("📚 Libro PDF", "https://github.com")
 
-# 3. Panel Principal
+# 3. Contenido Principal
 if menu == "Inicio":
-    st.title("Bienvenidos al Proyecto MAYER")
-    st.markdown("""
-    Este sitio es el soporte dinámico para el estudio de la termodinámica aplicada.
-    Aquí transformamos las ecuaciones del libro en herramientas de cálculo reales.
-    """)
-    st.image("https://www.na-sa.com.ar/assets/images/centrales/atucha2_header.jpg", caption="Central Nuclear Atucha II")
+    st.title("Estudio de Sistemas Térmicos")
+    st.write("Bienvenido a la plataforma interactiva del Proyecto MAYER.")
 
 elif menu == "Capítulo II: Sistemas":
-    st.title("⚛️ Definición de Límites y Balances")
+    st.title("⚛️ Capítulo II: Análisis de Sistemas y Balances")
     
     st.markdown("""
-    ### El Generador de Vapor (GV) como Volumen de Control
-    Para formalizar la Primera Ley, primero debemos definir los **límites del sistema**.
-    En Atucha II, el GV es un intercambiador de calor de tubos en U.
+    En esta sección analizamos el **Generador de Vapor (GV)** de Atucha II. 
+    Para aplicar la Primera Ley, es crucial definir si nuestro sistema es el fluido, 
+    el equipo, o el conjunto de circuitos.
     """)
 
-    # --- ESQUEMA DE CAÑERÍAS (SIMULADO) ---
-    st.markdown("""
-    <div style="background-color: #1e1e1e; color: #00ff00; padding: 20px; border-radius: 10px; font-family: 'Courier New', monospace;">
-        <p> [CIRCUITO PRIMARIO: D2O] ---->( Calor Q )----> [CIRCUITO SECUNDARIO: H2O] </p>
-        <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ^ </p>
-        <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | </p>
-        <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( LÍMITE DEL SISTEMA ) </p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    col1, col2 = st.columns(2)
+    # --- DEFINICIÓN VISUAL DEL SISTEMA ---
+    st.subheader("Configuración del Volumen de Control")
     
-    with col1:
-        st.subheader("1. Límites del Sistema")
-        st.write("""
-        Si definimos el límite **solo** en el fluido secundario:
-        * Es un **sistema abierto**.
-        * **No es adiabático**: Recibe energía del primario.
-        * El balance es: $\dot{Q} = \dot{m} (h_{sal} - h_{ent})$
-        """)
-        
-    with col2:
-        st.subheader("2. Parámetros Reales")
-        m = 950.4
-        h_ent = 950   # Agua de alimentación
-        h_sal = 2770  # Vapor Saturado
-        st.latex(r"h_{entrada} = 950 \frac{kJ}{kg}")
-        st.latex(r"h_{salida} = 2770 \frac{kJ}{kg}")
+    # Creamos un esquema más limpio con columnas y bordes
+    c1, c2, c3 = st.columns([1, 1.5, 1])
+    
+    with c1:
+        st.markdown("### 🔵 Primario\n**Agua Pesada ($D_2O$)**")
+        st.caption("Proviene del Reactor")
+        st.latex(r"T \approx 312 °C")
+        st.write("---")
+        st.write("⬅️ Retorno al Reactor")
+
+    with c2:
+        # Representación estética del intercambiador
+        st.markdown(
+            """
+            <div style="border: 2px solid #555; background-color: #f0f2f6; padding: 20px; border-radius: 15px; text-align: center;">
+                <b style="color: #ff4b4b;">LÍMITE DEL SISTEMA (VC)</b><br>
+                <small>Interfase de los tubos en U</small>
+                <div style="margin: 20px; border: 2px dashed #ff4b4b; padding: 10px;">
+                    <h3 style="margin:0;">GENERADOR DE VAPOR</h3>
+                    <p style="font-size: 20px;">$\dot{Q}$</p>
+                </div>
+                <p>Transferencia de calor por conducción y convección</p>
+            </div>
+            """, unsafe_allow_html=True
+        )
+
+    with c3:
+        st.markdown("### ⚪ Secundario\n**Agua Leve ($H_2O$)**")
+        st.caption("Hacia la Turbina")
+        st.latex(r"P = 56.1 \text{ bar}")
+        st.write("---")
+        st.write("⬅️ Agua de Alimentación")
 
     st.divider()
 
-    # Gráfico de Balance de Energía (Sankey o Barras)
-    st.subheader("Flujo de Energía en el Generador")
-    st.info("Aquí visualizamos cómo la entalpía 'crece' gracias al aporte de calor del reactor.")
+    # --- BALANCE DE ENERGÍA ---
+    st.subheader("Balance de Energía en Estado Estacionario")
     
-    df_bal = pd.DataFrame({
-        'Punto': ['Entrada', 'Aporte Calor (Q)', 'Salida'],
-        'Energía (MW)': [m*h_ent/1000, m*(h_sal-h_ent)/1000, m*h_sal/1000]
+    # Datos técnicos
+    m = 950.4    # kg/s
+    h_ent = 950   # kJ/kg
+    h_sal = 2770  # kJ/kg
+    Q_mw = m * (h_sal - h_ent) / 1000
+
+    st.write("Considerando el **fluido secundario** como nuestro sistema:")
+    
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.latex(r"\dot{Q} = \dot{m} \cdot (h_{salida} - h_{entrada})")
+        st.write(f"Sustituyendo con valores de diseño de Atucha II:")
+        st.success(f"$\dot{{Q}} = {m} \, kg/s \cdot ({h_sal} - {h_ent}) \, kJ/kg = {Q_mw:.1f} \, MW_t$")
+    
+    with col_b:
+        st.info("""
+        **Nota Pedagógica:** El sistema NO es adiabático porque el límite corta 
+        la interfase de los tubos, permitiendo el flujo de calor $\dot{Q}$ desde 
+        el circuito primario.
+        """)
+
+    # Tabla de Balance de Materia
+    st.subheader("Balance de Masa")
+    df_masa = pd.DataFrame({
+        "Flujo": ["Entrada (Alimentación)", "Salida (Vapor)"],
+        "Caudal Másico [kg/s]": [m, m],
+        "Estado": ["Líquido Subenfriado", "Vapor Saturado"]
     })
-    st.bar_chart(df_bal, x='Punto', y='Energía (MW)')
-
-    st.markdown("""
-    > **Pregunta para el alumno:** Si consideráramos el sistema como el conjunto de Primario + Secundario, 
-    > y aislamos el exterior del Generador de Vapor, ¿el sistema sería adiabático? 
-    > **Respuesta:** Sí, y el balance sería $\sum \dot{m}h_{ent} = \sum \dot{m}h_{sal}$.
-    """)
-
-elif menu == "Observatorio de Datos":
-    st.title("🔭 Observatorio de Datos")
-    st.write("Visualización de parámetros históricos de Atucha II.")
-    # Aquí podrías poner un gráfico más adelante
-    st.bar_chart([745, 740, 745, 730, 745])
+    st.table(df_masa)
 
 
 

@@ -28,9 +28,9 @@ def mostrar_autor():
             st.warning("Subí la foto a 'web/assets/autor.jpg'")
             
     with col2:
-        st.header("Ing. Gauna")
+        st.header("Dr. Gauna")
         st.markdown("""
-        **Autor del Proyecto MAYER** Especialista en Ingeniería Térmica y Sistemas Nucleares.
+        **Autor del Proyecto MAYER** Doctor en Ingeniería - Mención Tecnologías Químicas por la Universidad Tecnológica Nacional - Facultad Regional Buenos Aires. Ingeniero Químico.
         
         Este entorno digital es el soporte interactivo del libro sobre la 
         **Central Nuclear Atucha II**, diseñado para facilitar el cálculo de 
@@ -43,3 +43,4 @@ def mostrar_autor():
 
     st.divider()
     st.info("💡 **Dato:** Podés navegar a la sección 'Capítulo II' para ver los cálculos en acción.")
+

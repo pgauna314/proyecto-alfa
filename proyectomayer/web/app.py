@@ -7,7 +7,7 @@ from modules.autor import mostrar_autor
 # NUEVO: Importamos el laboratorio
 from modules.laboratorio import mostrar_laboratorio
 
-st.set_page_config(page_title="Proyecto MAYER", layout="wide", page_icon="⚛️")
+st.set_page_config(page_title="Proyecto TERMO", layout="wide", page_icon="⚛️")
 
 # Barra Lateral
 with st.sidebar:

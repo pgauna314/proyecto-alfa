@@ -4,35 +4,49 @@ from modules.inicio import mostrar_inicio
 from modules.matriz import mostrar_matriz
 from modules.capitulo2 import mostrar_cap2
 from modules.autor import mostrar_autor
-# NUEVO: Importamos el laboratorio
 from modules.laboratorio import mostrar_laboratorio
 
-st.set_page_config(page_title="Proyecto TERMO", layout="wide", page_icon="⚛️")
+# Configuración de página con la nueva identidad
+st.set_page_config(
+    page_title="Proyecto α - Termodinámica", 
+    layout="wide", 
+    page_icon="α"
+)
 
-# Barra Lateral
+# Barra Lateral (Sidebar)
 with st.sidebar:
-    st.title("🏗️ Proyecto TERMO")
-    # AGREGAMOS "Laboratorio de Propiedades" al menú:
-    menu = st.radio("Navegación:", [
-        "Inicio", 
-        "Matriz Energética", 
-        "Laboratorio de Propiedades", # <-- NUEVA OPCIÓN
-        "Capítulo II: Sistemas",
-        "Sobre el Autor"
-    ])
+    st.title("Proyecto α (Alfa)")
+    st.markdown("### *Conversión de Energía en Argentina*")
+    
     st.divider()
-    st.link_button("📺 YouTube", "https://youtube.com")
-    st.link_button("📚 Libro PDF", "https://github.com")
+    
+    # Menú de Navegación actualizado
+    menu = st.radio("Entorno de Trabajo:", [
+        "Inicio (Proyecto α)", 
+        "Matriz Energética Nacional", 
+        "Σ - Laboratorio de Propiedades", 
+        "λ - Capítulo II: Sistemas",
+        "Autor"
+    ])
+    
+    st.divider()
+    
+    # Sostenes del Entorno (Acceso a los otros módulos)
+    st.subheader("Sostenes del Entorno")
+    st.link_button("Módulo ϕ (YouTube)", "https://youtube.com")
+    st.link_button("Módulo λ (Libro PDF)", "https://github.com")
+    
+    st.divider()
+    st.caption("Soberanía Educativa y Tecnológica")
 
-# Enrutador inteligente
-if menu == "Inicio":
+# Enrutador inteligente (Routing)
+if menu == "Inicio (Proyecto α)":
     mostrar_inicio()
-elif menu == "Matriz Energética":
+elif menu == "Matriz Energética Nacional":
     mostrar_matriz()
-elif menu == "Laboratorio de Propiedades": # <-- NUEVA RUTA
+elif menu == "Σ - Laboratorio de Propiedades":
     mostrar_laboratorio()
-elif menu == "Capítulo II: Sistemas":
+elif menu == "λ - Capítulo II: Sistemas":
     mostrar_cap2()
-elif menu == "Sobre el Autor":         
+elif menu == "Autor":         
     mostrar_autor()
-

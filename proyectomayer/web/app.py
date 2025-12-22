@@ -20,7 +20,7 @@ with st.sidebar:
     st.link_button("📚 Libro Completo (PDF)", "https://github.com/TuUsuario/Proyecto-Mayer/libro/main.pdf")
     
     st.divider()
-    st.info("Autor: Ing. Mayer")
+    st.info("Autor: Dr. Pablo Gauna")
 
 # 3. Panel Principal
 if menu == "Inicio":
@@ -63,3 +63,4 @@ elif menu == "Observatorio de Datos":
     st.write("Visualización de parámetros históricos de Atucha II.")
     # Aquí podrías poner un gráfico más adelante
     st.bar_chart([745, 740, 745, 730, 745])
+

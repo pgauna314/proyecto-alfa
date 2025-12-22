@@ -3,6 +3,7 @@ import streamlit as st
 from modules.inicio import mostrar_inicio
 from modules.matriz import mostrar_matriz
 from modules.capitulo2 import mostrar_cap2
+from modules.autor import mostrar_autor
 
 st.set_page_config(page_title="Proyecto MAYER", layout="wide", page_icon="⚛️")
 
@@ -25,3 +26,4 @@ elif menu == "Matriz Energética":
     mostrar_matriz()
 elif menu == "Capítulo II: Sistemas":
     mostrar_cap2()
+

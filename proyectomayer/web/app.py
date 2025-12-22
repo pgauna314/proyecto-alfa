@@ -32,36 +32,67 @@ if menu == "Inicio":
     st.image("https://www.na-sa.com.ar/assets/images/centrales/atucha2_header.jpg", caption="Central Nuclear Atucha II")
 
 elif menu == "Capítulo II: Sistemas":
-    st.title("⚛️ Capítulo II: Sistemas y Balances")
+    st.title("⚛️ Análisis de Sistemas: El Generador de Vapor")
     
-    st.markdown("""
-    En este capítulo, abordaremos los conceptos fundamentales de **sistema, balance de materia 
-    y balance de energía**, aplicándolos al funcionamiento de una central térmica.
+    # Tu texto pedagógico
+    st.markdown(f"""
+    > **Enfoque del Capítulo:** {st.session_state.get('intro_text', 'Analizaremos cómo los principios de balance se aplican en la generación de electricidad, para finalmente formalizar los conceptos clave.')}
     """)
-    
-    st.warning("🔍 **Enfoque Inductivo:** Analizamos la generación antes de las definiciones abstractas.")
 
-    # Simulador de Balance para Atucha II
-    st.subheader("Simulador de Balance de Masa y Energía (CNA II)")
-    col1, col2 = st.columns(2)
+    st.markdown("""
+    ### 1. El Concepto de Volumen de Control
+    Para entender el balance, aislamos el **Generador de Vapor** de Atucha II. 
+    Lo representamos como una 'Caja Negra' donde solo nos importan los flujos que cruzan la frontera.
+    """)
+
+    # --- REPRESENTACIÓN DE LA CAJA NEGRA ---
+    st.subheader("Visualización del Balance de Energía")
+    
+    m = 950.4    # kg/s (Caudal)
+    h_in = 950   # kJ/kg (Entalpía agua)
+    h_out = 2770 # kJ/kg (Entalpía vapor)
+    Q = m * (h_out - h_in) / 1000 # Potencia en MW
+
+    col1, col_box, col2 = st.columns([1, 2, 1])
     
     with col1:
-        st.write("**Entradas al Generador de Vapor**")
-        caudal = st.slider("Caudal másico ($kg/s$)", 800.0, 1100.0, 950.4)
-        temp_ent = st.number_input("Temp. Entrada ($°C$)", value=220)
-    
+        st.write("### 📥 Entra")
+        st.latex(r"\dot{m} \cdot h_{ent}")
+        st.metric("Energía de Entrada", f"{m*h_in/1000:.0f} MW")
+        st.caption("Agua de alimentación de los precalentadores.")
+
+    with col_box:
+        # Dibujo de la Caja Negra con HTML/CSS
+        st.markdown(
+            f"""
+            <div style="border: 3px dashed #ff4b4b; padding: 30px; text-align: center; border-radius: 15px; background-color: #fff5f5;">
+                <h3 style="color: #333;">SISTEMA: GENERADOR DE VAPOR</h3>
+                <hr style="border: 1px solid #ff4b4b;">
+                <h2 style="color: #ff4b4b; margin: 20px 0;">Q = {Q:.1f} MWt</h2>
+                <p style="font-weight: bold;">Calor transferido desde el circuito primario</p>
+            </div>
+            """, unsafe_allow_html=True
+        )
+
     with col2:
-        st.write("**Resultado del Balance**")
-        # Un cálculo lineal simple para ilustrar el concepto de balance
-        potencia = (caudal * 0.78) 
-        st.metric("Potencia Térmica Transferida", f"{potencia:.1f} MWt")
-        
-        st.write("A mayor caudal, mayor transferencia de energía, manteniendo el balance del sistema.")
+        st.write("### 📤 Sale")
+        st.latex(r"\dot{m} \cdot h_{sal}")
+        st.metric("Energía de Salida", f"{m*h_out/1000:.0f} MW")
+        st.caption("Vapor saturado hacia la turbina.")
+
+    st.divider()
+    st.markdown("""
+    ### 2. Formalización Matemática
+    Como se observa arriba, la energía no desaparece. Para un sistema abierto en estado estacionario:
+    """)
+    st.latex(r"\dot{Q} - \dot{W} = \dot{m} \cdot (h_{sal} - h_{ent})")
+    st.write("En este equipo no hay trabajo ($W=0$), por lo que todo el cambio de entalpía se debe al calor ($Q$) aportado por el reactor.")
 
 elif menu == "Observatorio de Datos":
     st.title("🔭 Observatorio de Datos")
     st.write("Visualización de parámetros históricos de Atucha II.")
     # Aquí podrías poner un gráfico más adelante
     st.bar_chart([745, 740, 745, 730, 745])
+
 
 

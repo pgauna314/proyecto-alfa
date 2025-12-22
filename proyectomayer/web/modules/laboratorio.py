@@ -74,46 +74,54 @@ def mostrar_laboratorio():
             # --- GRÁFICOS PULIDOS ---
             t_crit = PropsSI('Tcrit', sustancia)
             t_min = PropsSI('Tmin', sustancia)
-            t_vec = np.linspace(t_min + 0.5, t_crit - 0.1, 100)
+            # Evitamos tocar exactamente el punto crítico para que no explote el cálculo
+            t_vec = np.linspace(t_min + 0.5, t_crit - 0.2, 100)
             
             fig = go.Figure()
 
             if "T-s" in tipo_grafico:
                 sf = [PropsSI('S', 'T', t, 'Q', 0, sustancia)/1000 for t in t_vec]
                 sg = [PropsSI('S', 'T', t, 'Q', 1, sustancia)/1000 for t in t_vec]
-                # Campana cerrada
-                fig.add_trace(go.Scatter(x=sf + sg[::-1], y=[t-273.15 for t in t_vec] + [t-273.15 for t in t_vec][::-1], 
-                                         fill='toself', fillcolor='rgba(0,100,255,0.05)', line=dict(color='blue', width=1), name='Campana'))
                 
-                # Isobara Dinámica
-                s_iso = np.linspace(min(sf)*0.8, max(sg)*1.2, 100)
-                t_iso = [PropsSI('T', 'P', p_pa, 'S', s*1000, sustancia)-273.15 for s in s_iso]
-                fig.add_trace(go.Scatter(x=s_iso, y=t_iso, line=dict(color='orange', dash='dot'), name=f'Isobara {p_plot} bar'))
+                # Campana (unimos líquido y vapor)
+                fig.add_trace(go.Scatter(x=sf + sg[::-1], 
+                                         y=[t-273.15 for t in t_vec] + [t-273.15 for t in t_vec][::-1], 
+                                         fill='toself', fillcolor='rgba(0,100,255,0.05)', 
+                                         line=dict(color='blue', width=1.5), name='Campana'))
                 
-                # Punto de estado
+                # ISOBARA (P constante)
+                # Calculamos entropías desde un poco antes de sf hasta un poco después de sg
+                s_range = np.linspace(min(sf)*0.8, max(sg)*1.2, 100)
+                t_iso = [PropsSI('T', 'P', p_pa, 'S', s*1000, sustancia)-273.15 for s in s_range]
+                fig.add_trace(go.Scatter(x=s_range, y=t_iso, line=dict(color='orange', dash='dot'), name=f'Isobar {p_plot} bar'))
+                
+                # PUNTO DE ESTADO
                 fig.add_trace(go.Scatter(x=[s_plot], y=[t_plot], mode='markers+text', 
-                                         text=[f"  ({s_plot:.2f}, {t_plot:.1f})"], textposition="top right",
-                                         marker=dict(color='red', size=12, symbol='circle'), name='Estado Actual'))
-                fig.update_layout(xaxis_title="s [kJ/kgK]", yaxis_title="T [°C]", hovermode='x')
+                                         text=[f"({s_plot:.2f}, {t_plot:.1f})"], textposition="top center",
+                                         marker=dict(color='red', size=14, symbol='x'), name='Estado'))
+                
+                fig.update_layout(xaxis_title="Entropía (s) [kJ/kgK]", yaxis_title="Temperatura (T) [°C]")
 
-            else: # P-v
+            else: # P-v (Diagrama Presión-Volumen)
                 vf = [1/PropsSI('D', 'T', t, 'Q', 0, sustancia) for t in t_vec]
                 vg = [1/PropsSI('D', 'T', t, 'Q', 1, sustancia) for t in t_vec]
                 p_sat = [PropsSI('P', 'T', t, 'Q', 0, sustancia)/100000 for t in t_vec]
-                fig.add_trace(go.Scatter(x=vf + vg[::-1], y=p_sat + p_sat[::-1], fill='toself', 
-                                         fillcolor='rgba(0,255,100,0.05)', line=dict(color='green', width=1), name='Campana'))
                 
-                # Isoterma Dinámica
-                v_iso = np.logspace(np.log10(min(vf)*0.5), np.log10(max(vg)*5), 100)
+                fig.add_trace(go.Scatter(x=vf + vg[::-1], y=p_sat + p_sat[::-1], 
+                                         fill='toself', fillcolor='rgba(0,255,100,0.05)', 
+                                         line=dict(color='green', width=1.5), name='Campana'))
+                
+                # ISOTERMA (T constante) - USANDO v_iso correctamente
+                v_iso = np.logspace(np.log10(min(vf)*0.5), np.log10(max(vg)*10), 100)
                 p_iso = [PropsSI('P', 'T', t_plot+273.15, 'D', 1/v, sustancia)/100000 for v in v_iso]
-                fig.add_trace(go.Scatter(x=v_vals, y=p_iso, line=dict(color='purple', dash='dot'), name=f'Isoterma {t_plot:.1f} °C'))
+                fig.add_trace(go.Scatter(x=v_iso, y=p_iso, line=dict(color='purple', dash='dot'), name=f'Isoterma {t_plot:.1f}°C'))
                 
+                # PUNTO DE ESTADO
                 fig.add_trace(go.Scatter(x=[v_plot], y=[p_plot], mode='markers+text',
-                                         text=[f"  v={v_plot:.3f}"], textposition="top right",
-                                         marker=dict(color='red', size=12), name='Estado Actual'))
-                fig.update_layout(xaxis_type="log", yaxis_type="log", xaxis_title="v [m³/kg]", yaxis_title="P [bar]")
+                                         text=[f"v={v_plot:.4f}"], textposition="top right",
+                                         marker=dict(color='red', size=14, symbol='x'), name='Estado'))
+                
+                fig.update_layout(xaxis_type="log", yaxis_type="log", 
+                                  xaxis_title="Vol. Esp. (v) [m³/kg]", yaxis_title="Presión (P) [bar]")
 
             st.plotly_chart(fig, use_container_width=True)
-
-        except Exception as e:
-            st.error(f"Error en el diagnóstico: {e}")

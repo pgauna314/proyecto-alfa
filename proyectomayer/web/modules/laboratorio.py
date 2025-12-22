@@ -99,3 +99,4 @@ def mostrar_laboratorio():
             st.error(f"❌ **Combinación imposible:** Los datos ingresados no corresponden a un estado físico real para el {nombre_user}.")
     else:
         st.info("💡 Completá los datos arriba y hacé clic en **Ejecutar Diagnóstico**.")
+        st.info("💡 Completá los datos arriba y hacé clic en **Ejecutar Diagnóstico**.")

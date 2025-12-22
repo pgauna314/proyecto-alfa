@@ -4,80 +4,75 @@ import plotly.graph_objects as go
 import numpy as np
 
 def mostrar_laboratorio():
-    st.title("🧪 Laboratorio y Diagnóstico Termodinámico")
+    st.title("🧪 Laboratorio de Diagnóstico Termodinámico")
     
-    # --- CONFIGURACIÓN DE ENTRADA ---
-    sustancias_map = {"Agua": "Water", "R134a": "R134a", "D2O (Agua Pesada)": "HeavyWater"}
-    nombre_usuario = st.selectbox("Sustancia:", list(sustancias_map.keys()))
-    sustancia = sustancias_map[nombre_usuario]
+    # 1. Configuración de entrada
+    sustancias_map = {"Agua": "Water", "R134a": "R134a", "D2O": "HeavyWater"}
+    nombre_user = st.selectbox("Sustancia:", list(sustancias_map.keys()))
+    sustancia = sustancias_map[nombre_user]
+
+    par = st.selectbox("Variables de entrada:", ["P y h", "P y T", "P y u"])
 
     col1, col2 = st.columns(2)
     with col1:
-        p_bar = st.number_input("Presión (bar)", value=10.0, step=1.0)
-        p_pa = p_bar * 100000
+        p_bar = st.number_input("Presión (bar)", value=10.0, format="%.2f")
     with col2:
-        h_kj = st.number_input("Entalpía (kJ/kg)", value=2000.0, step=50.0)
-        h_j = h_kj * 1000
+        val2 = st.number_input("Segunda variable (h o T o u)", value=2000.0 if "h" in par or "u" in par else 200.0)
+
+    st.divider()
 
     try:
-        # 1. Obtener valores de saturación reales
+        # Conversión a SI (Pascal, Kelvin, J/kg)
+        p_pa = p_bar * 100000
+        
+        # --- BUSCAMOS VALORES DE SATURACIÓN PARA EL DIAGNÓSTICO ---
+        # hf y hg siempre son necesarios para comparar
         hf = PropsSI('H', 'P', p_pa, 'Q', 0, sustancia) / 1000
         hg = PropsSI('H', 'P', p_pa, 'Q', 1, sustancia) / 1000
+        Tsat = PropsSI('T', 'P', p_pa, 'Q', 0, sustancia) - 273.15
         sf = PropsSI('S', 'P', p_pa, 'Q', 0, sustancia) / 1000
         sg = PropsSI('S', 'P', p_pa, 'Q', 1, sustancia) / 1000
-        T_sat = PropsSI('T', 'P', p_pa, 'Q', 0, sustancia) - 273.15
-        
-        # 2. Diagnóstico de fase y cálculo de S actual
-        s_act = 0
-        estado = ""
-        
-        if h_kj < hf:
-            estado = "Líquido Comprimido"
-            s_act = PropsSI('S', 'P', p_pa, 'H', h_j, sustancia) / 1000
-            t_act = PropsSI('T', 'P', p_pa, 'H', h_j, sustancia) - 273.15
-            st.info(f"🔹 **Estado: {estado}**")
-        elif hf <= h_kj <= hg:
-            estado = "Mezcla"
-            x = (h_kj - hf) / (hg - hf)
-            s_act = sf + x * (sg - sf)
-            t_act = T_sat
-            st.success(f"🔸 **Estado: {estado} (Título x={x:.3f})**")
-        else:
-            estado = "Vapor Sobrecalentado"
-            s_act = PropsSI('S', 'P', p_pa, 'H', h_j, sustancia) / 1000
-            t_act = PropsSI('T', 'P', p_pa, 'H', h_j, sustancia) - 273.15
-            st.warning(f"🔥 **Estado: {estado}**")
 
-        # --- GENERACIÓN DEL GRÁFICO T-s ---
-        # Creamos la campana de saturación
+        st.subheader("🔍 Diagnóstico de Fase")
+        
+        # LÓGICA SEGÚN EL PAR ELEGIDO
+        if "h" in par:
+            h_in = val2
+            if h_in < hf:
+                estado = "Líquido Comprimido"
+                st.info(f"🔹 **{estado}**: $h$ ({h_in}) < $h_f$ ({hf:.2f})")
+                s_plot = PropsSI('S', 'P', p_pa, 'H', h_in*1000, sustancia) / 1000
+                t_plot = PropsSI('T', 'P', p_pa, 'H', h_in*1000, sustancia) - 273.15
+            elif hf <= h_in <= hg:
+                estado = "Mezcla"
+                x = (h_in - hf) / (hg - hf)
+                st.success(f"🔸 **{estado}**: Título $x = {x:.4f}$")
+                st.latex(rf"x = \frac{{{h_in} - {hf:.2f}}}{{{hg:.2f} - {hf:.2f}}}")
+                s_plot = sf + x * (sg - sf)
+                t_plot = Tsat
+            else:
+                estado = "Vapor Sobrecalentado"
+                st.warning(f"🔥 **{estado}**: $h$ ({h_in}) > $h_g$ ({hg:.2f})")
+                s_plot = PropsSI('S', 'P', p_pa, 'H', h_in*1000, sustancia) / 1000
+                t_plot = PropsSI('T', 'P', p_pa, 'H', h_in*1000, sustancia) - 273.15
+
+        # --- GRÁFICO T-s ---
         t_crit = PropsSI('Tcrit', sustancia)
         t_min = PropsSI('Tmin', sustancia)
-        temps = np.linspace(t_min, t_crit - 0.1, 50)
+        t_range = np.linspace(t_min, t_crit - 0.1, 50)
         
-        sf_curve = [PropsSI('S', 'T', t, 'Q', 0, sustancia) / 1000 for t in temps]
-        sg_curve = [PropsSI('S', 'T', t, 'Q', 1, sustancia) / 1000 for t in temps]
+        sf_line = [PropsSI('S', 'T', t, 'Q', 0, sustancia)/1000 for t in t_range]
+        sg_line = [PropsSI('S', 'T', t, 'Q', 1, sustancia)/1000 for t in t_range]
+        t_celsius = [t - 273.15 for t in t_range]
 
         fig = go.Figure()
+        fig.add_trace(go.Scatter(x=sf_line + sg_line[::-1], y=t_celsius + t_celsius[::-1], 
+                                 fill='toself', name='Campana', line=dict(color='gray')))
+        fig.add_trace(go.Scatter(x=[s_plot], y=[t_plot], mode='markers', 
+                                 marker=dict(color='red', size=12), name='Estado'))
         
-        # Dibujar campana
-        fig.add_trace(go.Scatter(x=sf_curve + sg_curve[::-1], 
-                                 y=[t-273.15 for t in temps] + [t-273.15 for t in temps][::-1],
-                                 fill='toself', fillcolor='rgba(200, 200, 200, 0.2)',
-                                 line=dict(color='black'), name='Campana Sat.'))
-        
-        # Dibujar punto actual
-        fig.add_trace(go.Scatter(x=[s_act], y=[t_act], 
-                                 mode='markers+text',
-                                 marker=dict(color='red', size=12),
-                                 text=[" PUNTO ACTUAL"], textposition="top right",
-                                 name='Estado Actual'))
-
-        fig.update_layout(title=f"Diagrama T-s para {nombre_usuario}",
-                          xaxis_title="Entropía (s) [kJ/kg·K]",
-                          yaxis_title="Temperatura (T) [°C]",
-                          template="plotly_white")
-
-        st.plotly_chart(fig, use_container_width=True)
+        fig.update_layout(title="Ubicación en Diagrama T-s", xaxis_title="s [kJ/kgK]", yaxis_title="T [°C]")
+        st.plotly_chart(fig)
 
     except Exception as e:
-        st.error(f"Error en el cálculo: {e}")
+        st.error(f"Error en los datos o sustancia: {e}")

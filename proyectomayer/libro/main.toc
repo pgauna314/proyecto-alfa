@@ -1,23 +1,24 @@
 \babel@toc {spanish}{}\relax 
 \contentsline {chapter}{Prólogo}{1}{chapter*.2}%
 \contentsline {chapter}{El Enfoque Pedagógico de Este Libro}{3}{chapter*.3}%
-\contentsline {chapter}{\numberline {1}Introducción a la generación de potencia }{7}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Sobre la generación de potencia}{7}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Contexto histórico y evolución tecnológica}{8}{section.1.2}%
-\contentsline {section}{\numberline {1.3}Cómo se produce la energía eléctrica}{8}{section.1.3}%
-\contentsline {section}{\numberline {1.4}Centrales alternativas y energías renovables}{9}{section.1.4}%
-\contentsline {section}{\numberline {1.5}Generación de potencia en Argentina y el mundo}{10}{section.1.5}%
-\contentsline {section}{\numberline {1.6}Termodinámica e Ingeniería de Proceso}{13}{section.1.6}%
-\contentsline {chapter}{\numberline {2}Conceptos Fundamentales}{15}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Objetivos de este capítulo}{15}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Introducción: Central Térmica}{15}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Sistema abierto o volumen de control}{16}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Lo que tenés que saber sobre los sistemas abiertos}{17}{subsection.2.3.1}%
-\contentsline {section}{\numberline {2.4}Balance de materia}{18}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Balances de energía}{18}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}El Primer Principio}{18}{subsection.2.5.1}%
-\contentsline {subsubsection}{Sobre leyes, principios y teorías}{19}{subsubsection*.10}%
-\contentsline {subsection}{\numberline {2.5.2}La ecuación del Primer Principio para sistemas abiertos}{19}{subsection.2.5.2}%
-\contentsline {subsection}{\numberline {2.5.3}Ejemplo: Balance de materia y energía en la Central Térmica Güemes}{20}{subsection.2.5.3}%
-\contentsline {chapter}{\numberline {3}Anexos}{21}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Tablas termodinámicas y diagramas útiles}{21}{section.3.1}%
+\contentsline {part}{I\hspace {1em}Generación de potencia y conceptos fundamentales}{7}{part.1}%
+\contentsline {chapter}{\numberline {1}Introducción a la generación de potencia }{9}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Sobre la generación de potencia}{9}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Contexto histórico y evolución tecnológica}{10}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Cómo se produce la energía eléctrica}{10}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Centrales alternativas y energías renovables}{11}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Generación de potencia en Argentina y el mundo}{12}{section.1.5}%
+\contentsline {section}{\numberline {1.6}Termodinámica e Ingeniería de Proceso}{15}{section.1.6}%
+\contentsline {chapter}{\numberline {2}Conceptos Fundamentales}{17}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Objetivos de este capítulo}{17}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Introducción: Central Térmica}{17}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Sistema abierto o volumen de control}{18}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Lo que tenés que saber sobre los sistemas abiertos}{20}{subsection.2.3.1}%
+\contentsline {section}{\numberline {2.4}Balance de materia}{20}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Balances de energía}{21}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}El Primer Principio}{21}{subsection.2.5.1}%
+\contentsline {subsubsection}{Sobre leyes, principios y teorías}{21}{subsubsection*.12}%
+\contentsline {subsection}{\numberline {2.5.2}La ecuación del Primer Principio para sistemas abiertos}{22}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}Ejemplo: Balance de materia y energía en la Central Térmica Güemes}{23}{subsection.2.5.3}%
+\contentsline {chapter}{\numberline {3}Anexos}{25}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Tablas termodinámicas y diagramas útiles}{25}{section.3.1}%

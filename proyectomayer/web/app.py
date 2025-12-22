@@ -32,67 +32,67 @@ if menu == "Inicio":
     st.image("https://www.na-sa.com.ar/assets/images/centrales/atucha2_header.jpg", caption="Central Nuclear Atucha II")
 
 elif menu == "Capítulo II: Sistemas":
-    st.title("⚛️ Análisis de Sistemas: El Generador de Vapor")
+    st.title("⚛️ Definición de Límites y Balances")
     
-    # Tu texto pedagógico
-    st.markdown(f"""
-    > **Enfoque del Capítulo:** {st.session_state.get('intro_text', 'Analizaremos cómo los principios de balance se aplican en la generación de electricidad, para finalmente formalizar los conceptos clave.')}
-    """)
-
     st.markdown("""
-    ### 1. El Concepto de Volumen de Control
-    Para entender el balance, aislamos el **Generador de Vapor** de Atucha II. 
-    Lo representamos como una 'Caja Negra' donde solo nos importan los flujos que cruzan la frontera.
+    ### El Generador de Vapor (GV) como Volumen de Control
+    Para formalizar la Primera Ley, primero debemos definir los **límites del sistema**.
+    En Atucha II, el GV es un intercambiador de calor de tubos en U.
     """)
 
-    # --- REPRESENTACIÓN DE LA CAJA NEGRA ---
-    st.subheader("Visualización del Balance de Energía")
-    
-    m = 950.4    # kg/s (Caudal)
-    h_in = 950   # kJ/kg (Entalpía agua)
-    h_out = 2770 # kJ/kg (Entalpía vapor)
-    Q = m * (h_out - h_in) / 1000 # Potencia en MW
+    # --- ESQUEMA DE CAÑERÍAS (SIMULADO) ---
+    st.markdown("""
+    <div style="background-color: #1e1e1e; color: #00ff00; padding: 20px; border-radius: 10px; font-family: 'Courier New', monospace;">
+        <p> [CIRCUITO PRIMARIO: D2O] ---->( Calor Q )----> [CIRCUITO SECUNDARIO: H2O] </p>
+        <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ^ </p>
+        <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | </p>
+        <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( LÍMITE DEL SISTEMA ) </p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    col1, col_box, col2 = st.columns([1, 2, 1])
+    col1, col2 = st.columns(2)
     
     with col1:
-        st.write("### 📥 Entra")
-        st.latex(r"\dot{m} \cdot h_{ent}")
-        st.metric("Energía de Entrada", f"{m*h_in/1000:.0f} MW")
-        st.caption("Agua de alimentación de los precalentadores.")
-
-    with col_box:
-        # Dibujo de la Caja Negra con HTML/CSS
-        st.markdown(
-            f"""
-            <div style="border: 3px dashed #ff4b4b; padding: 30px; text-align: center; border-radius: 15px; background-color: #fff5f5;">
-                <h3 style="color: #333;">SISTEMA: GENERADOR DE VAPOR</h3>
-                <hr style="border: 1px solid #ff4b4b;">
-                <h2 style="color: #ff4b4b; margin: 20px 0;">Q = {Q:.1f} MWt</h2>
-                <p style="font-weight: bold;">Calor transferido desde el circuito primario</p>
-            </div>
-            """, unsafe_allow_html=True
-        )
-
+        st.subheader("1. Límites del Sistema")
+        st.write("""
+        Si definimos el límite **solo** en el fluido secundario:
+        * Es un **sistema abierto**.
+        * **No es adiabático**: Recibe energía del primario.
+        * El balance es: $\dot{Q} = \dot{m} (h_{sal} - h_{ent})$
+        """)
+        
     with col2:
-        st.write("### 📤 Sale")
-        st.latex(r"\dot{m} \cdot h_{sal}")
-        st.metric("Energía de Salida", f"{m*h_out/1000:.0f} MW")
-        st.caption("Vapor saturado hacia la turbina.")
+        st.subheader("2. Parámetros Reales")
+        m = 950.4
+        h_ent = 950   # Agua de alimentación
+        h_sal = 2770  # Vapor Saturado
+        st.latex(r"h_{entrada} = 950 \frac{kJ}{kg}")
+        st.latex(r"h_{salida} = 2770 \frac{kJ}{kg}")
 
     st.divider()
+
+    # Gráfico de Balance de Energía (Sankey o Barras)
+    st.subheader("Flujo de Energía en el Generador")
+    st.info("Aquí visualizamos cómo la entalpía 'crece' gracias al aporte de calor del reactor.")
+    
+    df_bal = pd.DataFrame({
+        'Punto': ['Entrada', 'Aporte Calor (Q)', 'Salida'],
+        'Energía (MW)': [m*h_ent/1000, m*(h_sal-h_ent)/1000, m*h_sal/1000]
+    })
+    st.bar_chart(df_bal, x='Punto', y='Energía (MW)')
+
     st.markdown("""
-    ### 2. Formalización Matemática
-    Como se observa arriba, la energía no desaparece. Para un sistema abierto en estado estacionario:
+    > **Pregunta para el alumno:** Si consideráramos el sistema como el conjunto de Primario + Secundario, 
+    > y aislamos el exterior del Generador de Vapor, ¿el sistema sería adiabático? 
+    > **Respuesta:** Sí, y el balance sería $\sum \dot{m}h_{ent} = \sum \dot{m}h_{sal}$.
     """)
-    st.latex(r"\dot{Q} - \dot{W} = \dot{m} \cdot (h_{sal} - h_{ent})")
-    st.write("En este equipo no hay trabajo ($W=0$), por lo que todo el cambio de entalpía se debe al calor ($Q$) aportado por el reactor.")
 
 elif menu == "Observatorio de Datos":
     st.title("🔭 Observatorio de Datos")
     st.write("Visualización de parámetros históricos de Atucha II.")
     # Aquí podrías poner un gráfico más adelante
     st.bar_chart([745, 740, 745, 730, 745])
+
 
 
 

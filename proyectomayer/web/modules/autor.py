@@ -2,35 +2,44 @@ import streamlit as st
 import os
 
 def mostrar_autor():
-    st.title("👤 Verificación de Carpeta Assets")
-
-    # 1. Intentamos mostrar la foto
-    nombre_archivo = "autor.jpg"
+    st.title("👤 Sobre el Autor")
     
-    # Lista de posibles lugares donde puede estar la foto
-    rutas = [
-        f"web/assets/{nombre_archivo}",
-        f"assets/{nombre_archivo}",
-        nombre_archivo
+    # Esta es la ruta estándar que debería funcionar ahora que limpiaste el repo
+    # Probamos con y sin el prefijo de la carpeta principal
+    rutas_a_probar = [
+        "web/assets/autor.jpg",
+        "proyectomayer/web/assets/autor.jpg",
+        "assets/autor.jpg"
     ]
-
-    encontrada = False
-    for r in rutas:
-        if os.path.exists(r):
-            st.success(f"✅ Foto encontrada en: {r}")
-            st.image(r, width=300)
-            encontrada = True
-            break
-
-    if not encontrada:
-        st.error("❌ No se encuentra 'autor.jpg' en ninguna ruta conocida.")
+    
+    col1, col2 = st.columns([1, 2])
+    
+    with col1:
+        exito = False
+        for ruta in rutas_a_probar:
+            if os.path.exists(ruta):
+                st.image(ruta, width=250, caption="Ing. Gauna")
+                exito = True
+                break
         
-        # 2. DEBUG: Vamos a ver qué carpetas existen realmente
-        st.write("### Diagnóstico de carpetas:")
-        st.write("Directorios presentes:", os.listdir("."))
+        if not exito:
+            # Si aún no la encuentra, ponemos el avatar por defecto
+            st.image("https://cdn-icons-png.flaticon.com/512/3135/3135715.png", width=200)
+            st.warning("Subí la foto a 'web/assets/autor.jpg'")
+            
+    with col2:
+        st.header("Ing. Gauna")
+        st.markdown("""
+        **Autor del Proyecto MAYER** Especialista en Ingeniería Térmica y Sistemas Nucleares.
         
-        if os.path.exists("web"):
-            st.write("Contenido de 'web/':", os.listdir("web"))
-            if os.path.exists("web/assets"):
-                st.write("Contenido de 'web/assets/':", os.listdir("web/assets"))
+        Este entorno digital es el soporte interactivo del libro sobre la 
+        **Central Nuclear Atucha II**, diseñado para facilitar el cálculo de 
+        balances de masa y energía de forma dinámica.
+        """)
+        
+        st.divider()
+        st.write("📩 **Contacto:** [tu-email@correo.com](mailto:tu-email@correo.com)")
+        st.write("🔗 **LinkedIn:** [Perfil Profesional](https://linkedin.com)")
 
+    st.divider()
+    st.info("💡 **Dato:** Podés navegar a la sección 'Capítulo II' para ver los cálculos en acción.")

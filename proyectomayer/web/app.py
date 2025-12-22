@@ -5,7 +5,7 @@ st.set_page_config(page_title="Proyecto MAYER", layout="wide", page_icon="🏗�
 
 # 2. Barra Lateral (Navegación y Botones)
 with st.sidebar:
-    st.title("🏗️ Proyecto MAYER")
+    st.title("🏗️ Hola AYU")
     st.divider()
     
     # Menú de Secciones
@@ -63,4 +63,5 @@ elif menu == "Observatorio de Datos":
     st.write("Visualización de parámetros históricos de Atucha II.")
     # Aquí podrías poner un gráfico más adelante
     st.bar_chart([745, 740, 745, 730, 745])
+
 

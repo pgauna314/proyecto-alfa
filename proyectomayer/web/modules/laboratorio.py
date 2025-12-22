@@ -4,122 +4,102 @@ import plotly.graph_objects as go
 import numpy as np
 
 def mostrar_laboratorio():
-    st.title("🧪 Laboratorio de Propiedades Termodinámicas")
-    st.write("Análisis de estado y diagnóstico pedagógico.")
+    st.title("🧪 Laboratorio de Diagnóstico Termodinámico")
+    
+    # --- PANEL DE CONTROL ---
+    with st.sidebar:
+        st.header("Configuración")
+        tipo_grafico = st.selectbox("Eje del gráfico:", ["T-s (Temperatura-Entropía)", "P-v (Presión-Volumen)"])
+        ejecutar = st.button("🚀 Ejecutar Diagnóstico", use_container_width=True)
 
-    # 1. Selector de Sustancias
-    sustancias_map = {
-        "Agua": "Water",
-        "Amoníaco": "Ammonia",
-        "Aire": "Air",
-        "R134a": "R134a",
-        "D2O (Agua Pesada)": "HeavyWater"
-    }
-    nombre_user = st.selectbox("Sustancia:", list(sustancias_map.keys()))
+    # 1. Selección de Sustancias
+    sustancias_map = {"Agua": "Water", "Amoníaco": "Ammonia", "Aire": "Air", "R134a": "R134a"}
+    nombre_user = st.selectbox("Seleccioná la sustancia:", list(sustancias_map.keys()))
     sustancia = sustancias_map[nombre_user]
 
-    # 2. Selector de Pares de Propiedades
-    # Agregamos T y x, P y x, h y s
-    par_opciones = [
-        "P y T", "P y h", "P y u", "P y x", "T y x", "h y s"
-    ]
-    par = st.selectbox("Par de variables de entrada:", par_opciones)
+    # 2. Selección de Par de Variables
+    par = st.selectbox("Par de variables de entrada:", ["P y h", "P y T", "P y x", "T y x"])
 
     col1, col2 = st.columns(2)
-    
-    # Configuración dinámica de inputs según el par
     with col1:
         if "P" in par:
             v1 = st.number_input("Presión (bar)", value=1.0, format="%.4f")
             p_pa = v1 * 100000
-        elif "T" in par:
+        else:
             v1 = st.number_input("Temperatura (°C)", value=100.0)
             t_k = v1 + 273.15
-        elif par == "h y s":
-            v1 = st.number_input("Entalpía (kJ/kg)", value=2500.0)
-            h_j = v1 * 1000
 
     with col2:
         if "x" in par:
             v2 = st.slider("Título de vapor (x)", 0.0, 1.0, 0.5)
             x_in = v2
-        elif "T" in par and "P" not in par:
-            v2 = st.number_input("Temperatura (°C)", value=20.0)
-            t_k = v2 + 273.15
         elif "h" in par:
             v2 = st.number_input("Entalpía (kJ/kg)", value=2000.0)
             h_j = v2 * 1000
-        elif "u" in par:
-            v2 = st.number_input("E. Interna (u) (kJ/kg)", value=1500.0)
-            u_j = v2 * 1000
-        elif "s" in par:
-            v2 = st.number_input("Entropía (s) (kJ/kgK)", value=6.0)
-            s_j = v2 * 1000
+        elif "T" in par:
+            v2 = st.number_input("Temperatura (°C)", value=20.0)
+            t_k = v2 + 273.15
 
     st.divider()
 
-    try:
-        # --- CÁLCULOS Y DIAGNÓSTICO ---
-        # Definimos variables por defecto para el gráfico
-        t_plot, s_plot = 0, 0
-        
-        if par == "P y x" or par == "T y x":
-            st.success("🔸 **Estado: Mezcla Saturada (Bifásico)**")
-            if "P" in par:
-                t_plot = PropsSI('T', 'P', p_pa, 'Q', x_in, sustancia) - 273.15
-                s_plot = PropsSI('S', 'P', p_pa, 'Q', x_in, sustancia) / 1000
-                st.write(f"Temperatura de saturación: {t_plot:.2f} °C")
-            else:
-                p_calc = PropsSI('P', 'T', t_k, 'Q', x_in, sustancia) / 100000
-                s_plot = PropsSI('S', 'T', t_k, 'Q', x_in, sustancia) / 1000
-                t_plot = v1
-                st.write(f"Presión de saturación: {p_calc:.4f} bar")
-
-        elif par == "P y h":
-            hf = PropsSI('H', 'P', p_pa, 'Q', 0, sustancia) / 1000
-            hg = PropsSI('H', 'P', p_pa, 'Q', 1, sustancia) / 1000
-            h_in = v2
-            if h_in < hf:
-                estado = "Líquido Comprimido"
-                st.info(f"🔹 **{estado}** ($h < h_f$)")
-            elif h_in > hg:
-                estado = "Vapor Sobrecalentado"
-                st.warning(f"🔥 **{estado}** ($h > h_g$)")
-            else:
-                x = (h_in - hf) / (hg - hf)
-                st.success(f"🔸 **Mezcla** (Título $x={x:.4f}$)")
+    # --- LÓGICA DE EJECUCIÓN ---
+    if ejecutar:
+        try:
+            st.subheader("📖 El cuento de cómo llegamos aquí:")
             
-            t_plot = PropsSI('T', 'P', p_pa, 'H', h_in*1000, sustancia) - 273.15
-            s_plot = PropsSI('S', 'P', p_pa, 'H', h_in*1000, sustancia) / 1000
-
-        elif par == "h y s":
-            # Caso avanzado: Determinar fase por h y s
-            t_plot = PropsSI('T', 'H', h_j, 'S', s_j, sustancia) - 273.15
-            s_plot = v2
-            st.write(f"Temperatura calculada: {t_plot:.2f} °C")
-
+            # Variables para el gráfico
+            t_plot, s_plot, p_plot, v_plot = 0, 0, 0, 0
             
+            if par == "P y h":
+                # Buscamos saturación para explicar el proceso
+                hf = PropsSI('H', 'P', p_pa, 'Q', 0, sustancia) / 1000
+                hg = PropsSI('H', 'P', p_pa, 'Q', 1, sustancia) / 1000
+                h_in = v2
+                
+                st.write(f"1. Primero, fuimos a las tablas de **{nombre_user}** con la presión de **{v1} bar**.")
+                st.write(f"2. Encontramos que el líquido saturado tiene $h_f = {hf:.2f}$ kJ/kg y el vapor saturado $h_g = {hg:.2f}$ kJ/kg.")
+                
+                if h_in < hf:
+                    estado = "Líquido Comprimido"
+                    st.info(f"**Diagnóstico:** Como tu entalpía ({h_in}) es menor a $h_f$ ({hf:.2f}), la sustancia es **{estado}**.")
+                elif h_in > hg:
+                    estado = "Vapor Sobrecalentado"
+                    st.warning(f"**Diagnóstico:** Como tu entalpía ({h_in}) es mayor a $h_g$ ({hg:.2f}), la sustancia es **{estado}**.")
+                else:
+                    x = (h_in - hf) / (hg - hf)
+                    st.success(f"**Diagnóstico:** Como tu entalpía está entre $h_f$ y $h_g$, estamos en zona de **Mezcla** con un título de {x:.4f}.")
+                
+                t_plot = PropsSI('T', 'P', p_pa, 'H', h_in*1000, sustancia) - 273.15
+                s_plot = PropsSI('S', 'P', p_pa, 'H', h_in*1000, sustancia) / 1000
+                p_plot = v1
+                v_plot = 1 / PropsSI('D', 'P', p_pa, 'H', h_in*1000, sustancia)
 
-        # --- GENERAR GRÁFICO T-s ---
-        t_crit = PropsSI('Tcrit', sustancia)
-        t_min = PropsSI('Tmin', sustancia)
-        t_vec = np.linspace(t_min, t_crit - 0.1, 100)
-        
-        sf_curve = [PropsSI('S', 'T', t, 'Q', 0, sustancia) / 1000 for t in t_vec]
-        sg_curve = [PropsSI('S', 'T', t, 'Q', 1, sustancia) / 1000 for t in t_vec]
+            # --- GENERAR GRÁFICO SELECCIONADO ---
+            t_crit = PropsSI('Tcrit', sustancia)
+            t_min = PropsSI('Tmin', sustancia)
+            t_vec = np.linspace(t_min, t_crit - 0.1, 100)
+            
+            fig = go.Figure()
+            
+            if "T-s" in tipo_grafico:
+                sf = [PropsSI('S', 'T', t, 'Q', 0, sustancia)/1000 for t in t_vec]
+                sg = [PropsSI('S', 'T', t, 'Q', 1, sustancia)/1000 for t in t_vec]
+                fig.add_trace(go.Scatter(x=sf+sg[::-1], y=[t-273.15 for t in t_vec]+[t-273.15 for t in t_vec][::-1], 
+                                         fill='toself', name='Campana', line=dict(color='blue')))
+                fig.add_trace(go.Scatter(x=[s_plot], y=[t_plot], mode='markers', marker=dict(color='red', size=15), name='Estado'))
+                fig.update_layout(xaxis_title="Entropía (s) [kJ/kgK]", yaxis_title="Temperatura (T) [°C]")
+            else:
+                vf = [1/PropsSI('D', 'T', t, 'Q', 0, sustancia) for t in t_vec]
+                vg = [1/PropsSI('D', 'T', t, 'Q', 1, sustancia) for t in t_vec]
+                fig.add_trace(go.Scatter(x=vf+vg[::-1], y=[PropsSI('P', 'T', t, 'Q', 0, sustancia)/100000 for t in t_vec]*2, 
+                                         fill='toself', name='Campana', line=dict(color='green')))
+                fig.add_trace(go.Scatter(x=[v_plot], y=[p_plot], mode='markers', marker=dict(color='red', size=15), name='Estado'))
+                fig.update_layout(xaxis_type="log", xaxis_title="Volumen (v) [m³/kg]", yaxis_title="Presión (P) [bar]")
 
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=sf_curve + sg_curve[::-1], 
-                                 y=[t-273.15 for t in t_vec] + [t-273.15 for t in t_vec][::-1],
-                                 fill='toself', fillcolor='rgba(100, 150, 255, 0.1)',
-                                 line=dict(color='blue'), name='Campana'))
-        
-        fig.add_trace(go.Scatter(x=[s_plot], y=[t_plot], mode='markers+text',
-                                 marker=dict(color='red', size=12),
-                                 text=[" PUNTO"], textposition="top right"))
+            st.plotly_chart(fig, use_container_width=True)
 
-        fig.update_layout(title=f"Diagrama T-s - {nombre_user}", xaxis_title="s [kJ/kgK]", yaxis_title="T [°C]")
-        st.plotly_chart(fig, use_container_width=True)
-
-    except Exception as e:
-        st.error(f"Error: {e}. Probablemente el punto esté fuera de los límites de la sustancia.")
+        except Exception as e:
+            st.error(f"❌ **¡Error de ingreso!** El valor de {v2} no es posible para la sustancia {nombre_user} a esa presión.")
+            st.write("Detalle técnico:", e)
+    else:
+        st.info("Configurá los datos y presioná 'Ejecutar Diagnóstico' en el panel lateral.")

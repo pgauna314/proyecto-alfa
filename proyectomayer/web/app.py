@@ -22,7 +22,7 @@ with st.sidebar:
     # SUBTÍTULO JUSTIFICADO
     st.markdown(
         """
-        <div style="text-align: justify; font-style: italic; font-size: 1.1em; color: #808495; line-height: 1.3;">
+        <div style="text-align: justify; font-style: italic; font-weight: bold; font-size: 1.1em; color: #808495; line-height: 1.3;">
             Termodinámica de la Conversión de Energía en Argentina
         </div>
         """, 

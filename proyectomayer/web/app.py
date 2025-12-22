@@ -11,7 +11,7 @@ st.set_page_config(page_title="Proyecto TERMO", layout="wide", page_icon="⚛️
 
 # Barra Lateral
 with st.sidebar:
-    st.title("🏗️ Proyecto MAYER")
+    st.title("🏗️ Proyecto TERMO")
     # AGREGAMOS "Laboratorio de Propiedades" al menú:
     menu = st.radio("Navegación:", [
         "Inicio", 

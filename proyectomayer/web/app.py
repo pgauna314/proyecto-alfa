@@ -26,4 +26,7 @@ elif menu == "Matriz Energética":
     mostrar_matriz()
 elif menu == "Capítulo II: Sistemas":
     mostrar_cap2()
+elif menu == "Sobre el Autor":         # <-- ESTE BLOQUE ES EL QUE FALTA
+    mostrar_autor()
+
 

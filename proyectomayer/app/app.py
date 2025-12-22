@@ -1,11 +1,11 @@
 import streamlit as st
 
 # Configuración de la página
-st.set_page_config(page_title="Proyecto MAYER", layout="wide")
+st.set_page_config(page_title="Proyecto TERMO", layout="wide")
 
 # Título Principal
-st.title("🏗️ Proyecto MAYER")
-st.subheader("Sistema de Integración: Termodinámica de los Procesos")
+st.title("🏗️ Proyecto TERMO")
+st.subheader("Sistema Integral de Aprendizaje de Termodinámica")
 
 # Barra lateral para navegar
 st.sidebar.header("Navegación")

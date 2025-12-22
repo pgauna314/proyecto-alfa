@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
+
 
 # 1. Configuración de página
 st.set_page_config(page_title="Proyecto MAYER", layout="wide", page_icon="⚛️")
@@ -67,6 +69,62 @@ elif menu == "Capítulo II: Sistemas":
     * Si el límite incluyera ambos circuitos, el sistema sería **adiabático**.
     * Al incluir solo el secundario, el calor cruza la frontera y debe contabilizarse.
     """)
+
+# (Mantener configuración inicial de la página)
+
+# Agregar "Matriz Energética" al menú lateral
+with st.sidebar:
+    menu = st.radio("Navegación:", ["Inicio", "Capítulo II: Sistemas", "Matriz Energética (CAMMESA)"])
+
+if menu == "Matriz Energética (CAMMESA)":
+    st.title("⚡ Monitoreo de la Matriz Energética Argentina")
+    st.markdown("""
+    Para entender Atucha II, debemos ver el sistema completo. 
+    Datos obtenidos de **CAMMESA** (Compañía Administradora del Mercado Mayorista Eléctrico).
+    """)
+
+    # --- SIMULACIÓN DE DATOS DE CAMMESA ---
+    # En el futuro, aquí leeremos el archivo .csv real de CAMMESA
+    data = {
+        'Fuente': ['Térmica', 'Hidráulica', 'Nuclear', 'Eólica', 'Solar', 'Biomasa'],
+        'Generación (MW)': [12500, 4200, 1650, 3100, 800, 250],
+        'Color': ['#808080', '#1f77b4', '#ff4b4b', '#2ca02c', '#ffea00', '#8c564b']
+    }
+    df = pd.DataFrame(data)
+
+    col1, col2 = st.columns([1, 1.5])
+
+    with col1:
+        st.subheader("Distribución por Fuente")
+        fig_pie = px.pie(df, values='Generación (MW)', names='Fuente', 
+                         color='Fuente', color_discrete_sequence=df['Color'].tolist(),
+                         hole=0.4)
+        st.plotly_chart(fig_pie, use_container_width=True)
+
+    with col2:
+        st.subheader("Impacto de la Energía Nuclear")
+        total_mw = df['Generación (MW)'].sum()
+        nuclear_mw = df[df['Fuente'] == 'Nuclear']['Generación (MW)'].values[0]
+        porcentaje_nuclear = (nuclear_mw / total_mw) * 100
+        
+        st.metric("Potencia Total en Red", f"{total_mw} MW")
+        st.metric("Aporte Nuclear (Atucha I, II y Embalse)", f"{nuclear_mw} MW", f"{porcentaje_nuclear:.1f}% del total")
+        
+        st.info(f"""
+        **Dato para el Libro:** La energía nuclear aporta una base estable (base-load) 
+        que no depende de factores climáticos, a diferencia de las renovables variables.
+        """)
+
+    st.divider()
+    st.subheader("Histórico de Demanda (SADI)")
+    # Simulación de curva de carga diaria
+    chart_data = pd.DataFrame({
+        'Hora': list(range(24)),
+        'Demanda (MW)': [14000, 13200, 12800, 12500, 12700, 13500, 15000, 17000, 18500, 19000, 19500, 20000, 
+                         19800, 19500, 19200, 19000, 19500, 21000, 22500, 23000, 22000, 20000, 18000, 16000]
+    })
+    st.line_chart(chart_data, x='Hora', y='Demanda (MW)')
+
 
 
 

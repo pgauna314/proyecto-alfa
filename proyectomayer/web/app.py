@@ -17,15 +17,15 @@ st.set_page_config(page_title="Proyecto α - Termodinámica", layout="wide", pag
 
 # --- BARRA LATERAL ---
 with st.sidebar:
-    st.title("Proyecto α (Alfa)")
+    st.title("Proyecto α")
     
     # SUBTÍTULO JUSTIFICADO
     st.markdown(
         """
-        <div style="text-align: justify; font-style: italic; font-size: 1.1em; color: #808495;">
+        <div style="text-align: justify; font-style: italic; font-size: 1.1em; color: #808495; line-height: 1.3;">
             Termodinámica de la Conversión de Energía en Argentina
         </div>
-        """, 
+        """,, 
         unsafe_allow_html=True
     )
     

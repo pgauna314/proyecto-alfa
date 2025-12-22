@@ -49,7 +49,7 @@ def mostrar_laboratorio():
     # --- EJECUCIÓN DEL CÁLCULO ---
     if ejecutar:
         try:
-            t_plot, s_plot, p_plot, v_plot = 0, 0, 0, 0
+            t_plot, s_plot, p_plot, v_plot = 0.0, 0.0, 0.0, 0.0
 
             with st.expander("📖 Procedimiento del Diagnóstico", expanded=True):
                 if par == "P y T":
@@ -108,4 +108,31 @@ def mostrar_laboratorio():
             fig = go.Figure()
 
             if "T-s" in tipo_grafico:
-                sf = [PropsSI('S', 'T', t, 'Q', 0, sustancia)/1000 for t
+                sf = [PropsSI('S', 'T', t, 'Q', 0, sustancia)/1000 for t in t_vec]
+                sg = [PropsSI('S', 'T', t, 'Q', 1, sustancia)/1000 for t in t_vec]
+                fig.add_trace(go.Scatter(x=sf + sg[::-1], y=[t-273.15 for t in t_vec]*2, fill='toself', fillcolor='rgba(0,100,255,0.05)', line=dict(color='blue'), name='Campana'))
+                
+                s_range = np.linspace(min(sf)*0.8, max(sg)*1.2, 50)
+                t_iso = [PropsSI('T', 'P', p_plot*100000, 'S', s*1000, sustancia)-273.15 for s in s_range]
+                fig.add_trace(go.Scatter(x=s_range, y=t_iso, line=dict(color='orange', dash='dot'), name=f'Isobar {p_plot:.2f} bar'))
+                fig.add_trace(go.Scatter(x=[s_plot], y=[t_plot], mode='markers', marker=dict(color='red', size=14, symbol='x'), name='Estado'))
+                fig.update_layout(xaxis_title="s [kJ/kgK]", yaxis_title="T [°C]")
+
+            else: # P-v
+                vf = [1/PropsSI('D', 'T', t, 'Q', 0, sustancia) for t in t_vec]
+                vg = [1/PropsSI('D', 'T', t, 'Q', 1, sustancia) for t in t_vec]
+                psat_v = [PropsSI('P', 'T', t, 'Q', 0, sustancia)/100000 for t in t_vec]
+                fig.add_trace(go.Scatter(x=vf + vg[::-1], y=psat_v*2, fill='toself', fillcolor='rgba(0,255,100,0.05)', line=dict(color='green'), name='Campana'))
+                
+                v_range = np.logspace(np.log10(min(vf)*0.5), np.log10(max(vg)*10), 50)
+                p_iso = [PropsSI('P', 'T', t_plot+273.15, 'D', 1/v, sustancia)/100000 for v in v_range]
+                fig.add_trace(go.Scatter(x=v_range, y=p_iso, line=dict(color='purple', dash='dot'), name=f'Isoterma {t_plot:.1f}°C'))
+                fig.add_trace(go.Scatter(x=[v_plot], y=[p_plot], mode='markers', marker=dict(color='red', size=14, symbol='x'), name='Estado'))
+                fig.update_layout(xaxis_type="log", yaxis_type="log", xaxis_title="v [m³/kg]", yaxis_title="P [bar]")
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        except Exception as e:
+            st.error(f"Error en el cálculo: {e}")
+    else:
+        st.info("💡 Completá los datos y presioná **Ejecutar Diagnóstico**.")

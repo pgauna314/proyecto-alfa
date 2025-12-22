@@ -1,10 +1,15 @@
 import streamlit as st
-# Importamos las funciones desde nuestra carpeta de módulos
+import sys
+import os
+
+# Esto le dice a Python que busque módulos también en la carpeta actual
+sys.path.append(os.path.dirname(__file__))
+
+# Ahora importamos con la ruta relativa correcta
 from modules.inicio import mostrar_inicio
 from modules.matriz import mostrar_matriz
 from modules.capitulo2 import mostrar_cap2
 from modules.autor import mostrar_autor
-# Módulo Σ: El simulador/laboratorio
 from modules.laboratorio import mostrar_laboratorio
 
 # Configuración de página con la identidad del Proyecto α

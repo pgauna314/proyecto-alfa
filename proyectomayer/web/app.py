@@ -16,7 +16,7 @@ st.set_page_config(
 
 # --- Barra Lateral (Sidebar) ---
 with st.sidebar:
-    st.title("Proyecto α (Alfa)")
+    st.title("Proyecto α")
     st.markdown("### *Termodinámica de la Conversión de Energía en Argentina*")
     
     st.divider()

@@ -21,14 +21,13 @@ with st.sidebar:
     
     st.divider()
     
-    # Menú de Navegación Unificado
+   # Menú de Navegación actualizado y más ambicioso
     menu = st.radio("Entorno de Trabajo:", [
-        "Inicio (Proyecto α)", 
-        "Matriz Energética Nacional", 
-        "Σ - Laboratorio de Propiedades", 
-        "λ - Capítulo II: Sistemas",
-        "Autor"
-    ])
+    "Inicio (Proyecto α)", 
+    "Matriz Energética Nacional", 
+    "Módulo Σ: Simulador de Procesos", # <-- Más que un laboratorio, es un simulador
+    "Módulo λ: Fundamentos de Sistemas",
+    "Autor"])
     
     st.divider()
     

@@ -98,6 +98,13 @@ def mostrar_laboratorio():
             s_plot = v2
             st.write(f"Temperatura calculada: {t_plot:.2f} °C")
 
+            else:
+            # Cálculo genérico para cualquier par que no sea de saturación directa
+            # Esto permite que P y T o P y u también funcionen
+            t_plot = PropsSI('T', par[0], v1_si, par[4], v2_si, sustancia) - 273.15
+            s_plot = PropsSI('S', par[0], v1_si, par[4], v2_si, sustancia) / 1000
+            st.info(f"Estado calculado para el par {par}")
+
         # --- GENERAR GRÁFICO T-s ---
         t_crit = PropsSI('Tcrit', sustancia)
         t_min = PropsSI('Tmin', sustancia)

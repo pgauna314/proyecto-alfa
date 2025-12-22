@@ -4,93 +4,64 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 # 1. Configuración de página
-st.set_page_config(page_title="Proyecto MAYER", layout="wide", page_icon="⚛️")
+st.set_page_config(page_title="Proyecto MAYER", layout="wide")
 
-# 2. Datos de Referencia (SADI - Argentina)
-capacidad_data = {
+# 2. DATOS TÉCNICOS (Capacidad Instalada SADI aprox. 2024/2025)
+# Valores en MW para el cálculo, pero mostraremos %
+data_sadi = {
     'Fuente': ['Térmica', 'Hidráulica', 'Renovables', 'Nuclear'],
-    'MW_Instalados': [25300, 10800, 5500, 1750],
+    'Capacidad_MW': [25300, 10800, 5500, 1750],
+    'Despacho_Actual_MW': [13500, 4800, 3200, 1650], # Valores de ejemplo
     'Color': ['#E69F00', '#56B4E9', '#009E73', '#F0E442'] # Paleta daltónicos
 }
-df_cap = pd.DataFrame(capacidad_data)
+df = pd.DataFrame(data_sadi)
 
-# Datos de Generación Típica (Para la Torta)
-generacion_data = {
-    'Fuente': ['Térmica', 'Hidráulica', 'Eólica/Solar', 'Nuclear'],
-    'Generación [MW]': [12800, 4200, 3100, 1650],
-    'Color': ['#E69F00', '#56B4E9', '#009E73', '#F0E442']
-}
-df_gen = pd.DataFrame(generacion_data)
-
-# 3. Barra Lateral
+# 3. BARRA LATERAL
 with st.sidebar:
     st.title("🏗️ Proyecto MAYER")
     menu = st.radio("Navegación:", ["Matriz Energética", "Capítulo II: Sistemas"])
-    st.divider()
-    st.link_button("📺 YouTube", "https://youtube.com")
-    st.link_button("📚 Libro PDF", "https://github.com")
 
-# 4. Contenido Principal
+# 4. CONTENIDO PRINCIPAL
 if menu == "Matriz Energética":
-    st.title("⚡ Análisis de la Matriz Energética Nacional")
-    st.markdown("""
-    Esta sección permite visualizar la **oferta y demanda** del Sistema Argentino de Interconexión (SADI). 
-    Analizamos tanto la capacidad instalada como el despacho real de energía.
-    """)
+    st.title("⚡ Estado de la Matriz Energética (SADI)")
+    st.markdown("Comparativa porcentual de Capacidad Instalada vs. Despacho Real.")
 
-    # --- FILA 1: Gráfico de Torta y Métricas ---
-    col_pie, col_met = st.columns([1.5, 1])
-    
-    with col_pie:
-        st.subheader("Despacho de Generación Actual")
-        fig_pie = px.pie(
-            df_gen, 
-            values='Generación [MW]', 
-            names='Fuente',
-            color='Fuente',
-            color_discrete_map={row['Fuente']: row['Color'] for index, row in df_gen.iterrows()},
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.subheader("Capacidad Instalada (%)")
+        fig_cap = px.pie(
+            df, values='Capacidad_MW', names='Fuente',
+            color='Fuente', color_discrete_map={row['Fuente']: row['Color'] for i, row in df.iterrows()},
             hole=0.4
         )
-        fig_pie.update_traces(textinfo='percent+label')
-        st.plotly_chart(fig_pie, use_container_width=True)
+        fig_cap.update_traces(textinfo='percent')
+        st.plotly_chart(fig_cap, use_container_width=True)
+        st.caption("Distribución de la potencia máxima que el sistema puede generar.")
 
-    with col_met:
-        st.subheader("Estado del Sistema")
-        total_gen = df_gen['Generación [MW]'].sum()
-        nuclear_gen = df_gen[df_gen['Fuente'] == 'Nuclear']['Generación [MW]'].values[0]
-        porc_nuclear = (nuclear_gen / total_gen) * 100
-
-        st.metric("Generación Total", f"{total_gen} MW")
-        st.metric("Aporte Nuclear", f"{nuclear_gen} MW", f"{porc_nuclear:.1f}% del despacho")
-        
-        st.info("""
-        **Nota Pedagógica:** Observá que aunque la capacidad instalada nuclear es menor en MW totales, 
-        su despacho es constante. Es la 'base' del sistema que permite la estabilidad.
-        """)
+    with col2:
+        st.subheader("Despacho Actual (%)")
+        fig_desp = px.pie(
+            df, values='Despacho_Actual_MW', names='Fuente',
+            color='Fuente', color_discrete_map={row['Fuente']: row['Color'] for i, row in df.iterrows()},
+            hole=0.4
+        )
+        fig_desp.update_traces(textinfo='percent')
+        st.plotly_chart(fig_desp, use_container_width=True)
+        st.caption("Distribución de la energía que se está consumiendo ahora.")
 
     st.divider()
 
-    # --- FILA 2: Curva de Demanda Histórica ---
-    st.subheader("Demanda vs. Capacidad Máxima")
-    epoca = st.select_slider("Seleccione Época del Año:", options=["Invierno", "Verano"])
+    # GRÁFICO DE BARRAS DE UTILIZACIÓN
+    st.subheader("Factor de Utilización por Fuente")
+    # Calculamos qué % de su propia capacidad está usando cada fuente
+    df['Utilizacion'] = (df['Despacho_Actual_MW'] / df['Capacidad_MW']) * 100
     
-    # Simulación de curvas
-    horas = list(range(24))
-    demanda = [19000, 18000, 17500, 17000, 17200, 18000, 20000, 22000, 24000, 25000, 26000, 27000, 
-               27500, 28000, 27800, 27000, 26500, 27000, 28500, 29000, 28000, 26000, 23000, 21000] if epoca == "Verano" else \
-              [16000, 15000, 14500, 14200, 14500, 16000, 18000, 20000, 21000, 21500, 21800, 22000,
-               21500, 21000, 20500, 20000, 21000, 23000, 24500, 25000, 24000, 22000, 19000, 17500]
-    
-    cap_total = df_cap['MW_Instalados'].sum()
+    fig_util = px.bar(
+        df, x='Fuente', y='Utilizacion', 
+        color='Fuente', color_discrete_map={row['Fuente']: row['Color'] for i, row in df.iterrows()},
+        labels={'Utilizacion': '% de Uso de Capacidad'}
+    )
+    st.plotly_chart(fig_util, use_container_width=True)
+    st.info("Este gráfico muestra cuánta 'reserva' tiene cada fuente. Si una barra llega al 100%, esa fuente no puede dar más energía.")
 
-    fig_dem = go.Figure()
-    fig_dem.add_trace(go.Scatter(x=horas, y=demanda, fill='tozeroy', name='Demanda (MW)', line=dict(color='#56B4E9')))
-    fig_dem.add_trace(go.Scatter(x=horas, y=[cap_total]*24, name='Capacidad Instalada Total', line=dict(color='#D55E00', dash='dash')))
-    
-    fig_dem.update_layout(xaxis_title="Hora", yaxis_title="Potencia (MW)")
-    st.plotly_chart(fig_dem, use_container_width=True)
-
-# --- SECCIÓN CAPÍTULO II (Esqueleto) ---
-elif menu == "Capítulo II: Sistemas":
-    st.title("⚛️ Capítulo II: Análisis de Sistemas")
-    st.write("Contenido técnico en desarrollo para acompañar el libro.")

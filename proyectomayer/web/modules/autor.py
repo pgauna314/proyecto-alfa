@@ -2,39 +2,35 @@ import streamlit as st
 import os
 
 def mostrar_autor():
-    st.title("👤 Sobre el Autor")
-    
-    col1, col2 = st.columns([1, 2])
-    
-    with col1:
-        # Intentamos las dos rutas más comunes en Streamlit Cloud
-        ruta_foto = "web/assets/autor.jpg"
-        ruta_alt = "assets/autor.jpg"
-        
-        if os.path.exists(ruta_foto):
-            st.image(ruta_foto, width=250)
-        elif os.path.exists(ruta_alt):
-            st.image(ruta_alt, width=250)
-        else:
-            # Avatar genérico si la foto falla
-            st.image("https://cdn-icons-png.flaticon.com/512/3135/3135715.png", width=200)
-            st.caption("Imagen no encontrada en assets/autor.jpg")
-    
-    with col2:
-        st.header("Ing. Gauna")
-        st.markdown("""
-        **Autor del Proyecto MAYER** Especialista en Ingeniería Térmica y Sistemas Nucleares.
-        
-        Este entorno digital complementa el estudio detallado de los sistemas de la 
-        Central Nuclear Atucha II, permitiendo una transición fluida entre la 
-        teoría del libro y la práctica computacional.
-        """)
-        
-        st.info("📩 **Contacto:** [tu-email@correo.com](mailto:tu-email@correo.com)")
+    st.title("👤 Verificación de Carpeta Assets")
 
-    # Separador visual
-    st.divider()
+    # 1. Intentamos mostrar la foto
+    nombre_archivo = "autor.jpg"
     
-    # Aquí podrías usar el TXT que mencionaste si contiene alguna descripción extra
-    st.subheader("El Proyecto")
-    st.write("Desarrollado para optimizar el aprendizaje de balances de masa y energía.")
+    # Lista de posibles lugares donde puede estar la foto
+    rutas = [
+        f"web/assets/{nombre_archivo}",
+        f"assets/{nombre_archivo}",
+        nombre_archivo
+    ]
+
+    encontrada = False
+    for r in rutas:
+        if os.path.exists(r):
+            st.success(f"✅ Foto encontrada en: {r}")
+            st.image(r, width=300)
+            encontrada = True
+            break
+
+    if not encontrada:
+        st.error("❌ No se encuentra 'autor.jpg' en ninguna ruta conocida.")
+        
+        # 2. DEBUG: Vamos a ver qué carpetas existen realmente
+        st.write("### Diagnóstico de carpetas:")
+        st.write("Directorios presentes:", os.listdir("."))
+        
+        if os.path.exists("web"):
+            st.write("Contenido de 'web/':", os.listdir("web"))
+            if os.path.exists("web/assets"):
+                st.write("Contenido de 'web/assets/':", os.listdir("web/assets"))
+

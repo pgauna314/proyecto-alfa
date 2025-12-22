@@ -2,36 +2,47 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-
 # 1. Configuración de página
 st.set_page_config(page_title="Proyecto MAYER", layout="wide", page_icon="⚛️")
 
-# 2. Barra Lateral
+# 2. Barra Lateral Única
 with st.sidebar:
     st.title("🏗️ Proyecto MAYER")
-    menu = st.radio("Navegación:", ["Inicio", "Capítulo II: Sistemas"])
+    menu = st.radio("Navegación:", [
+        "Inicio", 
+        "Capítulo II: Sistemas", 
+        "Matriz Energética (CAMMESA)"
+    ])
     st.divider()
     st.link_button("📺 YouTube", "https://youtube.com")
     st.link_button("📚 Libro PDF", "https://github.com")
+    st.info("Soporte interactivo para el estudio de sistemas térmicos.")
 
 # 3. Contenido Principal
+
+# --- SECCIÓN: INICIO ---
 if menu == "Inicio":
     st.title("Estudio de Sistemas Térmicos")
     st.write("Bienvenido a la plataforma interactiva del Proyecto MAYER.")
+    st.markdown("""
+    Este sitio funciona como complemento dinámico del libro. Aquí podrás:
+    * Analizar sistemas térmicos reales (Atucha II).
+    * Validar balances de masa y energía.
+    * Monitorear la matriz energética nacional.
+    """)
 
+# --- SECCIÓN: CAPÍTULO II ---
 elif menu == "Capítulo II: Sistemas":
     st.title("⚛️ Análisis de Sistemas: El Generador de Vapor")
     
-    # Este bloque vincula directamente con el texto de tu libro
     st.markdown("""
     ### 1. Definición del Volumen de Control
     Como se describe en la **Figura 2.1** del libro, definimos nuestro sistema 
     rodeando el fluido secundario dentro del Generador de Vapor.
     """)
 
-    # ESPACIO PARA TU FIGURA DEL LIBRO
-    # Cuando tengas la imagen, reemplazaremos este cuadro por st.image()
-    st.container(border=True):
+    # Espacio para figura
+    with st.container(border=True):
         st.write("🖼️ **[ Aquí se insertará la Figura 2.1 del libro ]**")
         st.caption("Diagrama de flujos y límites del sistema para el Generador de Vapor de Atucha II.")
 
@@ -39,7 +50,6 @@ elif menu == "Capítulo II: Sistemas":
 
     st.markdown("### 2. Balance de Energía en el Sistema")
     
-    # Parámetros técnicos alineados con Atucha II
     m = 950.4
     h_ent = 950
     h_sal = 2770
@@ -62,7 +72,6 @@ elif menu == "Capítulo II: Sistemas":
 
     st.divider()
     
-    # Sección de formalización pedagógica
     st.markdown("""
     ### 3. Formalización del Concepto
     A partir de este análisis, observamos que la elección del límite es arbitraria pero fundamental:
@@ -70,21 +79,14 @@ elif menu == "Capítulo II: Sistemas":
     * Al incluir solo el secundario, el calor cruza la frontera y debe contabilizarse.
     """)
 
-# (Mantener configuración inicial de la página)
-
-# Agregar "Matriz Energética" al menú lateral
-with st.sidebar:
-    menu = st.radio("Navegación:", ["Inicio", "Capítulo II: Sistemas", "Matriz Energética (CAMMESA)"])
-
-if menu == "Matriz Energética (CAMMESA)":
+# --- SECCIÓN: MATRIZ ENERGÉTICA ---
+elif menu == "Matriz Energética (CAMMESA)":
     st.title("⚡ Monitoreo de la Matriz Energética Argentina")
     st.markdown("""
-    Para entender Atucha II, debemos ver el sistema completo. 
-    Datos obtenidos de **CAMMESA** (Compañía Administradora del Mercado Mayorista Eléctrico).
+    Datos simulados basados en los informes de **CAMMESA**. La energía nuclear 
+    proporciona la estabilidad necesaria para el Sistema Argentino de Interconexión (SADI).
     """)
 
-    # --- SIMULACIÓN DE DATOS DE CAMMESA ---
-    # En el futuro, aquí leeremos el archivo .csv real de CAMMESA
     data = {
         'Fuente': ['Térmica', 'Hidráulica', 'Nuclear', 'Eólica', 'Solar', 'Biomasa'],
         'Generación (MW)': [12500, 4200, 1650, 3100, 800, 250],
@@ -102,30 +104,20 @@ if menu == "Matriz Energética (CAMMESA)":
         st.plotly_chart(fig_pie, use_container_width=True)
 
     with col2:
-        st.subheader("Impacto de la Energía Nuclear")
+        st.subheader("Impacto Nuclear")
         total_mw = df['Generación (MW)'].sum()
         nuclear_mw = df[df['Fuente'] == 'Nuclear']['Generación (MW)'].values[0]
         porcentaje_nuclear = (nuclear_mw / total_mw) * 100
         
-        st.metric("Potencia Total en Red", f"{total_mw} MW")
-        st.metric("Aporte Nuclear (Atucha I, II y Embalse)", f"{nuclear_mw} MW", f"{porcentaje_nuclear:.1f}% del total")
-        
-        st.info(f"""
-        **Dato para el Libro:** La energía nuclear aporta una base estable (base-load) 
-        que no depende de factores climáticos, a diferencia de las renovables variables.
-        """)
+        st.metric("Potencia Total", f"{total_mw} MW")
+        st.metric("Aporte Nuclear", f"{nuclear_mw} MW", f"{porcentaje_nuclear:.1f}%")
+        st.info("La energía nuclear actúa como carga base, garantizando el suministro independientemente del clima.")
 
     st.divider()
-    st.subheader("Histórico de Demanda (SADI)")
-    # Simulación de curva de carga diaria
+    st.subheader("Histórico de Demanda Típica (SADI)")
     chart_data = pd.DataFrame({
         'Hora': list(range(24)),
         'Demanda (MW)': [14000, 13200, 12800, 12500, 12700, 13500, 15000, 17000, 18500, 19000, 19500, 20000, 
                          19800, 19500, 19200, 19000, 19500, 21000, 22500, 23000, 22000, 20000, 18000, 16000]
     })
     st.line_chart(chart_data, x='Hora', y='Demanda (MW)')
-
-
-
-
-

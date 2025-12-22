@@ -1,7 +1,7 @@
 import streamlit as st
 
 def mostrar_inicio():
-    st.header("Bienvenidos al Proyecto α (Alfa)")
+    st.header("Bienvenidos al Proyecto α")
     st.subheader("Termodinámica de la Conversión de Energía en Argentina")
     
     st.markdown("""

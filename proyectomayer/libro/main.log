@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.2.3)  7 FEB 2025 20:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.2.25)  22 DEC 2025 13:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -26,7 +26,7 @@ File: bk12.clo 2024/06/29 v1.4n Standard LaTeX file (size option)
 \bibindent=\dimen141
 )
 (C:\Users\pablo\AppData\Local\Programs\MiKTeX2\tex/generic/babel\babel.sty
-Package: babel 2025/01/25 v25.2 The multilingual framework for pdfLaTeX, LuaLaT
+Package: babel 2025/02/14 v25.4 The multilingual framework for pdfLaTeX, LuaLaT
 eX and XeLaTeX
 \babel@savecnt=\count271
 \U@D=\dimen142
@@ -157,7 +157,7 @@ Package: amsthm 2020/05/29 v2.20.6
 \dth@everypar=\toks30
 )
 (C:\Users\pablo\AppData\Local\Programs\MiKTeX2\tex/latex/siunitx\siunitx.sty
-Package: siunitx 2025-01-21 v3.4.4 A comprehensive (SI) units package
+Package: siunitx 2025-02-19 v3.4.5 A comprehensive (SI) units package
 \l__siunitx_number_uncert_offset_int=\count286
 \l__siunitx_number_exponent_fixed_int=\count287
 \l__siunitx_number_min_decimal_int=\count288
@@ -179,7 +179,7 @@ Package: translations 2022/02/05 v1.12 internationalization of LaTeX2e packages
  (CN)
 
 (C:\Users\pablo\AppData\Local\Programs\MiKTeX2\tex/latex/etoolbox\etoolbox.sty
-Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+Package: etoolbox 2025/02/11 v2.5l e-TeX tools for LaTeX (JAW)
 \etb@tempcnta=\count297
 )
 (C:\Users\pablo\AppData\Local\Programs\MiKTeX2\tex/generic/pdftexcmds\pdftexcmd
@@ -757,8 +757,8 @@ Package: longtable 2024-10-27 v4.22 Multi-page Table package (DPC)
 \LT@p@ftn=\toks46
 )
 (C:\Users\pablo\AppData\Local\Programs\MiKTeX2\tex/latex/fancyhdr\fancyhdr.sty
-Package: fancyhdr 2025/01/07 v5.1.1 Extensive control of page headers and foote
-rs
+Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
+
 \f@nch@headwidth=\skip67
 \f@nch@offset@elh=\skip68
 \f@nch@offset@erh=\skip69
@@ -1220,7 +1220,7 @@ Package: xparse 2024-08-16 L3 Experimental document command parser
 Package: blx-case-expl3 2024/03/21 v3.20 expl3 case changing code for biblatex
 ))
 (C:\Users\pablo\AppData\Local\Programs\MiKTeX2\tex/latex/enumitem\enumitem.sty
-Package: enumitem 2025/01/19 v3.10 Customized lists
+Package: enumitem 2025/02/06 v3.11 Customized lists
 \labelindent=\skip120
 \enit@outerparindent=\dimen324
 \enit@toks=\toks51
@@ -1695,48 +1695,38 @@ Cap\'{\i }tulo 2.
 
 
 [15]
-<graphics/centraltermica.jpg, id=240, 454.69875pt x 319.94531pt>
+<graphics/centraltermica.jpg, id=241, 454.69875pt x 319.94531pt>
 File: graphics/centraltermica.jpg Graphic file (type jpg)
 <use graphics/centraltermica.jpg>
-Package pdftex.def Info: graphics/centraltermica.jpg  used on input line 19.
+Package pdftex.def Info: graphics/centraltermica.jpg  used on input line 21.
 (pdftex.def)             Requested size: 341.02322pt x 239.95839pt.
-<graphics/SistemaAbiertoCaldera.jpg, id=242, 193.32225pt x 229.45724pt>
+<graphics/SistemaAbiertoCaldera.jpg, id=243, 193.32225pt x 229.45724pt>
 File: graphics/SistemaAbiertoCaldera.jpg Graphic file (type jpg)
 <use graphics/SistemaAbiertoCaldera.jpg>
 Package pdftex.def Info: graphics/SistemaAbiertoCaldera.jpg  used on input line
- 29.
+ 33.
 (pdftex.def)             Requested size: 144.99133pt x 172.0925pt.
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-
-LaTeX Info: Redefining \. on input line 44.
-LaTeX Info: Redefining \% on input line 44.
+LaTeX Info: Redefining \. on input line 46.
+LaTeX Info: Redefining \% on input line 46.
 [16 <./graphics/centraltermica.jpg>]
-Package mdframed Info: mdframed works in twoside mode on input line 44.
+Package mdframed Info: mdframed works in twoside mode on input line 48.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 44.
+(mdframed)              on input line 48.
 
 
-LaTeX Info: Redefining \. on input line 64.
-LaTeX Info: Redefining \% on input line 64.
+LaTeX Info: Redefining \. on input line 70.
+LaTeX Info: Redefining \% on input line 70.
 [17 <./graphics/SistemaAbiertoCaldera.jpg>]
-Underfull \vbox (badness 1178) has occurred while \output is active []
 
-
-
-LaTeX Info: Redefining \. on input line 89.
-LaTeX Info: Redefining \% on input line 89.
+LaTeX Info: Redefining \. on input line 94.
+LaTeX Info: Redefining \% on input line 94.
 [18]
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
-
-
-LaTeX Info: Redefining \. on input line 112.
-LaTeX Info: Redefining \% on input line 112.
+LaTeX Info: Redefining \. on input line 114.
+LaTeX Info: Redefining \% on input line 114.
 [19])
 
 LaTeX Info: Redefining \. on input line 22.
@@ -1803,8 +1793,17 @@ L3 programming layer <2025-01-18>
 
 LaTeX Warning: There were undefined references.
 
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: D6BDBD1DFB9E92E8207BC453905E4710;4984.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: 946EA59A2EF61C529CCC00A448C30595;5005
+(rerunfilecheck)             After:  F3BF0AFDA302FC8317DA18B7301CB4B9;5138.
 
 Package biblatex Warning: Please (re)run Biber on the file:
 (biblatex)                main
@@ -1815,10 +1814,10 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 42656 strings out of 473530
- 886193 string characters out of 5714314
- 1822358 words of memory out of 5000000
- 65155 multiletter control sequences out of 15000+600000
+ 42687 strings out of 473530
+ 887296 string characters out of 5714313
+ 1822731 words of memory out of 5000000
+ 65185 multiletter control sequences out of 15000+600000
  577387 words of font info for 81 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  89i,14n,94p,1199b,2923s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1840,10 +1839,11 @@ sers/pablo/AppData/Local/Programs/MiKTeX2/fonts/type1/public/amsfonts/cm/cmex10
 /cm/cmmi12.pfb><C:/Users/pablo/AppData/Local/Programs/MiKTeX2/fonts/type1/publi
 c/amsfonts/cm/cmmi8.pfb><C:/Users/pablo/AppData/Local/Programs/MiKTeX2/fonts/ty
 pe1/public/amsfonts/cm/cmr12.pfb><C:/Users/pablo/AppData/Local/Programs/MiKTeX2
-/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on main.pdf (27 pages, 375773 bytes).
+/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/pablo/AppData/Local/Programs
+/MiKTeX2/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on main.pdf (27 pages, 385899 bytes).
 PDF statistics:
- 772 PDF objects out of 1000 (max. 8388607)
- 83 named destinations out of 1000 (max. 500000)
+ 780 PDF objects out of 1000 (max. 8388607)
+ 84 named destinations out of 1000 (max. 500000)
  191 words of extra memory for PDF output out of 10000 (max. 10000000)
 

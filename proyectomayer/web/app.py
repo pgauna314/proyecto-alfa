@@ -20,34 +20,54 @@ if menu == "Inicio":
 elif menu == "Capítulo II: Sistemas":
     st.title("⚛️ Análisis de Sistemas: El Generador de Vapor")
     
-    st.markdown("### Esquema de Flujos y Límites del Sistema")
+    # Este bloque vincula directamente con el texto de tu libro
+    st.markdown("""
+    ### 1. Definición del Volumen de Control
+    Como se describe en la **Figura 2.1** del libro, definimos nuestro sistema 
+    rodeando el fluido secundario dentro del Generador de Vapor.
+    """)
+
+    # ESPACIO PARA TU FIGURA DEL LIBRO
+    # Cuando tengas la imagen, reemplazaremos este cuadro por st.image()
+    st.container(border=True):
+        st.write("🖼️ **[ Aquí se insertará la Figura 2.1 del libro ]**")
+        st.caption("Diagrama de flujos y límites del sistema para el Generador de Vapor de Atucha II.")
+
+    st.divider()
+
+    st.markdown("### 2. Balance de Energía en el Sistema")
     
-    # Diagrama de Graphviz
-    st.graphviz_chart('''
-        digraph {
-            rankdir=LR;
-            node [shape=box, style=filled, color=lightgrey, fontname="Arial"];
-            
-            subgraph cluster_0 {
-                label = "VOLUMEN DE CONTROL (Secundario)";
-                color=red;
-                style=dashed;
-                GV [label="GENERADOR DE VAPOR", shape=cylinder, fillcolor=white];
-            }
-            
-            Entrada [label="Agua de Alimentación\\n(m_ent, h_ent)", fillcolor="#e1f5fe"];
-            Salida [label="Vapor Saturado\\n(m_sal, h_sal)", fillcolor="#fff9c4"];
-            Primario [label="Calor Primario (Q)\\nReactor", shape=ellipse, fillcolor="#ffcdd2"];
-            
-            Entrada -> GV [label=" m_ent"];
-            GV -> Salida [label=" m_sal"];
-            Primario -> GV [style=bold, color=red, label=" Q_transferido"];
-        }
-    ''')
+    # Parámetros técnicos alineados con Atucha II
+    m = 950.4
+    h_ent = 950
+    h_sal = 2770
+    Q_mw = m * (h_sal - h_ent) / 1000
 
-    st.info("Este diagrama representa el balance de un sistema abierto. El límite (línea roja) define qué flujos cruzan la frontera.")
+    col1, col2 = st.columns([1, 1])
+    
+    with col1:
+        st.write("**Ecuación de Balance:**")
+        st.latex(r"\dot{Q} = \dot{m} (h_{sal} - h_{ent})")
+        st.write("Donde:")
+        st.write(f"* $\dot{{m}}$ = {m} kg/s")
+        st.write(f"* $h_{{ent}}$ = {h_ent} kJ/kg")
+        st.write(f"* $h_{{sal}}$ = {h_sal} kJ/kg")
 
-    # Resto de los cálculos...
+    with col2:
+        st.write("**Resultado del Cálculo:**")
+        st.metric("Calor transferido (Q)", f"{Q_mw:.1f} MWt")
+        st.info("Este valor representa la potencia térmica que el circuito primario cede al secundario.")
+
+    st.divider()
+    
+    # Sección de formalización pedagógica
+    st.markdown("""
+    ### 3. Formalización del Concepto
+    A partir de este análisis, observamos que la elección del límite es arbitraria pero fundamental:
+    * Si el límite incluyera ambos circuitos, el sistema sería **adiabático**.
+    * Al incluir solo el secundario, el calor cruza la frontera y debe contabilizarse.
+    """)
+
 
 
 

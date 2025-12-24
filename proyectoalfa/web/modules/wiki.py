@@ -8,7 +8,7 @@ def main():
     st.markdown("Explorá centrales eléctricas reales de Argentina con datos oficiales.")
 
     # --- Cargar datos ---
-    ruta_csv = os.path.join(os.path.dirname(__file__), "..", "..", "..", "data", "potencia-instalada.csv")
+   ruta_csv = os.path.join(os.path.dirname(__file__), "..", "..", "..", "data", "potencia-instalada.csv")
     
     if not os.path.exists(ruta_csv):
         st.error("❌ No se encontró el archivo de datos en `data/potencia-instalada.csv`.")

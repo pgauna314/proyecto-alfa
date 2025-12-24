@@ -71,8 +71,7 @@ elif opcion == "👤 Autor":
 # Título
 st.title("📊 Análisis de la Matriz Energética Argentina")
 
-# Cargar datos
-df = load_power_data()
+
 
 # Sidebar: filtros
 region = st.sidebar.selectbox("Región", options=["Todas"] + sorted(df["region"].dropna().unique().tolist()))

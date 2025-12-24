@@ -1,6 +1,5 @@
 import streamlit as st
 
-# CONFIGURACIÓN DE PÁGINA (DEBE SER LO PRIMERO)
 st.set_page_config(
     page_title="Proyecto α - Termodinámica",
     layout="wide",
@@ -8,7 +7,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# SIDEBAR - MENÚ
+# SIDEBAR
 with st.sidebar:
     st.title("Proyecto α")
     st.markdown(
@@ -22,7 +21,6 @@ with st.sidebar:
     )
     st.divider()
     
-    # MENU PRINCIPAL
     opcion = st.radio(
         "🌐 Navegación Principal:",
         [
@@ -42,27 +40,22 @@ with st.sidebar:
     st.divider()
     st.caption("⚡ Soberanía Educativa y Tecnológica")
 
-# CARGAR CONTENIDO SEGÚN OPCIÓN
+# ENRUTADOR (¡NADA MÁS AQUÍ!)
 if opcion == "🏠 Inicio":
     from modules.inicio import mostrar_inicio
     mostrar_inicio()
-    
 elif opcion == "📊 Matriz Energética":
     from modules.matriz import mostrar_matriz
     mostrar_matriz()
-    
 elif opcion == "⚙️ Simulador de Procesos":
     from modules.laboratorio import mostrar_laboratorio
     mostrar_laboratorio()
-    
 elif opcion == "📚 Fundamentos de Sistemas":
     from modules.capitulo2 import mostrar_cap2
     mostrar_cap2()
-    
 elif opcion == "🔍 Wiki":
     from modules.wiki import main as wiki_main
     wiki_main()
-    
 elif opcion == "👤 Autor":
     from modules.autor import mostrar_autor
     mostrar_autor()

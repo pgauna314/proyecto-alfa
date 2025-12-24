@@ -1,28 +1,35 @@
+# modules/matriz.py
 import streamlit as st
 import pandas as pd
-import plotly.express as px
+import os
 
 def mostrar_matriz():
-    st.title("⚡ Matriz Energética Nacional")
+    st.title("📊 Matriz Energética Nacional")
     
-    # Datos (Podemos luego mover esto a un CSV externo)
-    data = {
-        'Fuente': ['Térmica', 'Hidráulica', 'Renovables', 'Nuclear'],
-        'Capacidad_MW': [25300, 10800, 5500, 1750],
-        'Despacho_MW': [13500, 4800, 3200, 1650],
-        'Color': ['#E69F00', '#56B4E9', '#009E73', '#F0E442']
-    }
-    df = pd.DataFrame(data)
+    # Ruta al CSV: desde modules/ → salir a proyectomayer/ → entrar a data/
+    ruta_csv = os.path.join(os.path.dirname(__file__), "..", "..", "data", "potencia-instalada.csv")
+    
+    if not os.path.exists(ruta_csv):
+        st.error(f"❌ Archivo no encontrado en:\n`{ruta_csv}`")
+        st.info("Asegurate de que la carpeta `data/` esté en la raíz del proyecto.")
+        return
 
-    c1, c2 = st.columns(2)
-    with c1:
-        st.subheader("Capacidad Instalada (%)")
-        fig1 = px.pie(df, values='Capacidad_MW', names='Fuente', hole=0.4,
-                      color='Fuente', color_discrete_map={row['Fuente']: row['Color'] for i, row in df.iterrows()})
-        st.plotly_chart(fig1, use_container_width=True)
+    try:
+        df = pd.read_csv(ruta_csv)
+        st.success(f"✅ Cargados {len(df)} registros.")
         
-    with c2:
-        st.subheader("Despacho Actual (%)")
-        fig2 = px.pie(df, values='Despacho_MW', names='Fuente', hole=0.4,
-                      color='Fuente', color_discrete_map={row['Fuente']: row['Color'] for i, row in df.iterrows()})
-        st.plotly_chart(fig2, use_container_width=True)
+        # Filtros
+        regiones = ["Todas"] + sorted(df["region"].dropna().unique().tolist())
+        region = st.sidebar.selectbox("Región", regiones)
+        
+        if region != "Todas":
+            df = df[df["region"] == region]
+        
+        # Mostrar datos
+        st.subheader(f"Potencia total: {df['potencia_instalada_mw'].sum():,.0f} MW")
+        st.dataframe(df[[
+            "central", "region", "tecnologia", "potencia_instalada_mw"
+        ]].head(20))
+        
+    except Exception as e:
+        st.error(f"Error al leer el CSV: {e}")

@@ -1,4 +1,3 @@
-# web/modules/wiki.py
 import streamlit as st
 from pathlib import Path
 
@@ -16,4 +15,4 @@ def main():
     if path.exists():
         st.markdown(path.read_text(encoding="utf-8"))
     else:
-        st.warning(f"⚠️ Archivo no encontrado: {path.resolve()}")
+        st.warning("⚠️ Entrada en construcción.")

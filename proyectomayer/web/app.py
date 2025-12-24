@@ -1,23 +1,43 @@
-# web/modules/wiki.py
 import streamlit as st
-from pathlib import Path
+import sys
+import os
 
-def main():
-    st.title("📚 Wiki Energética")
-    st.markdown("Explorá la historia y tecnología de las centrales eléctricas argentinas.")
+actual_dir = os.path.dirname(os.path.abspath(__file__))
+if actual_dir not in sys.path:
+    sys.path.append(actual_dir)
 
-    entries = {
-        "Río Turbio": "wiki_data/centrales/rio-turbio.md",
-    }
+# IMPORTAR TODOS LOS MÓDULOS
+from modules.inicio import mostrar_inicio
+from modules.matriz import mostrar_matriz
+from modules.capitulo2 import mostrar_cap2
+from modules.autor import mostrar_autor
+from modules.laboratorio import mostrar_laboratorio
+# NO importes wiki aquí; se importa solo cuando se necesita
 
-    selected = st.selectbox("Seleccioná una entrada", list(entries.keys()))
-    path = Path(entries[selected])
+st.set_page_config(page_title="Proyecto α - Termodinámica", layout="wide", page_icon="α")
 
-    # --- LÍNEAS DE DEBUG (OPCIONALES PERO ÚTILES) ---
-    # st.write("Ruta buscada:", path.resolve())
-    # st.write("¿Existe?", path.exists())
+# BARRA LATERAL CON MENÚ
+with st.sidebar:
+    menu = st.radio("Entorno de Trabajo:", [
+        "Inicio (Proyecto α)", 
+        "Matriz Energética Nacional", 
+        "Módulo Σ: Simulador de Procesos", 
+        "Módulo λ: Fundamentos de Sistemas",
+        "Wiki",          # ← esta línea debe estar
+        "Autor"
+    ])
 
-    if path.exists():
-        st.markdown(path.read_text(encoding="utf-8"))
-    else:
-        st.warning("⚠️ Entrada en construcción.")
+# ENRUTADOR
+if menu == "Inicio (Proyecto α)":
+    mostrar_inicio()
+elif menu == "Matriz Energética Nacional":
+    mostrar_matriz()
+elif menu == "Módulo Σ: Simulador de Procesos":
+    mostrar_laboratorio()
+elif menu == "Módulo λ: Fundamentos de Sistemas":
+    mostrar_cap2()
+elif menu == "Wiki":
+    from modules import wiki  # ← se importa aquí, solo cuando se elige
+    wiki.main()
+elif menu == "Autor":
+    mostrar_autor()

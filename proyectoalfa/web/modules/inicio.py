@@ -3,8 +3,7 @@ import streamlit as st
 
 def mostrar_inicio():
     st.header("🏠 Inicio - Proyecto α")
-    st.success("¡Aplicación cargada correctamente! ✅")
-    
+        
     st.markdown("""
     ## Termodinámica Aplicada a la Realidad Argentina
     

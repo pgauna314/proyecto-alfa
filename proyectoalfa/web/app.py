@@ -1,6 +1,5 @@
 import streamlit as st
 
-
 # CONFIGURACIÓN DE PÁGINA (DEBE SER LO PRIMERO)
 st.set_page_config(
     page_title="Proyecto α - Termodinámica",
@@ -43,7 +42,7 @@ with st.sidebar:
     st.divider()
     st.caption("⚡ Soberanía Educativa y Tecnológica")
 
-# CONTENIDO PRINCIPAL BASADO EN LA OPCIÓN
+# CARGAR CONTENIDO SEGÚN OPCIÓN
 if opcion == "🏠 Inicio":
     from modules.inicio import mostrar_inicio
     mostrar_inicio()
@@ -67,25 +66,3 @@ elif opcion == "🔍 Wiki":
 elif opcion == "👤 Autor":
     from modules.autor import mostrar_autor
     mostrar_autor()
-    
-# Título
-st.title("📊 Análisis de la Matriz Energética Argentina")
-
-
-
-# Sidebar: filtros
-region = st.sidebar.selectbox("Región", options=["Todas"] + sorted(df["region"].dropna().unique().tolist()))
-tecnologia = st.sidebar.selectbox("Tecnología", options=["Todas"] + sorted(df["tecnologia"].dropna().unique().tolist()))
-
-# Aplicar filtros
-if region != "Todas":
-    df = df[df["region"] == region]
-if tecnologia != "Todas":
-    df = df[df["tecnologia"] == tecnologia]
-
-# Mostrar resumen
-st.subheader(f"Potencia instalada total: {df['potencia_instalada_mw'].sum():,.0f} MW")
-st.dataframe(df[['central', 'region', 'tecnologia', 'potencia_instalada_mw', 'anio']].head(10))
-
-# Gráfico opcional
-st.bar_chart(df.groupby('fuente_generacion')['potencia_instalada_mw'].sum())

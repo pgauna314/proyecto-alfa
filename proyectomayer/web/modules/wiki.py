@@ -7,8 +7,7 @@ def main():
     st.markdown("Explorá la historia y tecnología de las centrales eléctricas argentinas.")
 
     entries = {
-        "Río Turbio": "web/wiki_data/centrales/rio-turbio.md",
-        "Atucha II": "web/wiki_data/centrales/atucha-ii.md",
+        "Río Turbio": "wiki/centrales/rio-turbio.md",
     }
 
     selected = st.selectbox("Seleccioná una entrada", list(entries.keys()))

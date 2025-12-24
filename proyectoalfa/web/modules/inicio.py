@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import streamlit as st
 
 def mostrar_inicio():
@@ -37,3 +38,28 @@ def mostrar_inicio():
     """)
 
     st.info("💡 **Soberanía Educativa:** Este proyecto busca que el estudiante de ingeniería disponga de herramientas propias, desvinculadas de manuales o software que no contemplan nuestra realidad industrial.")
+=======
+import streamlit as st
+
+def mostrar_inicio():
+    st.header("🏠 Inicio - Proyecto α")
+    st.success("¡Aplicación cargada correctamente! ✅")
+    
+    st.markdown("""
+    ## Termodinámica Aplicada a la Realidad Argentina
+    
+    Esta plataforma integra:
+    - **📚 Teoría** contextualizada en nuestra industria energética
+    - **⚙️ Simulación** de procesos termodinámicos reales
+    - **📊 Datos** de la matriz energética nacional
+    
+    ### 🚀 Cómo usar esta aplicación:
+    1. Navegá por las secciones usando el menú lateral
+    2. Probá el **Simulador de Procesos** para cálculos
+    3. Explorá la **Wiki** con información de centrales argentinas
+    
+    ### 🎯 Objetivo:
+    > "Desarrollar herramientas propias para el estudio de la termodinámica, 
+    > vinculadas a nuestra realidad productiva nacional."
+    """)
+>>>>>>> 1a24feb0dbd31b1b70938b2c48315a35e76f7756

@@ -1,65 +1,23 @@
+# web/modules/wiki.py
 import streamlit as st
-import sys
-import os
+from pathlib import Path
 
-# --- CORRECCIÓN DE RUTAS ---
-actual_dir = os.path.dirname(os.path.abspath(__file__))
-if actual_dir not in sys.path:
-    sys.path.append(actual_dir)
+def main():
+    st.title("📚 Wiki Energética")
+    st.markdown("Explorá la historia y tecnología de las centrales eléctricas argentinas.")
 
-from modules.inicio import mostrar_inicio
-from modules.matriz import mostrar_matriz
-from modules.capitulo2 import mostrar_cap2
-from modules.autor import mostrar_autor
-from modules.laboratorio import mostrar_laboratorio
+    entries = {
+        "Río Turbio": "wiki_data/centrales/rio-turbio.md",
+    }
 
-st.set_page_config(page_title="Proyecto α - Termodinámica", layout="wide", page_icon="α")
+    selected = st.selectbox("Seleccioná una entrada", list(entries.keys()))
+    path = Path(entries[selected])
 
-# --- BARRA LATERAL ---
-with st.sidebar:
-    st.title("Proyecto α")
-    
-    # SUBTÍTULO JUSTIFICADO
-    st.markdown(
-        """
-        <div style="text-align: justify; font-style: italic; font-weight: bold; font-size: 1.1em; color: #808495; line-height: 1.3;">
-            Termodinámica de la Conversión de Energía en Argentina
-        </div>
-        """, 
-        unsafe_allow_html=True
-    )
-    
-    st.divider()
-    
-    menu = st.radio("Entorno de Trabajo:", [
-        "Inicio (Proyecto α)", 
-        "Matriz Energética Nacional", 
-        "Módulo Σ: Simulador de Procesos", 
-        "Módulo λ: Fundamentos de Sistemas",
-        "Wiki",
-        "Autor"
-    ])
-    
-    st.divider()
-    st.subheader("Sostenes del Entorno")
-    st.link_button("Módulo ϕ (YouTube)", "https://youtube.com")
-    st.link_button("Módulo λ (Libro PDF)", "https://github.com")
-    
-    
-    st.divider()
-    st.caption("Soberanía Educativa y Tecnológica")
+    # --- LÍNEAS DE DEBUG (OPCIONALES PERO ÚTILES) ---
+    # st.write("Ruta buscada:", path.resolve())
+    # st.write("¿Existe?", path.exists())
 
-# --- ENRUTADOR ---
-if menu == "Inicio (Proyecto α)":
-    mostrar_inicio()
-elif menu == "Matriz Energética Nacional":
-    mostrar_matriz()
-elif menu == "Módulo Σ: Simulador de Procesos":
-    mostrar_laboratorio()
-elif menu == "Módulo λ: Fundamentos de Sistemas":
-    mostrar_cap2()
-elif menu == "Wiki":
-    from modules import wiki
-    wiki.main()    
-elif menu == "Sobre el autor":         
-    mostrar_autor()
+    if path.exists():
+        st.markdown(path.read_text(encoding="utf-8"))
+    else:
+        st.warning("⚠️ Entrada en construcción.")

@@ -16,4 +16,4 @@ def main():
     if path.exists():
         st.markdown(path.read_text(encoding="utf-8"))
     else:
-        st.warning("⚠️ Entrada en construcción.")
+        st.warning(f"⚠️ Archivo no encontrado: {path.resolve()}")

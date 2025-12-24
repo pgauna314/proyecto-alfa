@@ -2,14 +2,12 @@ import streamlit as st
 import sys
 import os
 
-# Solo asegurar la ruta, NADA DE IMPORTAR MÓDULOS AQUÍ
 actual_dir = os.path.dirname(os.path.abspath(__file__))
 if actual_dir not in sys.path:
     sys.path.append(actual_dir)
 
 st.set_page_config(page_title="Proyecto α - Termodinámica", layout="wide", page_icon="α")
 
-# --- BARRA LATERAL ---7
 with st.sidebar:
     st.title("Proyecto α")
     st.markdown(
@@ -21,7 +19,6 @@ with st.sidebar:
         unsafe_allow_html=True
     )
     st.divider()
-    
     menu = st.radio("Entorno de Trabajo:", [
         "Inicio (Proyecto α)", 
         "Matriz Energética Nacional", 
@@ -30,7 +27,6 @@ with st.sidebar:
         "Wiki",
         "Autor"
     ])
-    
     st.divider()
     st.subheader("Sostenes del Entorno")
     st.link_button("Módulo ϕ (YouTube)", "https://youtube.com")
@@ -38,22 +34,16 @@ with st.sidebar:
     st.divider()
     st.caption("Soberanía Educativa y Tecnológica")
 
-# --- ENRUTADOR: SOLO IMPORTAR CUANDO SE USA ---
+# Importar SOLO cuando se elige la opción
 if menu == "Inicio (Proyecto α)":
-    from modules.inicio import mostrar_inicio
-    mostrar_inicio()
+    from modules.inicio import mostrar_inicio; mostrar_inicio()
 elif menu == "Matriz Energética Nacional":
-    from modules.matriz import mostrar_matriz
-    mostrar_matriz()
+    from modules.matriz import mostrar_matriz; mostrar_matriz()
 elif menu == "Módulo Σ: Simulador de Procesos":
-    from modules.laboratorio import mostrar_laboratorio
-    mostrar_laboratorio()
+    from modules.laboratorio import mostrar_laboratorio; mostrar_laboratorio()
 elif menu == "Módulo λ: Fundamentos de Sistemas":
-    from modules.capitulo2 import mostrar_cap2
-    mostrar_cap2()
+    from modules.capitulo2 import mostrar_cap2; mostrar_cap2()
 elif menu == "Wiki":
-    from modules.wiki import main as wiki_main
-    wiki_main()
+    from modules.wiki import main as wiki_main; wiki_main()
 elif menu == "Autor":
-    from modules.autor import mostrar_autor
-    mostrar_autor()
+    from modules.autor import mostrar_autor; mostrar_autor()

@@ -22,3 +22,8 @@ def main():
     else:
         st.error(f"⚠️ Archivo no encontrado: {path}")
         st.info(f"Directorio actual de búsqueda: {base_dir}")
+        
+# Agrega esto en wiki.py para verificar
+st.write(f"Base dir: {base_dir}")
+st.write(f"Ruta buscada: {path}")
+st.write(f"¿Existe?: {path.exists()}")

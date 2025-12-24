@@ -45,6 +45,7 @@ with st.sidebar:
     st.link_button("Módulo ϕ (YouTube)", "https://youtube.com")
     st.link_button("Módulo λ (Libro PDF)", "https://github.com")
     
+    
     st.divider()
     st.caption("Soberanía Educativa y Tecnológica")
 
@@ -57,7 +58,7 @@ elif menu == "Módulo Σ: Simulador de Procesos":
     mostrar_laboratorio()
 elif menu == "Módulo λ: Fundamentos de Sistemas":
     mostrar_cap2()
-elif menu == "Wiki Energética":
+elif menu == "Wiki":
     from modules import wiki
     wiki.main()    
 elif menu == "Sobre el autor":         

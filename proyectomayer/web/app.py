@@ -36,6 +36,7 @@ with st.sidebar:
         "Matriz Energética Nacional", 
         "Módulo Σ: Simulador de Procesos", 
         "Módulo λ: Fundamentos de Sistemas",
+        "Wiki",
         "Autor"
     ])
     
@@ -56,5 +57,8 @@ elif menu == "Módulo Σ: Simulador de Procesos":
     mostrar_laboratorio()
 elif menu == "Módulo λ: Fundamentos de Sistemas":
     mostrar_cap2()
+elif menu == "Wiki Energética":
+    from modules import wiki
+    wiki.main()    
 elif menu == "Sobre el autor":         
     mostrar_autor()

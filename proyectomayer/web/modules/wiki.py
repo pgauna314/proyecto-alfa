@@ -2,7 +2,7 @@ import streamlit as st
 from pathlib import Path
 
 def main():
-    st.title("📚 Wiki Energética")
+    st.title("📚 Wiki")
     st.markdown("Explorá la historia y tecnología de las centrales eléctricas argentinas.")
 
     entries = {

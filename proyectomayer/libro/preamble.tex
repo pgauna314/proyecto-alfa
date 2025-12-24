@@ -18,7 +18,19 @@
 \usetikzlibrary{shapes, arrows.meta, positioning} % Librerías de TikZ
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
+\usepackage{soul}
+\usepackage[most]{tcolorbox} % Esto ya incluye skins
 
+\newtcolorbox{definicion}[1]{%
+    enhanced,
+    colback=blue!5,
+    colframe=blue!60!black,
+    boxrule=0.5pt,
+    leftrule=4pt,
+    sharp corners,
+    fonttitle=\bfseries,
+    title={#1}
+}
 % Tablas
 \usepackage{array} % Mejoras para tablas
 \usepackage{booktabs} % Tablas profesionales

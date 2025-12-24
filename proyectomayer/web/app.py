@@ -47,8 +47,8 @@ elif menu == "Módulo λ: Fundamentos de Sistemas":
     from modules.capitulo2 import mostrar_cap2
     mostrar_cap2()
 elif menu == "Wiki":
-    from modules.wiki import main as wiki_main
-    wiki_main()
+    #from modules.wiki import main as wiki_main
+    #wiki_main()
 elif menu == "Autor":
     from modules.autor import mostrar_autor
     mostrar_autor()

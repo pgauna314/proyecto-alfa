@@ -44,13 +44,13 @@ with st.sidebar:
 if opcion == "🏠 Inicio":
     from modules.inicio import mostrar_inicio
     mostrar_inicio()
-elif opcion == "📊 Matriz Energética":
+elif opcion == "📊 Matriz Energética Nacional":
     from modules.matriz import mostrar_matriz
     mostrar_matriz()
-elif opcion == "⚙️ Simulador de Procesos":
+elif opcion == "⚙️ Calculadora de Propiedades":
     from modules.laboratorio import mostrar_laboratorio
     mostrar_laboratorio()
-elif opcion == "📚 Fundamentos de Sistemas":
+elif opcion == "📚 Balances de Materia y Energía":
     from modules.capitulo2 import mostrar_cap2
     mostrar_cap2()
 elif opcion == "🔍 Wiki":

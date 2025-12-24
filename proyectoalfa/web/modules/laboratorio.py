@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 import numpy as np
 
 def mostrar_laboratorio():
-    st.title("🧪 Laboratorio de Propiedades Termodinámicas")
+    st.title("🧪 Calculadora de Propiedades")
     st.write("Configurá el estado, elegí el diagrama y ejecutá el diagnóstico pedagógico.")
 
     # --- PANEL DE CONFIGURACIÓN ---

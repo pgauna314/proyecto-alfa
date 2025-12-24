@@ -12,6 +12,8 @@ def main():
     wiki_content_dir = base_dir / "wiki_data"
 
     st.sidebar.info(f"Buscando en: {wiki_content_dir}")  # Línea para depurar
+    st.sidebar.write("---")
+    st.sidebar.subheader("🔍 Depuración de rutas")    
 
     entries = {
         "Río Turbio": "centrales/rio-turbio.md",  # Ruta RELATIVA a wiki_data/

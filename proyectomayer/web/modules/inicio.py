@@ -1,4 +1,3 @@
-#archivo inicio.py
 import streamlit as st
 
 def mostrar_inicio():

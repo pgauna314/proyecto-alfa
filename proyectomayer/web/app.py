@@ -1,11 +1,9 @@
-#app.py
 import streamlit as st
-import sys
 import os
+import sys
 
-actual_dir = os.path.dirname(os.path.abspath(__file__))
-if actual_dir not in sys.path:
-    sys.path.append(actual_dir)
+# Agregar el directorio actual al path para poder importar módulos
+sys.path.insert(0, os.path.dirname(__file__))
 
 st.set_page_config(page_title="Proyecto α - Termodinámica", layout="wide", page_icon="α")
 
@@ -35,16 +33,22 @@ with st.sidebar:
     st.divider()
     st.caption("Soberanía Educativa y Tecnológica")
 
-# Importar SOLO cuando se elige la opción
+# Importar y ejecutar el módulo correspondiente
 if menu == "Inicio (Proyecto α)":
-    from modules.inicio import mostrar_inicio; mostrar_inicio()
+    from modules.inicio import mostrar_inicio
+    mostrar_inicio()
 elif menu == "Matriz Energética Nacional":
-    from modules.matriz import mostrar_matriz; mostrar_matriz()
+    from modules.matriz import mostrar_matriz
+    mostrar_matriz()
 elif menu == "Módulo Σ: Simulador de Procesos":
-    from modules.laboratorio import mostrar_laboratorio; mostrar_laboratorio()
+    from modules.laboratorio import mostrar_laboratorio
+    mostrar_laboratorio()
 elif menu == "Módulo λ: Fundamentos de Sistemas":
-    from modules.capitulo2 import mostrar_cap2; mostrar_cap2()
+    from modules.capitulo2 import mostrar_cap2
+    mostrar_cap2()
 elif menu == "Wiki":
-    from modules.wiki import main as wiki_main; wiki_main()
+    from modules.wiki import main as wiki_main
+    wiki_main()
 elif menu == "Autor":
-    from modules.autor import mostrar_autor; mostrar_autor()
+    from modules.autor import mostrar_autor
+    mostrar_autor()

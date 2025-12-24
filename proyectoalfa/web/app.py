@@ -25,9 +25,9 @@ with st.sidebar:
         "🌐 Navegación Principal:",
         [
             "🏠 Inicio",
-            "📊 Matriz Energética", 
-            "⚙️ Simulador de Procesos",
-            "📚 Fundamentos de Sistemas",
+            "📊 Matriz Energética Nacional", 
+            "⚙️ Calculadora de Propiedades",
+            "📚 Balances de Materia y Energía",
             "🔍 Wiki",
             "👤 Autor"
         ]

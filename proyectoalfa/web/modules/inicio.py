@@ -2,18 +2,22 @@ import streamlit as st
 
 def mostrar_inicio():
     st.header("🏠 Inicio - Proyecto α")
-    st.success("✅ ¡La aplicación está funcionando correctamente!")
+    st.success("¡Aplicación cargada correctamente! ✅")
     
     st.markdown("""
-    ## Termodinámica de la Conversión de Energía en Argentina
+    ## Termodinámica Aplicada a la Realidad Argentina
     
-    Este entorno pedagógico integra:
-    - **📘 Teoría** contextualizada en nuestra industria
-    - **⚙️ Simulación** de procesos reales
+    Esta plataforma integra:
+    - **📚 Teoría** contextualizada en nuestra industria energética
+    - **⚙️ Simulación** de procesos termodinámicos reales
     - **📊 Datos** de la matriz energética nacional
     
-    ### Próximos pasos:
-    1. Verifica que todas las opciones del menú funcionen
-    2. Revisa que el módulo **"Autor"** muestre la información
-    3. Luego reconstruiremos la **Wiki**
+    ### 🚀 Cómo usar esta aplicación:
+    1. Navegá por las secciones usando el menú lateral
+    2. Probá el **Simulador de Procesos** para cálculos
+    3. Explorá la **Wiki** con información de centrales argentinas
+    
+    ### 🎯 Objetivo:
+    > "Desarrollar herramientas propias para el estudio de la termodinámica, 
+    > vinculadas a nuestra realidad productiva nacional."
     """)

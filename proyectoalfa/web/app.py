@@ -1,16 +1,14 @@
 import streamlit as st
-import os
-import sys
 
-# Configurar path para importar módulos
-sys.path.insert(0, os.path.dirname(__file__))
-
+# CONFIGURACIÓN DE PÁGINA (DEBE SER LO PRIMERO)
 st.set_page_config(
     page_title="Proyecto α - Termodinámica",
     layout="wide",
-    page_icon="α"
+    page_icon="α",
+    initial_sidebar_state="expanded"
 )
 
+# SIDEBAR - MENÚ
 with st.sidebar:
     st.title("Proyecto α")
     st.markdown(
@@ -24,54 +22,47 @@ with st.sidebar:
     )
     st.divider()
     
-    menu = st.radio("Entorno de Trabajo:", [
-        "Inicio (Proyecto α)",
-        "Matriz Energética Nacional",
-        "Módulo Σ: Simulador de Procesos",
-        "Módulo λ: Fundamentos de Sistemas",
-        "Wiki",
-        "Autor"
-    ], index=0)  # index=0 selecciona "Inicio" por defecto
+    # MENU PRINCIPAL
+    opcion = st.radio(
+        "🌐 Navegación Principal:",
+        [
+            "🏠 Inicio",
+            "📊 Matriz Energética", 
+            "⚙️ Simulador de Procesos",
+            "📚 Fundamentos de Sistemas",
+            "🔍 Wiki",
+            "👤 Autor"
+        ]
+    )
     
     st.divider()
-    st.subheader("Sostenes del Entorno")
-    st.link_button("Módulo ϕ (YouTube)", "https://youtube.com")
-    st.link_button("Módulo λ (Libro PDF)", "https://github.com")
+    st.subheader("📦 Recursos")
+    st.page_link("https://youtube.com", label="📺 Módulo ϕ (YouTube)", icon="📺")
+    st.page_link("https://github.com", label="📘 Módulo λ (PDF)", icon="📘")
     st.divider()
-    st.caption("Soberanía Educativa y Tecnológica")
+    st.caption("⚡ Soberanía Educativa y Tecnológica")
 
-# PANEL DE DIAGNÓSTICO (oculto por defecto)
-with st.sidebar.expander("🔧 Estado del Sistema", expanded=False):
-    st.write(f"Directorio: `{os.path.dirname(__file__)}`")
-    st.write("Módulos encontrados:")
+# CONTENIDO PRINCIPAL BASADO EN LA OPCIÓN
+if opcion == "🏠 Inicio":
+    from modules.inicio import mostrar_inicio
+    mostrar_inicio()
     
-    modulos_a_verificar = ["inicio", "matriz", "laboratorio", "capitulo2", "autor", "wiki"]
-    for modulo in modulos_a_verificar:
-        ruta = os.path.join("modules", f"{modulo}.py")
-        existe = os.path.exists(ruta)
-        st.write(f"• {modulo}: {'✅' if existe else '❌'}")
-
-# IMPORTAR SOLO EL MÓDULO SELECCIONADO (CON MANEJO DE ERRORES)
-try:
-    if menu == "Inicio (Proyecto α)":
-        from modules.inicio import mostrar_inicio
-        mostrar_inicio()
-    elif menu == "Matriz Energética Nacional":
-        from modules.matriz import mostrar_matriz
-        mostrar_matriz()
-    elif menu == "Módulo Σ: Simulador de Procesos":
-        from modules.laboratorio import mostrar_laboratorio
-        mostrar_laboratorio()
-    elif menu == "Módulo λ: Fundamentos de Sistemas":
-        from modules.capitulo2 import mostrar_cap2
-        mostrar_cap2()
-    elif menu == "Wiki":
-        from modules.wiki import main as wiki_main
-        wiki_main()
-    elif menu == "Autor":
-        from modules.autor import mostrar_autor
-        mostrar_autor()
-except Exception as e:
-    st.error(f"❌ Error al cargar el módulo: `{menu}`")
-    st.code(str(e))
-    st.info("Revisa la terminal para más detalles.")
+elif opcion == "📊 Matriz Energética":
+    from modules.matriz import mostrar_matriz
+    mostrar_matriz()
+    
+elif opcion == "⚙️ Simulador de Procesos":
+    from modules.laboratorio import mostrar_laboratorio
+    mostrar_laboratorio()
+    
+elif opcion == "📚 Fundamentos de Sistemas":
+    from modules.capitulo2 import mostrar_cap2
+    mostrar_cap2()
+    
+elif opcion == "🔍 Wiki":
+    from modules.wiki import main as wiki_main
+    wiki_main()
+    
+elif opcion == "👤 Autor":
+    from modules.autor import mostrar_autor
+    mostrar_autor()

@@ -1,5 +1,5 @@
 import streamlit as st
-from src.utils import load_power_data
+
 
 # CONFIGURACIÓN DE PÁGINA (DEBE SER LO PRIMERO)
 st.set_page_config(

@@ -9,7 +9,7 @@ if actual_dir not in sys.path:
 
 st.set_page_config(page_title="Proyecto α - Termodinámica", layout="wide", page_icon="α")
 
-# --- BARRA LATERAL ---
+# --- BARRA LATERAL ---7
 with st.sidebar:
     st.title("Proyecto α")
     st.markdown(

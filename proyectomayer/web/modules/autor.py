@@ -2,7 +2,7 @@ import streamlit as st
 import os
 
 def mostrar_autor():
-    st.title("👤 Sobre el Autor")
+    st.title("👤 Autor")
     
     # Esta es la ruta estándar que debería funcionar ahora que limpiaste el repo
     # Probamos con y sin el prefijo de la carpeta principal
@@ -18,7 +18,7 @@ def mostrar_autor():
         exito = False
         for ruta in rutas_a_probar:
             if os.path.exists(ruta):
-                st.image(ruta, width=250, caption="Ing. Gauna")
+                st.image(ruta, width=250, caption="Dr. Gauna")
                 exito = True
                 break
         

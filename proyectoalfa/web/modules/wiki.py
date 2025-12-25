@@ -4,9 +4,10 @@ import pandas as pd
 import os
 
 def main():
-    st.sidebar.header("🔍 Filtros Combinados")
+    # --- Configuración de página ---
+    st.set_page_config(page_title="Wiki Energética", layout="wide")
     
-    # Cargar datos
+    # --- Cargar datos ---
     ruta_csv = os.path.join(os.path.dirname(__file__), "..", "..", "data", "potencia-instalada.csv")
     if not os.path.exists(ruta_csv):
         st.error("❌ No se encontró `data/potencia-instalada.csv`.")
@@ -17,84 +18,135 @@ def main():
     df = df.sort_values('fecha_proceso').drop_duplicates(subset=['central'], keep='last')
     df = df.dropna(subset=['region', 'tecnologia', 'fuente_generacion'])
     
-    # Crear listas para filtros
+    # --- Sidebar con filtros avanzados ---
+    st.sidebar.header("🔍 Filtros Avanzados")
+    
+    # Opción 1: Filtros independientes con multiselect
+    st.sidebar.subheader("Filtrar por:")
+    
+    # Multiselect con opción "Todas" automática
     regiones = ["Todas"] + sorted(df['region'].unique().tolist())
     tecnologias = ["Todas"] + sorted(df['tecnologia'].unique().tolist())
     fuentes = ["Todas"] + sorted(df['fuente_generacion'].unique().tolist())
     
-    # Filtros individuales
-    region_sel = st.sidebar.selectbox("Región", regiones)
-    tecnologia_sel = st.sidebar.selectbox("Tecnología", tecnologias)
-    fuente_sel = st.sidebar.selectbox("Tipo/Fuente", fuentes)
+    # Filtros con selección múltiple
+    region_sel = st.sidebar.multiselect(
+        "Región",
+        options=sorted(df['region'].unique().tolist()),
+        default=None,
+        help="Selecciona una o más regiones"
+    )
+    
+    tecnologia_sel = st.sidebar.multiselect(
+        "Tecnología",
+        options=sorted(df['tecnologia'].unique().tolist()),
+        default=None,
+        help="Selecciona una o más tecnologías"
+    )
+    
+    fuente_sel = st.sidebar.multiselect(
+        "Fuente de Generación",
+        options=sorted(df['fuente_generacion'].unique().tolist()),
+        default=None,
+        help="Selecciona uno o más tipos de fuente"
+    )
+    
+    # Filtro adicional por potencia (opcional)
+    st.sidebar.subheader("Filtro por Potencia")
+    potencia_min = st.sidebar.number_input(
+        "Potencia Mínima (MW)",
+        min_value=0.0,
+        max_value=float(df['potencia_instalada_mw'].max()),
+        value=0.0,
+        step=10.0
+    )
+    
+    potencia_max = st.sidebar.number_input(
+        "Potencia Máxima (MW)",
+        min_value=0.0,
+        max_value=float(df['potencia_instalada_mw'].max()),
+        value=float(df['potencia_instalada_mw'].max()),
+        step=10.0
+    )
     
     # --- Contenido principal ---
     st.title("📚 Wiki Energética")
+    st.markdown("Explorá centrales eléctricas reales de Argentina.")
     
-    # Aplicar filtros
+    # --- Aplicar filtros ---
     df_filtrado = df.copy()
     
-    filtros_aplicados = []
-    if region_sel != "Todas":
-        df_filtrado = df_filtrado[df_filtrado['region'] == region_sel]
-        filtros_aplicados.append(f"Región: {region_sel}")
+    # Aplicar filtros de selección múltiple
+    if region_sel:
+        df_filtrado = df_filtrado[df_filtrado['region'].isin(region_sel)]
     
-    if tecnologia_sel != "Todas":
-        df_filtrado = df_filtrado[df_filtrado['tecnologia'] == tecnologia_sel]
-        filtros_aplicados.append(f"Tecnología: {tecnologia_sel}")
+    if tecnologia_sel:
+        df_filtrado = df_filtrado[df_filtrado['tecnologia'].isin(tecnologia_sel)]
     
-    if fuente_sel != "Todas":
-        df_filtrado = df_filtrado[df_filtrado['fuente_generacion'] == fuente_sel]
-        filtros_aplicados.append(f"Fuente: {fuente_sel}")
+    if fuente_sel:
+        df_filtrado = df_filtrado[df_filtrado['fuente_generacion'].isin(fuente_sel)]
     
-    # Mostrar filtros aplicados
-    if filtros_aplicados:
-        st.write("**Filtros aplicados:**", " | ".join(filtros_aplicados))
+    # Aplicar filtro de potencia
+    df_filtrado = df_filtrado[
+        (df_filtrado['potencia_instalada_mw'] >= potencia_min) &
+        (df_filtrado['potencia_instalada_mw'] <= potencia_max)
+    ]
     
-    # Mostrar resultados
+    # --- Mostrar resultados ---
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Total Centrales", len(df_filtrado))
+    with col2:
+        st.metric("Potencia Total", f"{df_filtrado['potencia_instalada_mw'].sum():.0f} MW")
+    with col3:
+        st.metric("Regiones", df_filtrado['region'].nunique())
+    
+    # Botón para resetear filtros
+    if st.button("🔄 Limpiar Filtros"):
+        st.rerun()
+    
+    # Mostrar centrales
     if df_filtrado.empty:
-        st.warning("No hay centrales con los filtros seleccionados.")
-        st.info("💡 Prueba con combinaciones diferentes de filtros")
+        st.warning("No hay centrales con los filtros aplicados.")
     else:
-        st.success(f"✅ Se encontraron {len(df_filtrado)} centrales")
+        # Opción para ver como tarjetas o tabla
+        vista = st.radio(
+            "Vista:",
+            ["Tarjetas", "Tabla"],
+            horizontal=True
+        )
         
-        # Agrupar por alguna categoría si hay muchos resultados
-        if len(df_filtrado) > 10:
-            grupo = st.selectbox(
-                "Agrupar por:",
-                ["Ninguno", "Región", "Tecnología", "Fuente"]
-            )
-            
-            if grupo != "Ninguno":
-                for valor, grupo_df in df_filtrado.groupby(grupo.lower()):
-                    st.subheader(f"{grupo}: {valor}")
-                    for _, row in grupo_df.iterrows():
-                        with st.container(border=True):
-                            cols = st.columns([3, 1])
-                            with cols[0]:
-                                st.write(f"**{row['agente_descripcion']}**")
-                                st.write(f"{row['central']}")
-                            with cols[1]:
-                                st.metric("Potencia", f"{row['potencia_instalada_mw']:.0f} MW")
-            else:
-                mostrar_centrales(df_filtrado)
+        if vista == "Tarjetas":
+            # Dividir en columnas para mejor visualización
+            cols = st.columns(2)
+            for idx, (_, row) in enumerate(df_filtrado.iterrows()):
+                with cols[idx % 2]:
+                    with st.container(border=True):
+                        st.subheader(f"🏭 {row['agente_descripcion']}")
+                        st.markdown(f"""
+                        **Ubicación**: {row['region']}
+                        **Tecnología**: {row['tecnologia']}
+                        **Fuente**: {row['fuente_generacion']}
+                        **Potencia Instalada**: {row['potencia_instalada_mw']:.0f} MW
+                        **Central**: {row['central']}
+                        """)
         else:
-            mostrar_centrales(df_filtrado)
-
-def mostrar_centrales(df):
-    """Función auxiliar para mostrar las centrales"""
-    for _, row in df.iterrows():
-        with st.container(border=True):
-            col1, col2 = st.columns([3, 1])
-            with col1:
-                st.subheader(row['agente_descripcion'])
-                st.markdown(f"""
-                **Región**: {row['region']}  
-                **Tecnología**: {row['tecnologia']}  
-                **Fuente**: {row['fuente_generacion']}  
-                **Central**: {row['central']}
-                """)
-            with col2:
-                st.metric("Potencia Instalada", f"{row['potencia_instalada_mw']:.0f} MW")
+            # Vista de tabla
+            columnas_mostrar = [
+                'agente_descripcion', 'region', 'tecnologia', 
+                'fuente_generacion', 'potencia_instalada_mw', 'central'
+            ]
+            st.dataframe(
+                df_filtrado[columnas_mostrar].rename(columns={
+                    'agente_descripcion': 'Agente',
+                    'region': 'Región',
+                    'tecnologia': 'Tecnología',
+                    'fuente_generacion': 'Fuente',
+                    'potencia_instalada_mw': 'Potencia (MW)',
+                    'central': 'Central'
+                }),
+                use_container_width=True
+            )
 
 if __name__ == "__main__":
     main()

@@ -59,3 +59,4 @@ elif opcion == "🔍 Wiki":
 elif opcion == "👤 Autor":
     from modules.autor import mostrar_autor
     mostrar_autor()
+    

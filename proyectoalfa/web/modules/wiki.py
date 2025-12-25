@@ -2,337 +2,357 @@
 import streamlit as st
 import pandas as pd
 import os
-import re
-
-def normalizar_texto(texto):
-    """Normaliza texto: quita acentos, convierte a mayúsculas, etc."""
-    if pd.isna(texto):
-        return ""
-    
-    texto = str(texto).strip()
-    
-    # Reemplazar acentos y caracteres especiales
-    reemplazos = {
-        'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U',
-        'á': 'A', 'é': 'E', 'í': 'I', 'ó': 'O', 'ú': 'U',
-        'Ñ': 'N', 'ñ': 'N'
-    }
-    for orig, repl in reemplazos.items():
-        texto = texto.replace(orig, repl)
-    
-    # Convertir a mayúsculas y quitar espacios extra
-    texto = texto.upper()
-    texto = re.sub(r'\s+', ' ', texto)  # Múltiples espacios a uno solo
-    
-    return texto
-
-def encontrar_columna_similar(df, nombres_posibles):
-    """Busca columnas similares a las esperadas"""
-    columnas_df = [col.lower().strip() for col in df.columns]
-    
-    for nombre_buscado in nombres_posibles:
-        nombre_buscado = nombre_buscado.lower().strip()
-        
-        # Búsqueda exacta
-        if nombre_buscado in columnas_df:
-            idx = columnas_df.index(nombre_buscado)
-            return df.columns[idx]
-        
-        # Búsqueda parcial
-        for col in df.columns:
-            col_lower = col.lower()
-            if (nombre_buscado in col_lower or 
-                col_lower in nombre_buscado or
-                nombre_buscado.replace('_', '') in col_lower.replace('_', '')):
-                return col
-    
-    return None
 
 def main():
     st.set_page_config(page_title="Wiki Energética", layout="wide")
     
-    # --- Cargar datos con detección inteligente ---
+    # --- Cargar datos ---
     ruta_csv = os.path.join(os.path.dirname(__file__), "..", "..", "data", "potencia-instalada.csv")
     if not os.path.exists(ruta_csv):
         st.error("❌ No se encontró `data/potencia-instalada.csv`.")
         return
     
     @st.cache_data
-    def cargar_y_normalizar_datos():
-        try:
-            # Intentar diferentes encodings
-            encodings = ['utf-8', 'latin-1', 'ISO-8859-1', 'cp1252']
-            df = None
-            
-            for encoding in encodings:
-                try:
-                    df = pd.read_csv(ruta_csv, encoding=encoding)
-                    st.success(f"✅ CSV cargado con encoding: {encoding}")
-                    break
-                except UnicodeDecodeError:
-                    continue
-            
-            if df is None:
-                st.error("❌ No se pudo leer el CSV con ningún encoding común")
-                return pd.DataFrame()
-            
-            # Panel de diagnóstico
-            with st.expander("🔧 Panel de Diagnóstico", expanded=False):
-                tab1, tab2, tab3, tab4 = st.tabs(["Columnas", "Muestra", "Estadísticas", "Problemas"])
-                
-                with tab1:
-                    st.write("**Columnas encontradas:**")
-                    for i, col in enumerate(df.columns, 1):
-                        st.write(f"{i}. `{col}` (tipo: {df[col].dtype}, nulos: {df[col].isna().sum()})")
-                
-                with tab2:
-                    st.write("**Primeras 5 filas:**")
-                    st.dataframe(df.head())
-                
-                with tab3:
-                    st.write("**Resumen estadístico:**")
-                    st.write(df.describe(include='all'))
-                
-                with tab4:
-                    # Buscar problemas comunes
-                    problemas = []
-                    for col in df.columns:
-                        nulos = df[col].isna().sum()
-                        if nulos > 0:
-                            problemas.append(f"Columna '{col}': {nulos} valores nulos ({nulos/len(df)*100:.1f}%)")
-                    
-                    if problemas:
-                        st.warning("Problemas encontrados:")
-                        for p in problemas:
-                            st.write(f"- {p}")
-                    else:
-                        st.success("✅ No se encontraron problemas graves")
-            
-            # Mapeo inteligente de columnas
-            mapeo_columnas = {
-                'REGION': ['region', 'región', 'provincia', 'zona', 'area', 'location'],
-                'TECNOLOGIA': ['tecnologia', 'tipo', 'tech', 'generacion', 'generación'],
-                'FUENTE': ['fuente', 'fuente_generacion', 'origen', 'tipo_fuente', 'combustible'],
-                'POTENCIA': ['potencia', 'potencia_mw', 'mw', 'capacidad', 'potencia_instalada'],
-                'CENTRAL': ['central', 'nombre', 'planta', 'estacion', 'unidad'],
-                'AGENTE': ['agente', 'empresa', 'operador', 'propietario', 'dueno']
-            }
-            
-            # Crear nuevo DataFrame normalizado
-            df_norm = pd.DataFrame()
-            columna_mapeada = {}
-            
-            for col_std, posibles in mapeo_columnas.items():
-                col_encontrada = encontrar_columna_similar(df, posibles)
-                if col_encontrada:
-                    df_norm[col_std] = df[col_encontrada]
-                    columna_mapeada[col_std] = col_encontrada
-                else:
-                    st.warning(f"⚠️ No se encontró columna para: {col_std}")
-            
-            # Mostrar mapeo realizado
-            if columna_mapeada:
-                st.info("**Mapeo de columnas detectado:**")
-                for std, original in columna_mapeada.items():
-                    st.write(f"  {std} ← {original}")
-            
-            # Validar que tenemos las columnas mínimas
-            columnas_minimas = ['REGION', 'TECNOLOGIA', 'FUENTE', 'POTENCIA']
-            faltan = [col for col in columnas_minimas if col not in df_norm.columns]
-            
-            if faltan:
-                st.error(f"❌ Faltan columnas esenciales: {faltan}")
-                st.stop()
-            
-            # Normalizar valores de texto
-            for col in ['REGION', 'TECNOLOGIA', 'FUENTE', 'CENTRAL', 'AGENTE']:
-                if col in df_norm.columns:
-                    df_norm[col] = df_norm[col].apply(normalizar_texto)
-            
-            # Normalizar potencia (convertir a numérico)
-            if 'POTENCIA' in df_norm.columns:
-                # Intentar extraer números del texto
-                def extraer_potencia(valor):
-                    if pd.isna(valor):
-                        return 0
-                    
-                    valor_str = str(valor)
-                    # Buscar números con decimales
-                    numeros = re.findall(r'\d+\.?\d*', valor_str)
-                    if numeros:
-                        return float(numeros[0])
-                    return 0
-                
-                df_norm['POTENCIA'] = df_norm['POTENCIA'].apply(extraer_potencia)
-                df_norm = df_norm[df_norm['POTENCIA'] > 0]  # Filtrar potencias válidas
-            
-            # Agrupar valores similares
-            if 'TECNOLOGIA' in df_norm.columns:
-                grupos_tecnologia = {
-                    'HIDRO': ['HIDRO', 'HIDRAULICA', 'HIDROELECTRICA'],
-                    'TERMICA': ['TERMICA', 'TERMO', 'CARBON', 'GAS', 'COMBUSTIBLE'],
-                    'EOLICA': ['EOLICA', 'VIENTO', 'WIND'],
-                    'SOLAR': ['SOLAR', 'FOTOVOLTAICA', 'PV'],
-                    'NUCLEAR': ['NUCLEAR', 'ATOMICA'],
-                    'BIOMASA': ['BIOMASA', 'BIOGAS', 'BIOCOMBUSTIBLE']
-                }
-                
-                def clasificar_tecnologia(texto):
-                    texto = texto.upper()
-                    for grupo, palabras in grupos_tecnologia.items():
-                        for palabra in palabras:
-                            if palabra in texto:
-                                return grupo
-                    return texto
-                
-                df_norm['TECNOLOGIA_GRUPO'] = df_norm['TECNOLOGIA'].apply(clasificar_tecnologia)
-            
-            return df_norm
-            
-        except Exception as e:
-            st.error(f"❌ Error crítico: {str(e)}")
-            import traceback
-            st.code(traceback.format_exc())
-            return pd.DataFrame()
+    def cargar_datos():
+        df = pd.read_csv(ruta_csv)
+        df['fecha_proceso'] = pd.to_datetime(df['fecha_proceso'], errors='coerce')
+        df = df.sort_values('fecha_proceso').drop_duplicates(subset=['central'], keep='last')
+        df = df.dropna(subset=['region', 'tecnologia', 'fuente_generacion'])
+        return df
     
-    # Cargar datos
-    df = cargar_y_normalizar_datos()
+    df = cargar_datos()
     
-    if df.empty:
-        st.error("No se pudieron cargar los datos. Verifica el archivo CSV.")
-        return
+    # --- Encabezado principal ---
+    st.title("📚 Wiki Energética")
+    st.markdown("Explorá centrales eléctricas reales de Argentina.")
     
-    # --- Interfaz de usuario mejorada ---
-    st.title("🏭 Centrales Eléctricas de Argentina")
-    
-    # Mostrar estadísticas rápidas
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.metric("Total Centrales", len(df))
-    with col2:
-        st.metric("Potencia Total", f"{df['POTENCIA'].sum():.0f} MW")
-    with col3:
-        st.metric("Regiones Únicas", df['REGION'].nunique())
-    with col4:
-        st.metric("Tecnologías", df['TECNOLOGIA'].nunique())
-    
-    # --- FILTROS EN LA PÁGINA ---
+    # --- FILTROS EN LA PÁGINA PRINCIPAL ---
     st.markdown("---")
     st.subheader("🔍 Filtros de Búsqueda")
     
-    # Crear filtros basados en los datos normalizados
-    col_f1, col_f2, col_f3 = st.columns(3)
+    # Crear 3 columnas para los filtros principales
+    col1, col2, col3, col4 = st.columns([2, 2, 2, 1])
     
-    with col_f1:
-        regiones = ["TODAS"] + sorted(df['REGION'].dropna().unique().tolist())
-        region_sel = st.selectbox("Región", regiones, help="Filtrar por región geográfica")
+    with col1:
+        # Filtro de región (con opción "Todas")
+        regiones_opciones = ["Todas"] + sorted(df['region'].dropna().unique().tolist())
+        region_seleccionada = st.selectbox(
+            "Región",
+            options=regiones_opciones,
+            index=0,
+            help="Selecciona una región específica o 'Todas'"
+        )
     
-    with col_f2:
-        tecnologias = ["TODAS"] + sorted(df['TECNOLOGIA'].dropna().unique().tolist())
-        tech_sel = st.selectbox("Tecnología", tecnologias, help="Filtrar por tipo de tecnología")
+    with col2:
+        # Filtro de tecnología (con opción "Todas")
+        tecnologias_opciones = ["Todas"] + sorted(df['tecnologia'].dropna().unique().tolist())
+        tecnologia_seleccionada = st.selectbox(
+            "Tecnología",
+            options=tecnologias_opciones,
+            index=0,
+            help="Selecciona un tipo de tecnología o 'Todas'"
+        )
     
-    with col_f3:
-        fuentes = ["TODAS"] + sorted(df['FUENTE'].dropna().unique().tolist())
-        fuente_sel = st.selectbox("Fuente", fuentes, help="Filtrar por fuente de generación")
+    with col3:
+        # Filtro de fuente/tipo (con opción "Todas")
+        fuentes_opciones = ["Todas"] + sorted(df['fuente_generacion'].dropna().unique().tolist())
+        fuente_seleccionada = st.selectbox(
+            "Fuente/Tipo",
+            options=fuentes_opciones,
+            index=0,
+            help="Selecciona una fuente de generación o 'Todas'"
+        )
     
-    # Filtro de potencia con slider
-    st.markdown("---")
-    potencia_min, potencia_max = st.slider(
-        "Rango de Potencia (MW)",
-        min_value=0,
-        max_value=int(df['POTENCIA'].max()),
-        value=(0, int(df['POTENCIA'].max())),
-        step=10
-    )
+    with col4:
+        # Botón para limpiar filtros
+        st.markdown(" ")  # Espacio vertical
+        st.markdown(" ")  # Espacio vertical
+        if st.button("🧹 Limpiar", use_container_width=True):
+            st.rerun()
     
-    # Aplicar filtros
-    df_filtrado = df.copy()
-    
-    if region_sel != "TODAS":
-        df_filtrado = df_filtrado[df_filtrado['REGION'] == region_sel]
-    
-    if tech_sel != "TODAS":
-        df_filtrado = df_filtrado[df_filtrado['TECNOLOGIA'] == tech_sel]
-    
-    if fuente_sel != "TODAS":
-        df_filtrado = df_filtrado[df_filtrado['FUENTE'] == fuente_sel]
-    
-    df_filtrado = df_filtrado[
-        (df_filtrado['POTENCIA'] >= potencia_min) & 
-        (df_filtrado['POTENCIA'] <= potencia_max)
-    ]
-    
-    # Mostrar resultados
-    st.markdown("---")
-    st.subheader(f"📊 Resultados: {len(df_filtrado)} centrales encontradas")
-    
-    if len(df_filtrado) == 0:
-        st.warning("No hay centrales que coincidan con los filtros seleccionados.")
-    else:
-        # Selector de vista
-        vista = st.radio("Vista:", ["Tarjetas", "Tabla", "Resumen"], horizontal=True)
+    # --- Filtros avanzados en un expander ---
+    with st.expander("⚙️ **Filtros Avanzados**", expanded=False):
+        col_adv1, col_adv2, col_adv3 = st.columns(3)
         
-        if vista == "Tarjetas":
-            # Mostrar tarjetas organizadas
-            cols = st.columns(2)
-            for i, (_, fila) in enumerate(df_filtrado.iterrows()):
-                with cols[i % 2]:
-                    with st.container(border=True):
-                        # Icono según tecnología
-                        iconos = {
-                            'HIDRO': '💧',
-                            'TERMICA': '🔥',
-                            'EOLICA': '💨',
-                            'SOLAR': '☀️',
-                            'NUCLEAR': '☢️',
-                            'BIOMASA': '🌿'
-                        }
-                        icono = iconos.get(fila.get('TECNOLOGIA_GRUPO', 'HIDRO'), '⚡')
-                        
-                        nombre = fila.get('CENTRAL', fila.get('AGENTE', 'Sin nombre'))
-                        st.markdown(f"### {icono} {nombre[:40]}")
-                        
-                        info = f"""
-                        **Región**: {fila.get('REGION', 'N/A')}  
-                        **Tecnología**: {fila.get('TECNOLOGIA', 'N/A')}  
-                        **Fuente**: {fila.get('FUENTE', 'N/A')}  
-                        **Potencia**: **{fila.get('POTENCIA', 0):.0f} MW**
-                        """
-                        
-                        if 'AGENTE' in fila and fila['AGENTE']:
-                            info += f"\n**Agente**: {fila['AGENTE']}"
-                        
-                        st.markdown(info)
-        
-        elif vista == "Tabla":
-            st.dataframe(
-                df_filtrado,
-                column_config={
-                    "REGION": "Región",
-                    "TECNOLOGIA": "Tecnología",
-                    "FUENTE": "Fuente",
-                    "POTENCIA": st.column_config.NumberColumn(
-                        "Potencia (MW)",
-                        format="%.0f MW"
-                    ),
-                    "CENTRAL": "Central",
-                    "AGENTE": "Agente"
-                },
-                hide_index=True,
-                use_container_width=True
+        with col_adv1:
+            # Filtro por potencia mínima
+            potencia_min = st.slider(
+                "Potencia Mínima (MW)",
+                min_value=0,
+                max_value=int(df['potencia_instalada_mw'].max()),
+                value=0,
+                step=10
             )
         
-        else:  # Resumen
-            col_r1, col_r2 = st.columns(2)
-            with col_r1:
-                st.subheader("Distribución por Región")
-                region_counts = df_filtrado['REGION'].value_counts()
-                st.bar_chart(region_counts.head(10))
+        with col_adv2:
+            # Filtro por agente/empresa (opcional)
+            agentes_opciones = ["Todos"] + sorted(df['agente_descripcion'].dropna().unique().tolist())
+            agente_seleccionado = st.selectbox(
+                "Agente/Empresa",
+                options=agentes_opciones,
+                index=0
+            )
+        
+        with col_adv3:
+            # Búsqueda por nombre de central
+            busqueda_texto = st.text_input(
+                "Buscar central (nombre)",
+                placeholder="Ej: Hidroeléctrica..."
+            )
+    
+    # --- Aplicar filtros ---
+    df_filtrado = df.copy()
+    
+    # Aplicar filtros principales
+    filtros_activos = []
+    
+    if region_seleccionada != "Todas":
+        df_filtrado = df_filtrado[df_filtrado['region'] == region_seleccionada]
+        filtros_activos.append(f"**Región**: {region_seleccionada}")
+    
+    if tecnologia_seleccionada != "Todas":
+        df_filtrado = df_filtrado[df_filtrado['tecnologia'] == tecnologia_seleccionada]
+        filtros_activos.append(f"**Tecnología**: {tecnologia_seleccionada}")
+    
+    if fuente_seleccionada != "Todas":
+        df_filtrado = df_filtrado[df_filtrado['fuente_generacion'] == fuente_seleccionada]
+        filtros_activos.append(f"**Fuente**: {fuente_seleccionada}")
+    
+    # Aplicar filtros avanzados
+    if potencia_min > 0:
+        df_filtrado = df_filtrado[df_filtrado['potencia_instalada_mw'] >= potencia_min]
+        filtros_activos.append(f"**Potencia mínima**: {potencia_min} MW")
+    
+    if agente_seleccionado != "Todos":
+        df_filtrado = df_filtrado[df_filtrado['agente_descripcion'] == agente_seleccionado]
+        filtros_activos.append(f"**Agente**: {agente_seleccionado}")
+    
+    if busqueda_texto:
+        df_filtrado = df_filtrado[df_filtrado['central'].str.contains(busqueda_texto, case=False, na=False) |
+                                   df_filtrado['agente_descripcion'].str.contains(busqueda_texto, case=False, na=False)]
+        filtros_activos.append(f"**Búsqueda**: '{busqueda_texto}'")
+    
+    # --- Mostrar resultados y estadísticas ---
+    st.markdown("---")
+    
+    # Mostrar filtros aplicados
+    if filtros_activos:
+        st.info("🗂️ **Filtros activos:** " + " | ".join(filtros_activos))
+    
+    # Estadísticas principales
+    col_stat1, col_stat2, col_stat3, col_stat4 = st.columns(4)
+    
+    with col_stat1:
+        st.metric(
+            "🏭 Centrales",
+            f"{len(df_filtrado):,}",
+            f"{len(df_filtrado) - len(df):,}" if len(df_filtrado) != len(df) else "0"
+        )
+    
+    with col_stat2:
+        st.metric(
+            "⚡ Potencia Total",
+            f"{df_filtrado['potencia_instalada_mw'].sum():.0f} MW",
+            f"{df_filtrado['potencia_instalada_mw'].sum() - df['potencia_instalada_mw'].sum():.0f} MW" 
+            if len(df_filtrado) != len(df) else "0 MW"
+        )
+    
+    with col_stat3:
+        potencia_promedio = df_filtrado['potencia_instalada_mw'].mean() if not df_filtrado.empty else 0
+        st.metric("📊 Potencia Promedio", f"{potencia_promedio:.0f} MW")
+    
+    with col_stat4:
+        st.metric("🌍 Regiones", df_filtrado['region'].nunique())
+    
+    # --- Mensaje si no hay resultados ---
+    if df_filtrado.empty:
+        st.warning("""
+        ⚠️ **No se encontraron centrales con los filtros seleccionados.**
+        
+        **Sugerencias:**
+        1. Intenta con filtros menos específicos
+        2. Reduce la potencia mínima requerida
+        3. Verifica que los filtros no sean contradictorios
+        """)
+        
+        # Mostrar vista previa de datos disponibles
+        with st.expander("📋 Ver datos disponibles para filtros"):
+            col_prev1, col_prev2, col_prev3 = st.columns(3)
             
-            with col_r2:
-                st.subheader("Distribución por Tecnología")
-                tech_counts = df_filtrado['TECNOLOGIA'].value_counts()
-                st.dataframe(tech_counts)
+            with col_prev1:
+                st.write("**Regiones disponibles:**")
+                for region in sorted(df['region'].unique().tolist())[:10]:
+                    st.write(f"- {region}")
+                if len(df['region'].unique()) > 10:
+                    st.write(f"... y {len(df['region'].unique()) - 10} más")
+            
+            with col_prev2:
+                st.write("**Tecnologías disponibles:**")
+                for tech in sorted(df['tecnologia'].unique().tolist())[:10]:
+                    st.write(f"- {tech}")
+                if len(df['tecnologia'].unique()) > 10:
+                    st.write(f"... y {len(df['tecnologia'].unique()) - 10} más")
+            
+            with col_prev3:
+                st.write("**Fuentes disponibles:**")
+                for fuente in sorted(df['fuente_generacion'].unique().tolist())[:10]:
+                    st.write(f"- {fuente}")
+                if len(df['fuente_generacion'].unique()) > 10:
+                    st.write(f"... y {len(df['fuente_generacion'].unique()) - 10} más")
+        
+        return  # Terminar la ejecución aquí
+    
+    # --- Selector de vista ---
+    st.markdown("---")
+    vista_col1, vista_col2 = st.columns([1, 3])
+    
+    with vista_col1:
+        vista = st.radio(
+            "**Seleccionar vista:**",
+            ["Tarjetas", "Tabla", "Resumen"],
+            horizontal=True
+        )
+    
+    with vista_col2:
+        # Opción para ordenar resultados
+        opciones_orden = [
+            "Potencia (Mayor a Menor)",
+            "Potencia (Menor a Mayor)",
+            "Nombre A-Z",
+            "Nombre Z-A",
+            "Región A-Z"
+        ]
+        orden_seleccionado = st.selectbox("Ordenar por:", opciones_orden)
+        
+        # Aplicar orden
+        if orden_seleccionado == "Potencia (Mayor a Menor)":
+            df_filtrado = df_filtrado.sort_values('potencia_instalada_mw', ascending=False)
+        elif orden_seleccionado == "Potencia (Menor a Mayor)":
+            df_filtrado = df_filtrado.sort_values('potencia_instalada_mw', ascending=True)
+        elif orden_select == "Nombre A-Z":
+            df_filtrado = df_filtrado.sort_values('agente_descripcion', ascending=True)
+        elif orden_seleccionado == "Nombre Z-A":
+            df_filtrado = df_filtrado.sort_values('agente_descripcion', ascending=False)
+        elif orden_seleccionado == "Región A-Z":
+            df_filtrado = df_filtrado.sort_values('region', ascending=True)
+    
+    # --- VISTA: TARJETAS ---
+    if vista == "Tarjetas":
+        st.markdown(f"### 🏭 Centrales encontradas: {len(df_filtrado)}")
+        
+        # Calcular número de columnas según cantidad de datos
+        num_columnas = 3 if len(df_filtrado) > 5 else 2
+        
+        # Crear columnas dinámicas
+        columnas = st.columns(num_columnas)
+        
+        for i, (_, fila) in enumerate(df_filtrado.iterrows()):
+            with columnas[i % num_columnas]:
+                with st.container(border=True, height=220):
+                    # Encabezado con icono según tecnología
+                    icono = "⚡"
+                    if "HIDRO" in str(fila['tecnologia']).upper():
+                        icono = "💧"
+                    elif "TERMO" in str(fila['tecnologia']).upper():
+                        icono = "🔥"
+                    elif "SOLAR" in str(fila['tecnologia']).upper():
+                        icono = "☀️"
+                    elif "EOLICA" in str(fila['tecnologia']).upper():
+                        icono = "💨"
+                    
+                    st.markdown(f"#### {icono} {fila['agente_descripcion'][:30]}{'...' if len(fila['agente_descripcion']) > 30 else ''}")
+                    
+                    st.markdown(f"""
+                    **Región**: {fila['region']}  
+                    **Tecnología**: {fila['tecnologia']}  
+                    **Fuente**: {fila['fuente_generacion']}  
+                    **Potencia**: **{fila['potencia_instalada_mw']:.0f} MW**  
+                    """)
+                    
+                    # Botón para ver más detalles
+                    with st.expander("📋 Ver detalles"):
+                        st.write(f"**Central**: {fila['central']}")
+                        st.write(f"**Agente**: {fila['agente_descripcion']}")
+                        st.write(f"**Potencia exacta**: {fila['potencia_instalada_mw']:.2f} MW")
+                        if 'fecha_proceso' in df.columns:
+                            st.write(f"**Fecha actualización**: {fila['fecha_proceso'].strftime('%d/%m/%Y')}")
+    
+    # --- VISTA: TABLA ---
+    elif vista == "Tabla":
+        # Selector de columnas a mostrar
+        columnas_disponibles = [
+            'agente_descripcion', 'region', 'tecnologia', 
+            'fuente_generacion', 'potencia_instalada_mw', 'central'
+        ]
+        
+        columnas_seleccionadas = st.multiselect(
+            "Seleccionar columnas para mostrar:",
+            options=columnas_disponibles,
+            default=columnas_disponibles
+        )
+        
+        if columnas_seleccionadas:
+            # Renombrar columnas para mejor visualización
+            nombres_bonitos = {
+                'agente_descripcion': 'Agente/Empresa',
+                'region': 'Región',
+                'tecnologia': 'Tecnología',
+                'fuente_generacion': 'Fuente',
+                'potencia_instalada_mw': 'Potencia (MW)',
+                'central': 'Nombre Central'
+            }
+            
+            df_mostrar = df_filtrado[columnas_seleccionadas].rename(columns=nombres_bonitos)
+            
+            # Formatear la columna de potencia si existe
+            if 'Potencia (MW)' in df_mostrar.columns:
+                df_mostrar['Potencia (MW)'] = df_mostrar['Potencia (MW)'].apply(lambda x: f"{x:,.0f} MW")
+            
+            st.dataframe(
+                df_mostrar,
+                use_container_width=True,
+                hide_index=True,
+                height=400
+            )
+            
+            # Opciones de descarga
+            st.download_button(
+                label="📥 Descargar datos filtrados (CSV)",
+                data=df_filtrado[columnas_seleccionadas].to_csv(index=False).encode('utf-8'),
+                file_name=f"centrales_filtradas_{len(df_filtrado)}.csv",
+                mime="text/csv",
+                use_container_width=True
+            )
+    
+    # --- VISTA: RESUMEN ---
+    else:
+        col_res1, col_res2 = st.columns(2)
+        
+        with col_res1:
+            st.subheader("📊 Distribución por Región")
+            region_dist = df_filtrado['region'].value_counts().head(10)
+            st.bar_chart(region_dist)
+            
+            st.subheader("🏗️ Distribución por Tecnología")
+            tech_dist = df_filtrado['tecnologia'].value_counts()
+            st.dataframe(tech_dist, use_container_width=True)
+        
+        with col_res2:
+            st.subheader("⚡ Estadísticas de Potencia")
+            
+            col_met1, col_met2 = st.columns(2)
+            with col_met1:
+                st.metric("Máxima", f"{df_filtrado['potencia_instalada_mw'].max():.0f} MW")
+                st.metric("Mínima", f"{df_filtrado['potencia_instalada_mw'].min():.0f} MW")
+            
+            with col_met2:
+                st.metric("Promedio", f"{df_filtrado['potencia_instalada_mw'].mean():.0f} MW")
+                st.metric("Mediana", f"{df_filtrado['potencia_instalada_mw'].median():.0f} MW")
+            
+            st.subheader("📈 Top 10 Centrales por Potencia")
+            top_10 = df_filtrado.nlargest(10, 'potencia_instalada_mw')[['agente_descripcion', 'region', 'potencia_instalada_mw']]
+            top_10.index = range(1, 11)
+            st.dataframe(top_10, use_container_width=True)
 
 if __name__ == "__main__":
     main()

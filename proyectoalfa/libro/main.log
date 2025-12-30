@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.2.25)  24 DEC 2025 10:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.2.25)  25 DEC 2025 21:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1721,8 +1721,7 @@ Package csquotes Info: Redefining alias 'default' -> 'spanish'.
 (main.aux
 LaTeX Info: Redefining \. on input line 13.
 LaTeX Info: Redefining \% on input line 13.
- (capitulos/prologo.aux) (capitulos/pedagogia.aux)
-(capitulos/capitulo1.aux) (capitulos/capitulo2.aux))
+ (capitulos/capitulo2.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
@@ -1877,6 +1876,9 @@ LaTeX Info: Redefining \sptext on input line 1.
 LaTeX Info: Redefining \. on input line 1.
 LaTeX Info: Redefining \% on input line 1.
 
+Underfull \vbox (badness 3989) has occurred while \output is active []
+
+
 
 [3])
 \tf@toc=\write6
@@ -1887,170 +1889,90 @@ LaTeX Info: Redefining \% on input line 1.
 LaTeX Info: Redefining \. on input line 17.
 LaTeX Info: Redefining \% on input line 17.
 [4]
-\openout2 = `capitulos/prologo.aux'.
-
- (capitulos/prologo.tex
 
 [1
 
 
-
 ]
 
-LaTeX Info: Redefining \. on input line 4.
-LaTeX Info: Redefining \% on input line 4.
-[2
-
-]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[3])
-
-LaTeX Info: Redefining \. on input line 18.
-LaTeX Info: Redefining \% on input line 18.
-[4]
-\openout2 = `capitulos/pedagogia.aux'.
-
- (capitulos/pedagogia.tex
-
-[5
-
-
-
-
-]
-
-LaTeX Info: Redefining \. on input line 33.
-LaTeX Info: Redefining \% on input line 33.
-[6]
-
-LaTeX Info: Redefining \. on input line 49.
-LaTeX Info: Redefining \% on input line 49.
-[7])
-
-LaTeX Info: Redefining \. on input line 19.
-LaTeX Info: Redefining \% on input line 19.
-[8]
-
-[9
-
-
-
-]
-
-[10]
-\openout2 = `capitulos/capitulo1.aux'.
-
- (capitulos/capitulo1.tex
-Cap\'{\i }tulo 1.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[11
-
-
-]
-
-LaTeX Info: Redefining \. on input line 32.
-LaTeX Info: Redefining \% on input line 32.
-[12]
-
-LaTeX Info: Redefining \. on input line 48.
-LaTeX Info: Redefining \% on input line 48.
-[13]
-
-LaTeX Info: Redefining \. on input line 64.
-LaTeX Info: Redefining \% on input line 64.
-[14]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-
-LaTeX Info: Redefining \. on input line 138.
-LaTeX Info: Redefining \% on input line 138.
-[15]
-
-LaTeX Info: Redefining \. on input line 138.
-LaTeX Info: Redefining \% on input line 138.
-[16])
-
-LaTeX Info: Redefining \. on input line 22.
-LaTeX Info: Redefining \% on input line 22.
-[17
-
-]
+[2]
 \openout2 = `capitulos/capitulo2.aux'.
 
  (capitulos/capitulo2.tex
+Cap\'{\i }tulo 1.
 
-LaTeX Info: Redefining \. on input line 2.
-LaTeX Info: Redefining \% on input line 2.
-[18
 
+[3
+
+
+]
+<graphics/centraltermica.jpg, id=184, 454.69875pt x 319.94531pt>
+File: graphics/centraltermica.jpg Graphic file (type jpg)
+<use graphics/centraltermica.jpg>
+Package pdftex.def Info: graphics/centraltermica.jpg  used on input line 36.
+(pdftex.def)             Requested size: 341.02322pt x 239.95839pt.
+
+Underfull \vbox (badness 4899) has occurred while \output is active []
+
+
+
+LaTeX Info: Redefining \. on input line 44.
+LaTeX Info: Redefining \% on input line 44.
+[4 <./graphics/centraltermica.jpg>]
+<graphics/SistemaAbiertoCaldera.jpg, id=192, 193.32225pt x 229.45724pt>
+File: graphics/SistemaAbiertoCaldera.jpg Graphic file (type jpg)
+<use graphics/SistemaAbiertoCaldera.jpg>
+Package pdftex.def Info: graphics/SistemaAbiertoCaldera.jpg  used on input line
+ 57.
+(pdftex.def)             Requested size: 144.99133pt x 172.0925pt.
+
+
+LaTeX Info: Redefining \. on input line 71.
+LaTeX Info: Redefining \% on input line 71.
+[5]
+
+LaTeX Info: Redefining \. on input line 97.
+LaTeX Info: Redefining \% on input line 97.
+[6 <./graphics/SistemaAbiertoCaldera.jpg>]
+
+LaTeX Info: Redefining \. on input line 118.
+LaTeX Info: Redefining \% on input line 118.
+[7]
+
+LaTeX Info: Redefining \. on input line 142.
+LaTeX Info: Redefining \% on input line 142.
+[8]
+
+LaTeX Info: Redefining \. on input line 175.
+LaTeX Info: Redefining \% on input line 175.
+[9]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+LaTeX Info: Redefining \. on input line 236.
+LaTeX Info: Redefining \% on input line 236.
+[10]
+
+LaTeX Info: Redefining \. on input line 248.
+LaTeX Info: Redefining \% on input line 248.
+[11]
+
+LaTeX Info: Redefining \. on input line 273.
+LaTeX Info: Redefining \% on input line 273.
+[12])
+
+LaTeX Info: Redefining \. on input line 23.
+LaTeX Info: Redefining \% on input line 23.
+[13]
+
+LaTeX Info: Redefining \. on input line 28.
+LaTeX Info: Redefining \% on input line 28.
+[14
 
 
 
 ]
-Cap\'{\i }tulo 2.
-
-
-[19]
-<graphics/centraltermica.jpg, id=324, 454.69875pt x 319.94531pt>
-File: graphics/centraltermica.jpg Graphic file (type jpg)
-<use graphics/centraltermica.jpg>
-Package pdftex.def Info: graphics/centraltermica.jpg  used on input line 26.
-(pdftex.def)             Requested size: 341.02322pt x 239.95839pt.
-<graphics/SistemaAbiertoCaldera.jpg, id=326, 193.32225pt x 229.45724pt>
-File: graphics/SistemaAbiertoCaldera.jpg Graphic file (type jpg)
-<use graphics/SistemaAbiertoCaldera.jpg>
-Package pdftex.def Info: graphics/SistemaAbiertoCaldera.jpg  used on input line
- 39.
-(pdftex.def)             Requested size: 144.99133pt x 172.0925pt.
-
-
-LaTeX Info: Redefining \. on input line 50.
-LaTeX Info: Redefining \% on input line 50.
-[20 <./graphics/centraltermica.jpg>]
-
-LaTeX Info: Redefining \. on input line 72.
-LaTeX Info: Redefining \% on input line 72.
-[21 <./graphics/SistemaAbiertoCaldera.jpg>]
-
-LaTeX Info: Redefining \. on input line 94.
-LaTeX Info: Redefining \% on input line 94.
-[22]
-
-LaTeX Info: Redefining \. on input line 113.
-LaTeX Info: Redefining \% on input line 113.
-[23]
-
-LaTeX Info: Redefining \. on input line 145.
-LaTeX Info: Redefining \% on input line 145.
-[24]
-
-LaTeX Info: Redefining \. on input line 187.
-LaTeX Info: Redefining \% on input line 187.
-[25]
-
-LaTeX Info: Redefining \. on input line 229.
-LaTeX Info: Redefining \% on input line 229.
-[26]
-Underfull \vbox (badness 1342) has occurred while \output is active []
-
-
-
-LaTeX Info: Redefining \. on input line 254.
-LaTeX Info: Redefining \% on input line 254.
-[27])
-
-LaTeX Info: Redefining \. on input line 23.
-LaTeX Info: Redefining \% on input line 23.
-[28]
 Overfull \hbox (2.83447pt too wide) in paragraph at lines 30--30
 [][]\T1/cmr/m/n/12 Çengel, Y. A. y M. A. Bo-les (2019). \T1/cmr/m/it/12 Ther-mo
 dy-na-mics: An En-gi-nee-ring Ap-proach\T1/cmr/m/n/12 . McGraw-
@@ -2058,17 +1980,13 @@ dy-na-mics: An En-gi-nee-ring Ap-proach\T1/cmr/m/n/12 . McGraw-
 
 
 
-[29
-
-
-
+[15
 
 ] (main.aux
 LaTeX Info: Redefining \sptext on input line 13.
 LaTeX Info: Redefining \. on input line 13.
 LaTeX Info: Redefining \% on input line 13.
- (capitulos/prologo.aux) (capitulos/pedagogia.aux)
-(capitulos/capitulo1.aux) (capitulos/capitulo2.aux))
+ (capitulos/capitulo2.aux))
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -2078,16 +1996,13 @@ L3 programming layer <2025-01-18>
 LaTeX Warning: There were undefined references.
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
 Package rerunfilecheck Warning: File `main.out' has changed.
 (rerunfilecheck)                Rerun to get outlines right
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: 7F6CFE6DDACDEE19A5743A1E71FC5C22;6723
-(rerunfilecheck)             After:  C064F373933F0B33F865CACB6303B4FC;6806.
+(rerunfilecheck)             Before: 0BF1732CC8FF4510C700A9850E3DB2DF;5008
+(rerunfilecheck)             After:  EAA112789EBE8E4A8A4C3D2656DD0D69;2933.
 
 Package biblatex Warning: Please (re)run Biber on the file:
 (biblatex)                main
@@ -2098,43 +2013,66 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 58984 strings out of 473530
- 1389756 string characters out of 5714313
- 2453315 words of memory out of 5000000
- 81246 multiletter control sequences out of 15000+600000
+ 58846 strings out of 473530
+ 1385726 string characters out of 5714313
+ 2431083 words of memory out of 5000000
+ 81149 multiletter control sequences out of 15000+600000
  577050 words of font info for 80 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 91i,14n,99p,1199b,2925s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 91i,7n,99p,1199b,2925s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-pdfTeX warning (dest): name{figure.caption.8} has been referenced but does not 
+pdfTeX warning (dest): name{subsection.1.5.3} has been referenced but does not 
 exist, replaced by a fixed one
 
 
-pdfTeX warning (dest): name{table.caption.4} has been referenced but does not e
-xist, replaced by a fixed one
+pdfTeX warning (dest): name{subsection.1.5.2} has been referenced but does not 
+exist, replaced by a fixed one
 
- <C:\Users\pablo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm08
+
+pdfTeX warning (dest): name{subsection.1.5.1} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{section.1.5} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection.1.4.6} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection.1.4.5} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection.1.4.4} has been referenced but does not 
+exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection.1.3.3} has been referenced but does not 
+exist, replaced by a fixed one
+
+ <C:\Users\pablo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti12
 00.pk> <C:\Users\pablo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\
 ecbx1728.pk> <C:\Users\pablo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/d
-pi600\ecti1200.pk> <C:\Users\pablo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappe
-n/ec/dpi600\ecsl1200.pk> <C:\Users\pablo\AppData\Local\MiKTeX\fonts/pk/ljfour/j
-knappen/ec/dpi600\ecrm1200.pk> <C:\Users\pablo\AppData\Local\MiKTeX\fonts/pk/lj
+pi600\ecsl1200.pk> <C:\Users\pablo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappe
+n/ec/dpi600\ecrm1200.pk> <C:\Users\pablo\AppData\Local\MiKTeX\fonts/pk/ljfour/j
+knappen/ec/dpi600\ecbx1200.pk> <C:\Users\pablo\AppData\Local\MiKTeX\fonts/pk/lj
 four/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\pablo\AppData\Local\MiKTeX\fonts
-/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\pablo\AppData\Local\MiKTeX
-\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\pablo\AppData\Local\
-MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1200.pk> <C:\Users\pablo\AppData\
-Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk> <C:\Users\pablo\Ap
-pData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2074.pk><C:/Users/pab
-lo/AppData/Local/Programs/MiKTeX2/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:
-/Users/pablo/AppData/Local/Programs/MiKTeX2/fonts/type1/public/amsfonts/cm/cmmi
-12.pfb><C:/Users/pablo/AppData/Local/Programs/MiKTeX2/fonts/type1/public/amsfon
-ts/cm/cmmi8.pfb><C:/Users/pablo/AppData/Local/Programs/MiKTeX2/fonts/type1/publ
-ic/amsfonts/cm/cmr12.pfb><C:/Users/pablo/AppData/Local/Programs/MiKTeX2/fonts/t
-ype1/public/amsfonts/cm/cmr8.pfb><C:/Users/pablo/AppData/Local/Programs/MiKTeX2
-/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on main.pdf (33 pages, 407857 bytes).
+/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\pablo\AppData\Local\MiKTeX
+\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1200.pk> <C:\Users\pablo\AppData\Local\
+MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk> <C:\Users\pablo\AppData\
+Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2074.pk><C:/Users/pablo/App
+Data/Local/Programs/MiKTeX2/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users
+/pablo/AppData/Local/Programs/MiKTeX2/fonts/type1/public/amsfonts/cm/cmmi12.pfb
+><C:/Users/pablo/AppData/Local/Programs/MiKTeX2/fonts/type1/public/amsfonts/cm/
+cmmi8.pfb><C:/Users/pablo/AppData/Local/Programs/MiKTeX2/fonts/type1/public/ams
+fonts/cm/cmr12.pfb><C:/Users/pablo/AppData/Local/Programs/MiKTeX2/fonts/type1/p
+ublic/amsfonts/cm/cmr8.pfb><C:/Users/pablo/AppData/Local/Programs/MiKTeX2/fonts
+/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on main.pdf (19 pages, 345364 bytes).
 PDF statistics:
- 868 PDF objects out of 1000 (max. 8388607)
- 100 named destinations out of 1000 (max. 500000)
- 383 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 698 PDF objects out of 1000 (max. 8388607)
+ 80 named destinations out of 1000 (max. 500000)
+ 327 words of extra memory for PDF output out of 10000 (max. 10000000)
 

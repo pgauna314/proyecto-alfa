@@ -2373,19 +2373,6 @@
     <bcf:datasource type="file" datatype="bibtex" glob="false">referencias.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1" intorder="1">Kandel2013</bcf:citekey>
-    <bcf:citekey order="2" intorder="1">Baddeley2000</bcf:citekey>
-    <bcf:citekey order="3" intorder="1">Dweck2006</bcf:citekey>
-    <bcf:citekey order="4" intorder="1">smith2020</bcf:citekey>
-    <bcf:citekey order="5" intorder="1">perez2021</bcf:citekey>
-    <bcf:citekey order="6" intorder="1">secretaria2022</bcf:citekey>
-    <bcf:citekey order="7" intorder="1">secretaria2022</bcf:citekey>
-    <bcf:citekey order="8" intorder="1">cader</bcf:citekey>
-    <bcf:citekey order="9" intorder="1">nucleoelectrica</bcf:citekey>
-    <bcf:citekey order="10" intorder="1">iea2023</bcf:citekey>
-    <bcf:citekey order="11" intorder="1">moran2018</bcf:citekey>
-    <bcf:citekey order="12" intorder="1">cengel2019</bcf:citekey>
-    <bcf:citekey order="13" intorder="1">jones2019</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">

@@ -2,11 +2,14 @@
 \chapter{Conceptos Fundamentales}
 
 \section{Objetivos de este capítulo}
-En este capítulo, abordaremos los conceptos fundamentales de \textbf{sistema}, \textbf{balance de materia} y \textbf{balance de energía}, aplicándolos al funcionamiento de una central térmica. En lugar de presentar definiciones abstractas desde el inicio, analizaremos cómo estos principios se aplican en la generación de electricidad, para finalmente formalizar los conceptos clave.
+En este capítulo, definiremos la Termodinámica como disiciplina y abordaremos los conceptos fundamentales de \textbf{sistema}, \textbf{balance de materia} y \textbf{balance de energía}.
+
+En lugar de iniciar con definiciones académicas abstractas, presentaremos el caso de la Central Térmica Río Turbio, a través de la cual  analizaremos cómo estos principios se aplican en la generación de potencia eléctrica, para finalmente formalizar los conceptos clave.
 
 
 
 \section{Introducción: Central Térmica}
+\label{sect:intro_centrales_termicas}
 En capítulos previos  \hl{¿CUAL?}, mencionamos que una central térmica es aquella que impulsa la turbina con vapor de agua, el cual se produce gracias al calor generado al quemarse (oxidarse) un combustible fósil como gas, petróleo, carbón.  Veamos entonces las etapas básicas de una central térmica, como se muestra en la Figura \ref{fig:CentralTermica}:
 
 \begin{itemize}
@@ -19,9 +22,16 @@ En capítulos previos  \hl{¿CUAL?}, mencionamos que una central térmica es aqu
     \item \textbf{Bombeo del agua}: El agua en estado líquido se bombea a alta presión para reingresar a la caldera, continuando así el ciclo de manera cíclica.
 \end{itemize}
 
-El agua que circula a través de los dispositivos (caldera, turbina, condensador y bomba) es la encargada de realizar el transporte de la energía (se lleva la energía de la combustión y la deja en la turbina). En este caso, el agua recibe el nombre de \emph{fluido de trabajo} o \emph{fluido intermediario}
+El agua que circula a través de los dispositivos (caldera, turbina, condensador y bomba) es la encargada de realizar el transporte de la energía (se lleva la energía de la combustión y la deja en la turbina). En este caso, el agua recibe el nombre de \emph{fluido de trabajo} o \emph{fluido intermediario}.
 
-\begin{figure}[htbp]
+Podemos resumir el proceso en términos generales de la siguiente forma: la energía química del combustible se transforma en calor que vaporiza el agua; este a su vez se transforma en energía cinética (movimiento de la turbina) y finalmente ese movimiento se transforma en energía eléctrica. Así es como se define formalmente la Termodinámica: 
+
+\begin{definicion}{Sistema Abierto}
+La Termodinámica es la parte de la Física que estudia la energía y sus transformaciones.
+\end{definicion}
+
+
+\begin{figure}[tbp]
     \centering
     \includegraphics[scale=0.75]{graphics/centraltermica.jpg}
     \caption{Procesos básicos involucrados en una central térmica.}
@@ -29,10 +39,18 @@ El agua que circula a través de los dispositivos (caldera, turbina, condensador
 \end{figure}
 
 
+\subsection{La Central Térmica Río Turbio}
+La Central Térmica de Río Turbio está emplazada en la provincia de Santa Cruz y genera una potencia eléctrica de 240 MW. Desde el punto de vista termodinámico, su funcionamiento puede explicarse con las cuatro operaciones básicas descriptas en la sección \ref{sect:intro_centrales_termicas}. El fluido intermediario es agua, y el combustible que emplea es carbón, dado que la zona cuenta con un yacimiento del mineral.
 
-\section{Sistema abierto o volumen de control}
 
-Teniendo en mente el funcionamiento de una central térmica, supongamos que queremos analizar termodinámicamente el agua que circula por una cañería dentro de la caldera. Para ello, tracemos una línea imaginaria que abarque esa cañería, como se muestra en la Figura \ref{fig:EleccionSistema} (recuadro rojo). Esta elección nos permite definir tres regiones:
+
+\section{Nuestras primeras herramientas de análisis}
+Para estudiar cómo las energías se transforman unas en otras en una planta de generación de potencia, necesitaremos un conjunto de herramientas fundamentales. En primer lugar, debemos aprender a delimitar nuestra región de estudio mediante la definición de un \textbf{volumen de control}, donde se establecen fronteras imaginarias. Una vez fijados estos límites, es necesario saber contar energía y materia, partiendo de la base de que la cantidad de una depende intrínsecamente de la cantidad de la otra. Este proceso de contabilidad, regido por las leyes de conservación, nos permitirá entender no solo cuánto fluido circula por las instalaciones, sino cómo ese flujo transporta y transforma la energía en cada etapa del ciclo térmico.
+
+
+\subsection{El volumen de control o sistema abierto}
+
+Supongamos que queremos analizar termodinámicamente el agua que circula por una cañería dentro de la caldera. Para ello, trazaremos una línea imaginaria que abarque esa cañería, como se muestra en la Figura \ref{fig:EleccionSistema} (recuadro rojo). Esta elección nos permite definir tres regiones:
 
 \begin{figure}[htbp]
     \centering
@@ -60,7 +78,7 @@ Podemos entonces establecer la siguiente definición:
 Un sistema abierto o \textbf{volumen de control} es una región del espacio seleccionada para su análisis, a través de cuya frontera puede existir flujo de masa además de energía.
 \end{definicion}
 
-\subsection{Lo que tenés que saber sobre los sistemas abiertos}
+\subsubsection{Lo que tenés que saber sobre los sistemas abiertos}
 Las definiciones académicas son importantes, pero lo esencial es aprender a aplicar estos conceptos en la resolución de problemas. Para ello, tené en cuenta lo siguiente:
 
 \begin{enumerate}
@@ -73,7 +91,7 @@ Las definiciones académicas son importantes, pero lo esencial es aprender a apl
    \end{enumerate}   
 
 
-\subsection{Otros sistemas}
+\subsubsection{Otros sistemas}
 Además de los sistemas abiertos, hay otros dos tipos: el sistema cerrado y el sistema aislado.
 
 El sistema cerrado es aquel a través de cuyos límites hay intercambio de energía, pero no de materia. Es decir, la cantidad de masa en su interior no cambia.
@@ -82,31 +100,31 @@ Por su parte, el sistema aislado es aquel en el que no hay intercambios ni de ma
 \hl{donde ampliamos esto?}
 
 
-\section{Balance de materia}
+\subsection{Balance de materia}
 
 El balance de materia constituye uno de los pilares fundamentales en el estudio de los sistemas termodinámicos y de los procesos de ingeniería química. En términos prácticos, puede interpretarse como un proceso de contabilidad en el que se registran las masas que ingresan a un sistema, las que egresan y la masa que permanece dentro de sus límites. El fundamento de este análisis es el \emph{principio de conservación de la masa}, el cual establece que la materia no se crea ni se destruye, sino que se conserva.
 
 Para aplicar este principio es necesario definir un \emph{volumen de control}, es decir, una región del espacio seleccionada para el análisis. A lo largo de este capítulo se adoptará como volumen de control la cañería por la cual circula el agua en el interior de la caldera. Este enfoque permite analizar el comportamiento del fluido a medida que ingresa al sistema, se calienta y finalmente lo abandona.
 
-\subsection{Estado transitorio: fase de llenado}
+\subsubsection{Estado transitorio: fase de llenado}
 
 Consideremos el caso de una instalación recién construida que se encuentra inicialmente vacía. Al iniciar el proceso de llenado, el fluido comienza a ingresar al volumen de control definido por la cañería del sistema. Durante esta etapa existe una entrada de masa, pero no se observa aún una salida, lo que produce una acumulación progresiva de fluido en el interior de las conducciones.
 
 En estas condiciones, la cantidad de materia contenida dentro del volumen de control varía con el tiempo. Este comportamiento se denomina \emph{estado transitorio} y se caracteriza precisamente por la existencia de acumulación de masa dentro del sistema.
 
-\subsection{Estado estacionario: operación en régimen permanente}
+\subsubsection{Estado estacionario: operación en régimen permanente}
 
 Una vez que la planta alcanza sus condiciones normales de operación y el fluido completa el circuito, el sistema entra en una fase de estabilidad. En este régimen, el volumen de control ya no acumula materia: toda la masa que ingresa por la sección de entrada es simultáneamente desplazada y evacuada por la sección de salida.
 
 Este comportamiento se denomina \emph{estado estacionario} o \emph{régimen permanente} y se caracteriza porque las propiedades macroscópicas del sistema permanecen constantes en el tiempo. En una central térmica, este tipo de operación es el más habitual durante el funcionamiento normal del ciclo. Por ejemplo, el caudal de agua que ingresa a la caldera en estado líquido es igual al caudal de vapor que egresa, despreciando pérdidas menores.
 
-\subsection{Necesidad de una descripción en términos de flujo}
+\subsubsection{Necesidad de una descripción en términos de flujo}
 
 Dado que el agua, en sus diferentes estados de agregación, circula de manera continua dentro del ciclo térmico, resulta poco práctico describir el proceso en términos de cantidades fijas de materia. En su lugar, es más conveniente analizar el sistema en términos de flujos, es decir, considerando cuánta masa atraviesa una determinada sección del sistema por unidad de tiempo.
 
 Esta forma de descripción permite vincular el comportamiento del sistema con variables operativas como el régimen de funcionamiento, la capacidad de los equipos y las condiciones de diseño.
 
-\subsection{Caudal másico}
+\subsubsection{Caudal másico}
 
 Para cuantificar el ingreso y egreso de materia a través de las fronteras del volumen de control, se introduce el concepto de \textbf{caudal másico}. El caudal másico representa la cantidad de masa que atraviesa una sección del sistema por unidad de tiempo y se denota como $\dot{m}$.
 
@@ -118,7 +136,7 @@ Desde el punto de vista matemático, el caudal másico se define como la derivad
 
 y se expresa habitualmente en unidades de \(\text{kg/s}\). La notación con un punto sobre la variable \( m \) indica, por lo tanto, una tasa de transferencia de masa.
 
-\subsection{Planteo general del balance de materia}
+\subsubsection{Planteo general del balance de materia}
 
 Una vez definido el volumen de control y el concepto de caudal másico, el balance de materia puede plantearse de manera sistemática. En términos generales, para un sistema abierto, la variación de la masa contenida dentro del volumen de control es consecuencia del ingreso y egreso de materia a través de sus fronteras, así como de posibles procesos de generación o consumo.
 
@@ -130,7 +148,7 @@ De forma esquemática, este balance puede expresarse como:
 
 En muchos sistemas de ingeniería química, y en particular en aquellos donde no ocurren reacciones químicas, los términos de generación y consumo de masa son nulos.
 
-\subsection{Formalismo matemático del balance de materia}
+\subsubsection{Formalismo matemático del balance de materia}
 
 Sobre la base de los conceptos previamente introducidos, el balance de materia puede expresarse en forma rigurosa mediante una formulación matemática integral. La masa contenida dentro de un volumen de control se define como:
 

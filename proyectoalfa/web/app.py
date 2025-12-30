@@ -50,9 +50,11 @@ elif opcion == "📊 Matriz Energética Nacional":
 elif opcion == "⚙️ Calculadora de Propiedades":
     from modules.laboratorio import mostrar_laboratorio
     mostrar_laboratorio()
+
 elif opcion == "📚 Balances de Materia y Energía":
-    from modules.capitulo2 import mostrar_cap2
-    mostrar_cap2()
+    from modules.capitulo2.support import render as render_cap2
+    render_cap2()
+
 elif opcion == "🔍 Wiki":
     from modules.wiki import main as wiki_main
     wiki_main()

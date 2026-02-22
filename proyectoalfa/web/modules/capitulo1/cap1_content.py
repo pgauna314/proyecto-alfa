@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 from modules.palettes import ENERGY_THEME  # Importamos tu paleta centralizada
 
-def mostrar_matriz():
+def mostrar_resumen():
     st.title("⚡ Matriz Energética Nacional")
     
     # Datos 

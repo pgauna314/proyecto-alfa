@@ -1,5 +1,5 @@
+# proyectoalfa/web/app.py
 import streamlit as st
-import os
 import importlib
 
 # CONFIGURACIÓN DE PÁGINA
@@ -10,34 +10,22 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- LÓGICA DE DETECCIÓN Y FORMATEO ---
-def obtener_capitulos():
-    ruta_actual = os.path.dirname(os.path.abspath(__file__))
-    base_path = os.path.join(ruta_actual, "modules", "book_support")
-    
-    if not os.path.exists(base_path):
-        return {}
-    
-    try:
-        contenido = os.listdir(base_path)
-        carpetas = [d for d in contenido 
-                    if os.path.isdir(os.path.join(base_path, d)) and d.startswith("capitulo")]
-        
-        carpetas_ordenadas = sorted(carpetas, key=lambda x: int(''.join(filter(str.isdigit, x)) or 0))
-        
-        dict_caps = {}
-        for c in carpetas_ordenadas:
-            num = ''.join(filter(str.isdigit, c))
-            nombre_lindo = f"Capítulo {num}"
-            dict_caps[nombre_lindo] = c
-            
-        return dict_caps
-    except Exception:
-        return {}
+# --- ÍNDICE DEL LIBRO (FIJO Y PEDAGÓGICO) ---
+CAPITULOS_LIBRO = [
+    ("Capítulo 1", "La matriz energética argentina: potencia, recursos y restricciones"),
+    ("Capítulo 2", "Conservación de masa y energía en sistemas abiertos (caso Yacyretá)"),
+    ("Capítulo 3", "El límite de la conversión: ciclo de potencia real vs. ideal (caso Central Térmica Luján de Cuyo)"),
+    ("Capítulo 4", "Irreversibilidades: el costo de la transformación real (caso Turbina de vapor)"),
+    ("Capítulo 5", "Mejoras al ciclo Rankine y análisis exergético (caso Centrales termoeléctricas avanzadas)"),
+    ("Capítulo 6", "Combustión y ciclos de gas: nueva sustancia, mismos principios (caso Turbina de gas)"),
+    ("Capítulo 7", "Integración exergética: ciclos combinados (caso Central de ciclo combinado)"),
+    ("Capítulo 8", "Recursos variables: límites físicos de la conversión renovable"),
+    ("Capítulo 9", "Metodología del análisis termodinámico aplicado"),
+    ("Capítulo 10", "Diseñar la matriz energética del futuro")
+]
 
-# --- SIDEBAR (Navegación de Alto Nivel) ---
+# --- SIDEBAR: NAVEGACIÓN PRINCIPAL ---
 with st.sidebar:
-    # H1 para el lector de pantalla
     st.title("Proyecto α")
     st.markdown(
         """
@@ -49,81 +37,68 @@ with st.sidebar:
         unsafe_allow_html=True
     )
     st.divider()
+
+    # Construir opciones de menú
+    opciones_menu = [
+        "🏠 Inicio",
+        "⚙️ Calculadora de Propiedades"
+    ]
     
+    for i, (cap_num, titulo) in enumerate(CAPITULOS_LIBRO, start=1):
+        display = f"{i}. {titulo[:50]}..." if len(titulo) > 50 else f"{i}. {titulo}"
+        opciones_menu.append(display)
+    
+    opciones_menu.extend(["🔍 Wiki", "👤 Autor"])
+
     opcion = st.radio(
         label="Navegación Principal:",
-        options=["🏠 Inicio", "📊 Matriz Energética Nacional", "⚙️ Calculadora de Propiedades", "📚 Soporte de Libro", "🔍 Wiki", "👤 Autor"],
-        help="Seleccione una sección para cambiar el contenido principal de la pantalla."
+        options=opciones_menu,
+        help="Seleccione una sección para cambiar el contenido principal."
     )
     st.divider()
     st.caption("⚡ Soberanía Educativa y Tecnológica")
 
-# --- ENRUTADOR DE CONTENIDO ---
-if opcion == "📚 Soporte de Libro":
-    # Encabezado principal de la sección
-    st.title("📚 Soporte de Libro")
-    st.markdown("""
-    > **Bienvenido a la sección de apoyo pedagógico.** Aquí vas a encontrar material de soporte del libro como simulaciones interactivas y ejemplos resueltos.
-    """)
-    st.divider()
-
-    dict_caps = obtener_capitulos()
-    
-    if dict_caps:
-        nombres_lindos = ["--- Selecciona una unidad temática ---"] + list(dict_caps.keys())
-        
-        col_sel, _ = st.columns([1, 1])
-        with col_sel:
-            # Accesibilidad: Etiqueta clara e instrucción de ayuda
-            seleccion_visual = st.selectbox(
-                label="Explorar contenido técnico por unidad:", 
-                options=nombres_lindos,
-                help="Al seleccionar un capítulo, se cargará automáticamente el material didáctico debajo."
-            )
-        
-        if seleccion_visual != "--- Selecciona una unidad temática ---":
-            #st.header(f"📖 {seleccion_visual}")
-            #st.divider()
-
-            nombre_carpeta = dict_caps[seleccion_visual]
-            try:
-                # Extraemos el número de la carpeta (ej: '2' de 'capitulo2')
-                numero = ''.join(filter(str.isdigit, nombre_carpeta))
-                
-                # CAMBIO CLAVE: Ahora buscamos el archivo capX_main
-                if numero:
-                    ruta_importacion = f"modules.book_support.{nombre_carpeta}.cap{numero}_main"
-                else:
-                    # Por si tenés carpetas sin número, busca un main.py genérico
-                    ruta_importacion = f"modules.book_support.{nombre_carpeta}.main"
-                    
-                cap_modulo = importlib.import_module(ruta_importacion)
-                importlib.reload(cap_modulo)
-                
-                # Ejecución del contenido principal del capítulo
-                cap_modulo.render() 
-                
-            except Exception as e:
-                st.error(f"Error al cargar {seleccion_visual}: {e}")
-                st.info(f"Asegurate de que el archivo se llame cap{numero}_main.py")
-        else:
-            st.info("💡 Por favor, selecciona una unidad del menú superior para desplegar el material de estudio.")
-    else:
-        st.warning("No se detectaron carpetas de capítulos.")
-
-# --- RESTO DE SECCIONES ---
-elif opcion == "🏠 Inicio":
+# --- ENRUTAMIENTO DE CONTENIDO ---
+if opcion == "🏠 Inicio":
     from modules.inicio import mostrar_inicio
     mostrar_inicio()
-elif opcion == "📊 Matriz Energética Nacional":
-    from modules.matriz import mostrar_matriz
-    mostrar_matriz()
+
 elif opcion == "⚙️ Calculadora de Propiedades":
     from modules.laboratorio import mostrar_laboratorio
     mostrar_laboratorio()
+
 elif opcion == "🔍 Wiki":
     from modules.wiki import main as wiki_main
     wiki_main()
+
 elif opcion == "👤 Autor":
     from modules.autor import mostrar_autor
     mostrar_autor()
+
+# --- CAPÍTULOS 1 A 10: CARGA DINÁMICA ---
+elif opcion.startswith(tuple(f"{i}." for i in range(1, 11))):
+    try:
+        num_str = opcion.split(".")[0]
+        num = int(num_str)
+        cap_nombre, cap_titulo = CAPITULOS_LIBRO[num - 1]
+        
+        st.title(f"📘 {cap_titulo}")
+        st.divider()
+        
+        # Cargar capX_main.render() desde modules.capituloX
+        modulo_nombre = f"modules.capitulo{num}.cap{num}_main"
+        try:
+            modulo = importlib.import_module(modulo_nombre)
+            importlib.reload(modulo)
+            if hasattr(modulo, 'render'):
+                modulo.render()
+            else:
+                st.info("🛠️ Contenido interactivo en desarrollo.")
+        except ImportError:
+            st.info("🛠️ Contenido interactivo en desarrollo.")
+            
+    except Exception as e:
+        st.error(f"Error al cargar el capítulo: {e}")
+
+else:
+    st.info("Seleccione una opción del menú.")
